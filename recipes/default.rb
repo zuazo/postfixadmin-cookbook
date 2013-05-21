@@ -18,6 +18,7 @@
 #
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+::Chef::Recipe.send(:include, PostfixAdmin::PHP)
 
 include_recipe 'apache2::default'
 include_recipe 'apache2::mod_php5'
@@ -60,12 +61,21 @@ mysql_database node['postfixadmin']['database']['name'] do
 end
 
 if Chef::Config[:solo]
-  if node['mysql']['database']['password'].nil?
+  if node['postfixadmin']['database']['password'].nil?
     Chef::Application.fatal!("You must set node['postfixadmin']['database']['password'] in chef-solo mode.");
   end
+  if node['postfixadmin']['setup_password'].nil?
+    Chef::Application.fatal!("You must set node['postfixadmin']['setup_password'] in chef-solo mode.");
+  end
+  if node['postfixadmin']['setup_password_salt'].nil?
+    Chef::Application.fatal!("You must set node['postfixadmin']['setup_password_salt'] in chef-solo mode.");
+  end
+  node.set_unless['postfixadmin']['setup_password_encrypted'] = encrypt_setup_password(node['postfixadmin']['setup_password'], node['postfixadmin']['setup_password_salt'])
 else
-  # generate mysql password
+  # generate required passwords
   node.set_unless['postfixadmin']['database']['password'] = secure_password
+  node.set_unless['postfixadmin']['setup_password'] = secure_password
+  node.set_unless['postfixadmin']['setup_password_encrypted'] = encrypt_setup_password(node['postfixadmin']['setup_password'], generate_setup_password_salt)
   node.save
 end
 
@@ -84,7 +94,37 @@ ark 'postfixadmin' do
   checksum node['postfixadmin']['checksum']
 end
 
-link node['postfixadmin']['path'] do
-  to "#{node['ark']['prefix_root']}/postfixadmin"
+if node['postfixadmin']['ssl']
+  include_recipe 'apache2::mod_ssl'
+  package 'ssl-cert' # generates a self-signed (snakeoil) certificate
+end
+
+web_app 'postfixadmin' do
+  cookbook 'postfixadmin'
+  template 'vhost.erb'
+  docroot "#{node['ark']['prefix_root']}/postfixadmin"
+  server_name node['postfixadmin']['server_name']
+  server_aliases []
+  if node['postfixadmin']['ssl']
+    port '443'
+  else
+    port '80'
+  end
+  enable true
+end
+
+template 'config.local.php' do
+  path "#{node['postfixadmin']['path']}/config.local.php"
+  source 'config.local.php.erb'
+  owner 'root'
+  group node['apache']['group']
+  mode '0640'
+  variables(
+    :name => node['postfixadmin']['database']['name'],
+    :host => node['postfixadmin']['database']['host'],
+    :user => node['postfixadmin']['database']['user'],
+    :password => node['postfixadmin']['database']['password'],
+    :setup_password => node['postfixadmin']['setup_password_encrypted']
+  )
 end
 
