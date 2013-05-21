@@ -8,6 +8,8 @@ version          '0.1.0'
 
 supports 'ubuntu'
 
+depends 'apache2'
+depends 'ark'
 depends 'database'
 depends 'mysql'
 
