@@ -1,5 +1,5 @@
 
-default['postfixadmin']['map_files']['path'] = '/etc/postfix/sql'
+default['postfixadmin']['map_files']['path'] = '/etc/postfix/tables'
 default['postfixadmin']['map_files']['mode'] = '00640'
 default['postfixadmin']['map_files']['owner'] = 'root'
 default['postfixadmin']['map_files']['group'] = 'postfix'

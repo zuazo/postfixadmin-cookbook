@@ -114,7 +114,7 @@ web_app 'postfixadmin' do
 end
 
 template 'config.local.php' do
-  path "#{node['postfixadmin']['path']}/config.local.php"
+  path "#{node['ark']['prefix_root']}/postfixadmin/config.local.php"
   source 'config.local.php.erb'
   owner 'root'
   group node['apache']['group']

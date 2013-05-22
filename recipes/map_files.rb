@@ -26,7 +26,7 @@ directory node['postfixadmin']['map_files']['path'] do
 end
 
 node['postfixadmin']['map_files']['list'].each do |map_file|
-  template "#{node['postfixadmin']['maps_path']}/#{map_file}" do
+  template "#{node['postfixadmin']['map_files']['path']}/#{map_file}" do
     source "sql/#{map_file}.erb"
     mode node['postfixadmin']['map_files']['mode']
     owner node['postfixadmin']['map_files']['owner']
