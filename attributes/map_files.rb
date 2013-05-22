@@ -1,8 +1,8 @@
 
 default['postfixadmin']['map_files']['path'] = '/etc/postfix/sql'
-default['postfixadmin']['map_files']['mode'] = '00644'
+default['postfixadmin']['map_files']['mode'] = '00640'
 default['postfixadmin']['map_files']['owner'] = 'root'
-default['postfixadmin']['map_files']['group'] = 'root' # TODO: this should not be root, and mode should be more restritive
+default['postfixadmin']['map_files']['group'] = 'postfix'
 
 default['postfixadmin']['map_files']['list'] = [
   'mysql_virtual_alias_maps.cf',
