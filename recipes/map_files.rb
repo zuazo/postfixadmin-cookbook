@@ -22,6 +22,7 @@ directory node['postfixadmin']['map_files']['path'] do
   owner node['postfixadmin']['map_files']['owner']
   group node['postfixadmin']['map_files']['group']
   recursive true
+  not_if do ::File.exists?(node['postfixadmin']['map_files']['path']) end
   action :create
 end
 
