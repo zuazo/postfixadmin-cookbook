@@ -23,6 +23,41 @@ module PostfixAdmin
       "#{salt}:#{::Digest::SHA1.hexdigest("#{salt}:#{password}")}"
     end
 
+    def self.array(ary)
+
+      template =
+'array(<%=
+  list = [ @list ].flatten
+  list.map do |item|
+    @PostfixAdmin_Conf.value(item)
+  end.join(", ")
+%>)'
+
+      eruby = Erubis::Eruby.new(template)
+      eruby.evaluate(
+        :list => ary,
+        :PostfixAdmin_Conf => PostfixAdmin::Conf
+      )
+
+    end
+
+    def self.hash(hs)
+
+      template =
+'array(<%=
+  @hash.map do |k, v|
+    "#{@PostfixAdmin_Conf.value(v)} => #{@PostfixAdmin_Conf.value(k)}"
+  end.join(", ")
+%>)'
+
+      eruby = Erubis::Eruby.new(template)
+      eruby.evaluate(
+        :hash => hs,
+        :PostfixAdmin_Conf => PostfixAdmin::Conf
+      )
+
+    end
+
   end
 end
 

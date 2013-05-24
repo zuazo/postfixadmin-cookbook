@@ -8,9 +8,6 @@ $CONF['database_user'] = '<%= @user %>';
 $CONF['database_password'] = '<%= @password %>';
 $CONF['database_name'] = '<%= @name %>';
 
-$CONF['encrypt'] = '<%= @conf['encrypt'] %>';
-
-$CONF['domain_path'] = '<%= @conf['domain_path'] %>';
-$CONF['domain_in_mailbox'] = '<%= @conf['domain_in_mailbox'] %>';
-
-$CONF['fetchmail'] = '<%= @conf['fetchmail'] %>';
+<% @conf.sort.each do |k, v| -%>
+$CONF['<%= k %>'] = <%= PostfixAdmin::Conf.value(v) %>;
+<% end -%>
