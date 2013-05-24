@@ -124,7 +124,8 @@ template 'config.local.php' do
     :host => node['postfixadmin']['database']['host'],
     :user => node['postfixadmin']['database']['user'],
     :password => node['postfixadmin']['database']['password'],
-    :setup_password => node['postfixadmin']['setup_password_encrypted']
+    :setup_password => node['postfixadmin']['setup_password_encrypted'],
+    :conf => node['postfixadmin']['conf']
   )
 end
 

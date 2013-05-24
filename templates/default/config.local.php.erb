@@ -8,9 +8,9 @@ $CONF['database_user'] = '<%= @user %>';
 $CONF['database_password'] = '<%= @password %>';
 $CONF['database_name'] = '<%= @name %>';
 
-$CONF['encrypt'] = 'md5crypt';
+$CONF['encrypt'] = '<%= @conf['encrypt'] %>';
 
-$CONF['domain_path'] = 'YES';
-$CONF['domain_in_mailbox'] = 'NO';
+$CONF['domain_path'] = '<%= @conf['domain_path'] %>';
+$CONF['domain_in_mailbox'] = '<%= @conf['domain_in_mailbox'] %>';
 
-$CONF['fetchmail'] = 'NO';
+$CONF['fetchmail'] = '<%= @conf['fetchmail'] %>';
