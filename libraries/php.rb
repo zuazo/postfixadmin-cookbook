@@ -27,7 +27,6 @@ module PostfixAdmin
 
       template =
 'array(<%=
-  list = [ @list ].flatten
   list = @list.kind_of?(Array) ? @list : [ @list ]
   list.map do |item|
     @PostfixAdmin_Conf.value(item)
