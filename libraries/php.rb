@@ -45,7 +45,7 @@ module PostfixAdmin
 
       template =
 'array(<%=
-  @hash.map do |k, v|
+  @hash.to_hash.sort.map do |k, v|
     "#{@PostfixAdmin_Conf.value(v)} => #{@PostfixAdmin_Conf.value(k)}"
   end.join(", ")
 %>)'
