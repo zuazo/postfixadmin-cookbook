@@ -86,6 +86,17 @@ module PostfixAdmin
       result
     end
 
+    def aliasExists?(address)
+      connect
+      if @db.table_exists?('alias')
+        result = @db['SELECT 1 FROM alias WHERE address = ? LIMIT 1', address].count > 0
+      else
+        result = false
+      end
+      disconnect
+      result
+    end
+
   end
 end
 

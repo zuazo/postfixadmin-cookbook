@@ -120,6 +120,18 @@ module PostfixAdmin
       post('/create-mailbox.php', body, ssl)
     end
 
+    def self.createAlias(address, domain, goto, active, login_username, login_password, ssl=false)
+      login(login_username, login_password, ssl)
+      body = {
+        'fAddress' => address,
+        'fDomain' => domain,
+        'fGoto' => goto,
+        'submit' => 'Add+Alias',
+      }
+      body['fActive'] = 'on' if (active)
+      post('/create-alias.php', body, ssl)
+    end
+
   end
 end
 

@@ -39,3 +39,9 @@ postfixadmin_mailbox 'postmaster@foobar.com' do
   login_password 'p@ssw0rd1'
 end
 
+postfixadmin_alias 'admin@foobar.com' do
+  goto 'postmaster@foobar.com'
+  login_username 'admin@admin.org'
+  login_password 'p@ssw0rd1'
+end
+
