@@ -105,7 +105,21 @@ module PostfixAdmin
       setup(body, ssl)
     end
 
-  end
+    def self.createMailbox(username, domain, password, name, active, mail, login_username, login_password, ssl=false)
+      login(login_username, login_password, ssl)
+      body = {
+        'fUsername' => username,
+        'fDomain' => domain,
+        'fPassword' => password,
+        'fPassword2' => password,
+        'fName' => name,
+        'submit' => 'Add+Mailbox',
+      }
+      body['fActive'] = 'on' if (active)
+      body['fMail'] = 'on' if (mail)
+      post('/create-mailbox.php', body, ssl)
+    end
 
+  end
 end
 

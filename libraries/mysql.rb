@@ -75,6 +75,17 @@ module PostfixAdmin
       result
     end
 
+    def mailboxExists?(username)
+      connect
+      if @db.table_exists?('mailbox')
+        result = @db['SELECT 1 FROM mailbox WHERE username = ? LIMIT 1', username].count > 0
+      else
+        result = false
+      end
+      disconnect
+      result
+    end
+
   end
 end
 

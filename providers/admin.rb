@@ -5,7 +5,7 @@ end
 
 action :create do
   new_resource = @new_resource
-
+  user = new_resource.user
   setup_password = new_resource.setup_password || node['postfixadmin']['setup_password']
   db_user = new_resource.db_user || node['postfixadmin']['database']['user']
   db_password = new_resource.db_password || node['postfixadmin']['database']['password']
@@ -15,12 +15,12 @@ action :create do
 
   converge_by("Create #{new_resource}") do
     db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-    ruby_block "create admin user #{new_resource.user}" do
+    ruby_block "create admin user #{user}" do
       block do
-        result = PostfixAdmin::API.createAdmin(new_resource.user, new_resource.password, setup_password, ssl)
+        result = PostfixAdmin::API.createAdmin(user, new_resource.password, setup_password, ssl)
         Chef::Log.info("Created #{new_resource}: #{result}")
       end
-      not_if do db.adminExists?(new_resource.user) end
+      not_if do db.adminExists?(user) end
       action :create
     end
   end
@@ -29,7 +29,7 @@ end
 
 action :remove do
   new_resource = @new_resource
-
+  user = new_resource.user
   db_user = new_resource.db_user || node['postfixadmin']['database']['user']
   db_password = new_resource.db_password || node['postfixadmin']['database']['password']
   db_name = new_resource.db_name || node['postfixadmin']['database']['name']
@@ -37,12 +37,12 @@ action :remove do
 
   converge_by("Remove #{new_resource}") do
     db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-    ruby_block "remove admin user #{new_resource.user}" do
+    ruby_block "remove admin user #{user}" do
       block do
-        deleted = db.removeAdmin(new_resource.user)
+        deleted = db.removeAdmin(user)
         Chef::Log.info("Deleted #{new_resource}") if deleted
       end
-      only_if do db.adminExists?(new_resource.user) end
+      only_if do db.adminExists?(user) end
       action :create
     end
   end

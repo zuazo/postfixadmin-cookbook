@@ -5,10 +5,15 @@ end
 
 action :create do
   new_resource = @new_resource
-  domain = new_resource.domain
-  description = new_resource.description
-  aliases = new_resource.aliases
-  mailboxes = new_resource.mailboxes
+  mailbox = new_resource.name
+  username, domain = mailbox.split('@', 2)
+  if domain.nil?
+    raise Chef::Exceptions::ArgumentError, 'Could not get the domain name from the mailbox argument, it should have the following format: user@domain.tld'
+  end
+  password = new_resource.password
+  name = new_resource.name
+  active = new_resource.active
+  mail = new_resource.mail
   login_username = new_resource.login_username
   login_password = new_resource.login_password
   db_user = new_resource.db_user || node['postfixadmin']['database']['user']
@@ -19,12 +24,12 @@ action :create do
 
   converge_by("Create #{new_resource}") do
     db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-    ruby_block "create domain #{domain}" do
+    ruby_block "create mailbox #{mailbox}" do
       block do
-        result = PostfixAdmin::API.createDomain(domain, description, aliases, mailboxes, login_username, login_password, ssl)
+        result = PostfixAdmin::API.createMailbox(username, domain, password, name, active, mail, login_username, login_password, ssl)
         Chef::Log.info("Created #{new_resource}: #{result}")
       end
-      not_if do db.domainExists?(domain) end
+      not_if do db.mailboxExists?(mailbox) end
       action :create
     end
   end
