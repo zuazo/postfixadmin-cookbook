@@ -28,3 +28,8 @@ postfixadmin_admin 'admin@admin.org' do
   action :create
 end
 
+postfixadmin_domain 'foobar.com' do
+  login_username 'admin@admin.org'
+  login_password 'p@ssw0rd1'
+end
+

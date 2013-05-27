@@ -4,12 +4,13 @@ require 'net/http'
 
 module PostfixAdmin
   module API
+    @@cookie = nil
+    @@authenticated = false
 
-    def self.setup(body, ssl=false)
-
+    def self.request(method, path, body, ssl=false)
       proto = ssl ? 'https' : 'http'
       port = ssl ? 443 : 80
-      uri = URI.parse("#{proto}://localhost:#{port}/setup.php")
+      uri = URI.parse("#{proto}://localhost:#{port}#{path}")
       http = Net::HTTP.new(uri.host, uri.port)
       if ssl
         require 'net/https'
@@ -18,12 +19,24 @@ module PostfixAdmin
       end
       # http.set_debug_output $stderr # DEBUG
 
-      request = Net::HTTP::Post.new(uri.request_uri)
+      case method.downcase
+      when 'post'
+        request = Net::HTTP::Post.new(uri.request_uri)
+        request['Content-Type'] = 'application/x-www-form-urlencoded'
+      else
+        request = Net::HTTP::Get.new(uri.request_uri)
+      end
       request['User-Agent'] = "Chef/#{Chef::VERSION}"
-      request['Content-Type'] = 'application/x-www-form-urlencoded'
-      request.set_form_data(body)
+      unless @@cookie.nil?
+        request['Cookie'] = @@cookie
+      end
+      request.set_form_data(body) unless body.nil?
 
       response = http.request(request)
+      if response['Set-Cookie'].kind_of?(String)
+        @@cookie = response['set-cookie'].split(';')[0]
+        Chef::Log.debug("#{self.name}##{__method__.to_s} cookie: #{@@cookie}")
+      end
       if (response.code.to_i >= 400)
         error_msg = "#{self.name}##{__method__.to_s}: #{response.code} #{response.message}"
         Chef::Log.fatal(error_msg)
@@ -36,6 +49,48 @@ module PostfixAdmin
         return response.body.gsub(/^.*class=['"]standout['"][^>]*>([^<]*)<.*$/m, '\1')
       end
       return nil
+    end
+
+    def self.get(path, ssl=false)
+      request('get', path, nil, ssl)
+    end
+
+    def self.post(path, body, ssl=false)
+      request('post', path, body, ssl)
+    end
+
+    def self.index(ssl=false)
+      get('/login.php', ssl)
+    end
+
+    def self.setup(body, ssl=false)
+      post('/setup.php', body, ssl)
+    end
+
+    def self.login(username, password, ssl=false)
+      unless @@authenticated
+        index
+        body = {
+          'fUsername' => username,
+          'fPassword' => password,
+          'lang' => 'en',
+          'submit' => 'Login',
+        }
+        post('/login.php', body, ssl)
+        @@authenticated = true
+      end
+    end
+
+    def self.createDomain(domain, description, aliases, mailboxes, login_username, login_password, ssl=false)
+      login(login_username, login_password, ssl)
+      body = {
+        'fDomain' => domain,
+        'fDescription' => description,
+        'fAliases' => aliases,
+        'fMailboxes' => mailboxes,
+        'submit' => 'Add+Domain',
+      }
+      post('/create-domain.php', body, ssl)
     end
 
     def self.createAdmin(username, password, setup_password, ssl=false)
@@ -53,3 +108,4 @@ module PostfixAdmin
   end
 
 end
+
