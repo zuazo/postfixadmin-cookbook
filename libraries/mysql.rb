@@ -51,9 +51,14 @@ module PostfixAdmin
 
     def removeAdmin(user)
       connect
+      result = true
       if @db.table_exists?('admin')
         delete_ds = @db['DELETE FROM admin WHERE username = ?', user]
         result = delete_ds.delete > 0
+      end
+      if @db.table_exists?('domain_admins')
+        delete_ds = @db['DELETE FROM domain_admins WHERE username = ?', user]
+        delete_ds.delete
       end
       disconnect
       result
