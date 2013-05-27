@@ -49,6 +49,8 @@ package pkg_php_imap do
   action :install
 end
 
+chef_gem 'sequel'
+
 mysql_connection_info = {
   :host => node['postfixadmin']['database']['host'],
   :username => 'root',
@@ -99,20 +101,6 @@ if node['postfixadmin']['ssl']
   package 'ssl-cert' # generates a self-signed (snakeoil) certificate
 end
 
-web_app 'postfixadmin' do
-  cookbook 'postfixadmin'
-  template 'vhost.erb'
-  docroot "#{node['ark']['prefix_root']}/postfixadmin"
-  server_name node['postfixadmin']['server_name']
-  server_aliases []
-  if node['postfixadmin']['ssl']
-    port '443'
-  else
-    port '80'
-  end
-  enable true
-end
-
 template 'config.local.php' do
   path "#{node['ark']['prefix_root']}/postfixadmin/config.local.php"
   source 'config.local.php.erb'
@@ -127,5 +115,27 @@ template 'config.local.php' do
     :setup_password => node['postfixadmin']['setup_password_encrypted'],
     :conf => node['postfixadmin']['conf']
   )
+end
+
+# required by the lwrps
+ruby_block 'web_app-postfixadmin-reload' do
+  block {}
+  subscribes :create, 'execute[a2ensite postfixadmin.conf]', :immediately
+  notifies :reload, 'service[apache2]', :immediately
+end
+
+web_app 'postfixadmin' do
+  cookbook 'postfixadmin'
+  template 'vhost.erb'
+  docroot "#{node['ark']['prefix_root']}/postfixadmin"
+  server_name node['postfixadmin']['server_name']
+  server_aliases []
+  if node['postfixadmin']['ssl']
+    port '443'
+  else
+    port '80'
+  end
+  enable true
+  notifies :reload, resources(:service => "apache2"), :immediately
 end
 
