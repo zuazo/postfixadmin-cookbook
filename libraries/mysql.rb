@@ -42,8 +42,6 @@ module PostfixAdmin
       connect
       if @db.table_exists?('admin')
         result = @db['SELECT 1 FROM admin WHERE username = ? LIMIT 1', user].count > 0
-        Chef::Log.info(@db['SELECT 1 FROM admin WHERE username = ? LIMIT 1', user].count)
-        Chef::Log.info("adminExists?: #{result}")
       else
         result = false
       end
