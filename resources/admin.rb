@@ -1,8 +1,8 @@
 
-actions :create
+actions :create, :remove
 
 attribute :user, :kind_of => String, :name_attribute => true
-attribute :password, :kind_of => String, :required => true
+attribute :password, :kind_of => String, :default => 'p@ssw0rd1'
 attribute :setup_password, :kind_of => String
 attribute :db_user, :kind_of => String
 attribute :db_password, :kind_of => String

@@ -49,12 +49,14 @@ module PostfixAdmin
       result
     end
 
-    def dropAdmin(user)
+    def removeAdmin(user)
       connect
       if @db.table_exists?('admin')
-        @db['DELETE FROM admin WHERE username = ? LIMIT 1', user].count > 0
+        delete_ds = @db['DELETE FROM admin WHERE username = ?', user]
+        result = delete_ds.delete > 0
       end
       disconnect
+      result
     end
 
   end

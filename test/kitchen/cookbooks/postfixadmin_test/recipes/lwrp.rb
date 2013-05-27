@@ -20,6 +20,11 @@
 include_recipe 'postfixadmin'
 
 postfixadmin_admin 'admin@admin.org' do
+  action :remove
+end
+
+postfixadmin_admin 'admin@admin.org' do
   password 'p@ssw0rd1'
+  action :create
 end
 
