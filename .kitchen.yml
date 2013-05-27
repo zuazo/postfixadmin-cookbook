@@ -1,0 +1,83 @@
+---
+driver_plugin: vagrant
+
+platforms:
+- name: ubuntu-12.04
+  driver_config:
+    box: canonical-ubuntu-12.04
+    box_url: http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box
+    require_chef_omnibus: true
+- name: ubuntu-10.04
+  driver_config:
+    box: opscode-ubuntu-10.04
+    box_url: http://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-10.04_chef-11.2.0.box
+- name: centos-6.3
+  driver_config:
+    box: opscode-centos-6.3
+    box_url: http://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-6.3_chef-11.2.0.box
+- name: centos-5.8
+  driver_config:
+    box: opscode-centos-5.8
+    box_url: http://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-5.8_chef-11.2.0.box
+- name: debian-7.0-chef10
+  driver_config:
+    box: debian-7.0.0-chef_10.26.0-1-amd64
+    box_url: https://onddo-vm.s3.amazonaws.com/vagrant/debian-7.0.0-chef_10.26.0-1-amd64.box
+- name: debian-7.0-chef11
+  driver_config:
+    box: debian-7.0.0-chef_11.4.4-2-amd64
+    box_url: https://onddo-vm.s3.amazonaws.com/vagrant/debian-7.0.0-chef_11.4.4-2-amd64.box
+
+suites:
+- name: default
+  run_list:
+  - recipe[postfixadmin_test]
+  attributes: {
+    mysql: {
+      server_root_password: vagrant,
+      server_debian_password: vagrant_debian,
+      server_repl_password: vagrant_repl
+    },
+    postfixadmin: {
+      database: {
+        password: postfix_pass
+      },
+      setup_password: admin,
+      setup_password_salt: salt
+    }
+  }
+suites:
+- name: map_files
+  run_list:
+  - recipe[postfixadmin_test::map_files]
+  attributes: {
+    mysql: {
+      server_root_password: vagrant,
+      server_debian_password: vagrant_debian,
+      server_repl_password: vagrant_repl
+    },
+    postfixadmin: {
+      database: {
+        password: postfix_pass
+      },
+      setup_password: admin,
+      setup_password_salt: salt
+    }
+  }
+- name: lwrp
+  run_list:
+  - recipe[postfixadmin_test::lwrp]
+  attributes: {
+    mysql: {
+      server_root_password: vagrant,
+      server_debian_password: vagrant_debian,
+      server_repl_password: vagrant_repl
+    },
+    postfixadmin: {
+      database: {
+        password: postfix_pass
+      },
+      setup_password: admin,
+      setup_password_salt: salt
+    }
+  }
