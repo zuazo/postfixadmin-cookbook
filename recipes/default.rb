@@ -41,11 +41,24 @@ pkg_php_imap = value_for_platform(
   'default' => 'php5-imap'
 )
 
+pkg_php_mbstring = value_for_platform(
+  %w(centos redhat scientific fedora amazon) => {
+    %w(5.0 5.1 5.2 5.3 5.4 5.5 5.6 5.7 5.8) => 'php53-mbstring',
+    'default' => 'php-mbstring'
+  },
+  'default' => nil
+)
+
 package pkg_php_mysql do
   action :install
 end
 
 package pkg_php_imap do
+  action :install
+end
+
+package pkg_php_mbstring do
+  not_if do pkg_php_mbstring.nil? end
   action :install
 end
 
