@@ -69,7 +69,7 @@ module PostfixAdmin
 
     def self.login(username, password, ssl=false)
       unless @@authenticated
-        index
+        index(ssl)
         body = {
           'fUsername' => username,
           'fPassword' => password,
@@ -79,18 +79,6 @@ module PostfixAdmin
         post('/login.php', body, ssl)
         @@authenticated = true
       end
-    end
-
-    def self.createDomain(domain, description, aliases, mailboxes, login_username, login_password, ssl=false)
-      login(login_username, login_password, ssl)
-      body = {
-        'fDomain' => domain,
-        'fDescription' => description,
-        'fAliases' => aliases,
-        'fMailboxes' => mailboxes,
-        'submit' => 'Add+Domain',
-      }
-      post('/create-domain.php', body, ssl)
     end
 
     def self.createAdmin(username, password, setup_password, ssl=false)
@@ -103,6 +91,18 @@ module PostfixAdmin
         'submit' => 'Add+Admin',
       }
       setup(body, ssl)
+    end
+
+    def self.createDomain(domain, description, aliases, mailboxes, login_username, login_password, ssl=false)
+      login(login_username, login_password, ssl)
+      body = {
+        'fDomain' => domain,
+        'fDescription' => description,
+        'fAliases' => aliases,
+        'fMailboxes' => mailboxes,
+        'submit' => 'Add+Domain',
+      }
+      post('/create-domain.php', body, ssl)
     end
 
     def self.createMailbox(username, domain, password, name, active, mail, login_username, login_password, ssl=false)
