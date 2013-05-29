@@ -149,6 +149,6 @@ web_app 'postfixadmin' do
     port '80'
   end
   enable true
-  notifies :reload, resources(:service => "apache2"), :immediately
+  notifies :reload, 'service[apache2]', :immediately
 end
 
