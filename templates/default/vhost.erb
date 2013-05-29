@@ -6,7 +6,7 @@
   ServerName <%= @params[:server_name] %>
 <% end -%>
 <% if @params[:server_aliases].kind_of? Array -%>
-  ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %>
 <% end -%>
   DocumentRoot <%= @params[:docroot] %>
 
