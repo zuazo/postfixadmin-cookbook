@@ -1,6 +1,7 @@
 
 require 'uri'
 require 'net/http'
+require 'chef/rest/rest_request'
 
 module PostfixAdmin
   module API
@@ -26,7 +27,7 @@ module PostfixAdmin
       else
         request = Net::HTTP::Get.new(uri.request_uri)
       end
-      request['User-Agent'] = "Chef/#{Chef::VERSION}"
+      request['User-Agent'] = Chef::REST::RESTRequest.user_agent
       unless @@cookie.nil?
         request['Cookie'] = @@cookie
       end
