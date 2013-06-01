@@ -561,7 +561,7 @@ License and Author
 |                      |                                          |
 |:---------------------|:-----------------------------------------|
 | **Author:**          | Xabier de Zuazo (<xabier@onddo.com>)
-| **Copyright:**       | Copyright (c) 2013 Onddo Labs, SL.
+| **Copyright:**       | Copyright (c) 2013 Onddo Labs, SL. (www.onddo.com)
 | **License:**         | Apache License, Version 2.0
 
 Licensed under the Apache License, Version 2.0 (the "License");
