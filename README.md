@@ -52,7 +52,7 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['version']</code></td>
     <td>PostfixAdmin version</td>
-    <td><code>2.3.6</code></td>
+    <td><code>"2.3.6"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['url']</code></td>
@@ -62,12 +62,12 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['checksum']</code></td>
     <td>PostfixAdmin download file checksum</td>
-    <td><code>ea505281b6c04bda887eb4e6aa6c023b354c4ef4864aa60dcb1425942bf2af63</code></td>
+    <td><code>"ea505281b6c04bda887eb4e6aa6c023b354c4ef4864aa60dcb1425942bf2af63"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['server_name']</code></td>
     <td>PostfixAdmin server name</td>
-    <td><code>postfixadmin.onddo.com</code></td>
+    <td><code>"postfixadmin.onddo.com"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['ssl']</code></td>
@@ -92,17 +92,17 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['database']['name']</code></td>
     <td>PostfixAdmin database name</td>
-    <td><code>postfix</code></td>
+    <td><code>"postfix"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['database']['host']</code></td>
     <td>PostfixAdmin database hostname or IP address</td>
-    <td><code>localhost</code></td>
+    <td><code>"localhost"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['database']['user']</code></td>
     <td>PostfixAdmin database login username</td>
-    <td><code>postfix</code></td>
+    <td><code>"postfix"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['database']['password']</code></td>
@@ -112,27 +112,27 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['conf']['encrypt']</code></td>
     <td>The way do you want the passwords to be crypted</td>
-    <td><code>md5crypt</code></td>
+    <td><code>"md5crypt"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['conf']['domain_path']</code></td>
     <td>Whether you want to store the mailboxes per domain</td>
-    <td><code>YES</code></td>
+    <td><code>"YES"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['conf']['domain_in_mailbox']</code></td>
     <td>Whether you want to have the domain in your mailbox</td>
-    <td><code>NO</code></td>
+    <td><code>"NO"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['conf']['fetchmail']</code></td>
     <td>Whether you want fetchmail tab</td>
-    <td><code>NO</code></td>
+    <td><code>"NO"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['map_files']['path']</code></td>
     <td>Path to generate map-files into</td>
-    <td><code>/etc/postfix/tables</code></td>
+    <td><code>"/etc/postfix/tables"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['map_files']['mode']</code></td>
@@ -142,12 +142,12 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['map_files']['owner']</code></td>
     <td>Map-files files owner</td>
-    <td><code>root</code></td>
+    <td><code>"root"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['map_files']['group']</code></td>
     <td>Map-files files group</td>
-    <td><code>postfix</code></td>
+    <td><code>"postfix"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['map_files']['list']</code></td>
@@ -270,7 +270,7 @@ Create domains.
   <tr>
     <td>description</td>
     <td>Domain description</td>
-    <td><code>''</code></td>
+    <td><code>""</code></td>
   </tr>
   <tr>
     <td>aliases</td>
@@ -358,7 +358,7 @@ Create a mailbox.
   <tr>
     <td>name</td>
     <td>The name of the mailbox owner</td>
-    <td><code>''</code></td>
+    <td><code>""</code></td>
   </tr>
   <tr>
     <td>active</td>

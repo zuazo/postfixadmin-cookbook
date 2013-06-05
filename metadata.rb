@@ -28,7 +28,7 @@ attribute 'postfixadmin/version',
   :description => 'PostfixAdmin version',
   :type => 'string',
   :required => 'optional',
-  :default => '2.3.6'
+  :default => '"2.3.6"'
   
 attribute 'postfixadmin/url',
   :display_name => 'postfixadmin URL',
@@ -42,14 +42,14 @@ attribute 'postfixadmin/checksum',
   :description => 'PostfixAdmin download file checksum',
   :type => 'string',
   :required => 'optional',
-  :default => 'ea505281b6c04bda887eb4e6aa6c023b354c4ef4864aa60dcb1425942bf2af63'
+  :default => '"ea505281b6c04bda887eb4e6aa6c023b354c4ef4864aa60dcb1425942bf2af63"'
 
 attribute 'postfixadmin/server_name',
   :display_name => 'server name',
   :description => 'PostfixAdmin server name',
   :type => 'string',
   :required => 'recommended',
-  :default => 'postfixadmin.onddo.com'
+  :default => '"postfixadmin.onddo.com"'
 
 attribute 'postfixadmin/ssl',
   :display_name => 'enable ssl',
@@ -89,21 +89,21 @@ attribute 'postfixadmin/database/name',
   :description => 'PostfixAdmin database name',
   :type => 'string',
   :required => 'optional',
-  :default => 'postfix'
+  :default => '"postfix"'
 
 attribute 'postfixadmin/database/host',
   :display_name => 'database host',
   :description => 'PostfixAdmin database hostname or IP address',
   :type => 'string',
   :required => 'optional',
-  :default => 'localhost'
+  :default => '"localhost"'
 
 attribute 'postfixadmin/database/user',
   :display_name => 'database user',
   :description => 'PostfixAdmin database login username',
   :type => 'string',
   :required => 'optional',
-  :default => 'postfix'
+  :default => '"postfix"'
 
 attribute 'postfixadmin/database/password',
   :display_name => 'database password',
@@ -121,7 +121,7 @@ attribute 'postfixadmin/conf/encrypt',
   :description => 'The way do you want the passwords to be crypted',
   :type => 'string',
   :required => 'optional',
-  :default => 'md5crypt'
+  :default => '"md5crypt"'
 
 attribute 'postfixadmin/conf/domain_path',
   :display_name => 'domain path configuration',
@@ -129,7 +129,7 @@ attribute 'postfixadmin/conf/domain_path',
   :choice => [ 'YES', 'NO' ],
   :type => 'string',
   :required => 'optional',
-  :default => 'YES'
+  :default => '"YES"'
 
 attribute 'postfixadmin/conf/domain_in_mailbox',
   :display_name => 'domain in mailbox configuration',
@@ -137,7 +137,7 @@ attribute 'postfixadmin/conf/domain_in_mailbox',
   :choice => [ 'YES', 'NO' ],
   :type => 'string',
   :required => 'optional',
-  :default => 'NO'
+  :default => '"NO"'
 
 attribute 'postfixadmin/conf/fetchmail',
   :display_name => 'enable fetchmail',
@@ -145,7 +145,7 @@ attribute 'postfixadmin/conf/fetchmail',
   :choice => [ 'YES', 'NO' ],
   :type => 'string',
   :required => 'optional',
-  :default => 'NO'
+  :default => '"NO"'
 
 grouping 'postfixadmin/map_files',
  :title => 'postfixadmin map files',
@@ -156,7 +156,7 @@ attribute 'postfixadmin/map_files/path',
   :description => 'Path to generate map-files into',
   :type => 'string',
   :required => 'optional',
-  :default => '/etc/postfix/tables'
+  :default => '"/etc/postfix/tables"'
 
 attribute 'postfixadmin/map_files/mode',
   :display_name => 'map files mode',
@@ -170,14 +170,14 @@ attribute 'postfixadmin/map_files/owner',
   :description => 'Map-files files owner',
   :type => 'string',
   :required => 'optional',
-  :default => 'root'
+  :default => '"root"'
 
 attribute 'postfixadmin/map_files/group',
   :display_name => 'map files group',
   :description => 'Map-files files group',
   :type => 'string',
   :required => 'optional',
-  :default => 'postfix'
+  :default => '"postfix"'
 
 attribute 'postfixadmin/map_files/list',
   :display_name => 'map files list',
