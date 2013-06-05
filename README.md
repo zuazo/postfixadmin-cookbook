@@ -45,9 +45,9 @@ Attributes
 
 <table>
   <tr>
-    <td>Attribute</td>
-    <td>Description</td>
-    <td>Default</td>
+    <th>Attribute</th>
+    <th>Description</th>
+    <th>Default</th>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['version']</code></td>
@@ -57,7 +57,7 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['url']</code></td>
     <td>PostfixAdmin download URL</td>
-    <td><i>calculated</i></td>
+    <td><em>calculated</em></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['checksum']</code></td>
@@ -77,17 +77,17 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['setup_password']</code></td>
     <td>PostfixAdmin Setup Password (required for chef-solo)</td>
-    <td><i>calculated</i></td>
+    <td><em>calculated</em></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['setup_password_salt']</code></td>
     <td>PostfixAdmin password salt (required for chef-solo)</td>
-    <td><i>calculated</i></td>
+    <td><em>calculated</em></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['setup_password_encrypted']</code></td>
     <td>PostfixAdmin encrypted Password</td>
-    <td><i>calculated</i></td>
+    <td><em>calculated</em></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['database']['name']</code></td>
@@ -107,7 +107,7 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['database']['password']</code></td>
     <td>PostfixAdmin database login password (requried for chef-solo)</td>
-    <td><i>calculated</i></td>
+    <td><em>calculated</em></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['conf']['encrypt']</code></td>
@@ -191,14 +191,14 @@ Create or remove a PostfixAdmin admin user. This kind of user is used to create 
 
 <table>
   <tr>
-    <td>Attribute</td>
-    <td>Description</td>
-    <td>Default</td>
+    <th>Attribute</th>
+    <th>Description</th>
+    <th>Default</th>
   </tr>
   <tr>
     <td>user</td>
     <td>Username</td>
-    <td><i>name attribute</i></td>
+    <td><em>name attribute</em></td>
   </tr>
   <tr>
     <td>password</td>
@@ -258,14 +258,14 @@ Create domains.
 
 <table>
   <tr>
-    <td>Attribute</td>
-    <td>Description</td>
-    <td>Default</td>
+    <th>Attribute</th>
+    <th>Description</th>
+    <th>Default</th>
   </tr>
   <tr>
     <td>domain</td>
     <td>Domain name</td>
-    <td><i>name attribute</i></td>
+    <td><em>name attribute</em></td>
   </tr>
   <tr>
     <td>description</td>
@@ -285,12 +285,12 @@ Create domains.
   <tr>
     <td>login_username</td>
     <td>Admin user to use</td>
-    <td><i>required</i></td>
+    <td><em>required</em></td>
   </tr>
   <tr>
     <td>login_password</td>
     <td>Admin password </td>
-    <td><i>required</i></td>
+    <td><em>required</em></td>
   </tr>
   <tr>
     <td>db_user</td>
@@ -341,19 +341,19 @@ Create a mailbox.
 
 <table>
   <tr>
-    <td>Attribute</td>
-    <td>Description</td>
-    <td>Default</td>
+    <th>Attribute</th>
+    <th>Description</th>
+    <th>Default</th>
   </tr>
   <tr>
     <td>mailbox</td>
     <td>Mailbox address to create</td>
-    <td><i>name attribute</i></td>
+    <td><em>name attribute</em></td>
   </tr>
   <tr>
     <td>password</td>
     <td>Mailbox password</td>
-    <td><i>required</i></td>
+    <td><em>required</em></td>
   </tr>
   <tr>
     <td>name</td>
@@ -373,12 +373,12 @@ Create a mailbox.
   <tr>
     <td>login_username</td>
     <td>Admin user to use</td>
-    <td><i>required</i></td>
+    <td><em>required</em></td>
   </tr>
   <tr>
     <td>login_password</td>
     <td>Admin password </td>
-    <td><i>required</i></td>
+    <td><em>required</em></td>
   </tr>
   <tr>
     <td>db_user</td>
@@ -430,19 +430,19 @@ Create mailbox aliases.
 
 <table>
   <tr>
-    <td>Attribute</td>
-    <td>Description</td>
-    <td>Default</td>
+    <th>Attribute</th>
+    <th>Description</th>
+    <th>Default</th>
   </tr>
   <tr>
     <td>address</td>
     <td>Alias address</td>
-    <td><i>name attribute</i></td>
+    <td><em>name attribute</em></td>
   </tr>
   <tr>
     <td>goto</td>
     <td>Destination mailbox address</td>
-    <td><i>required</i></td>
+    <td><em>required</em></td>
   </tr>
   <tr>
     <td>active</td>
@@ -452,12 +452,12 @@ Create mailbox aliases.
   <tr>
     <td>login_username</td>
     <td>Admin user to use</td>
-    <td><i>required</i></td>
+    <td><em>required</em></td>
   </tr>
   <tr>
     <td>login_password</td>
     <td>Admin password </td>
-    <td><i>required</i></td>
+    <td><em>required</em></td>
   </tr>
   <tr>
     <td>db_user</td>
