@@ -2,7 +2,7 @@ name             'postfixadmin'
 maintainer       'Onddo Labs, Sl.'
 maintainer_email 'team@onddo.com'
 license          'Apache 2.0'
-description      'Installs and configures PostfixAdmin'
+description      'Installs and configures PostfixAdmin, a web based interface used to manage mailboxes, virtual domains and aliases.'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.1.0'
 

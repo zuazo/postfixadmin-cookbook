@@ -1,11 +1,11 @@
 Description
 ===========
 
-Installs and configures PostfixAdmin.
+Installs and configures [PostfixAdmin](http://postfixadmin.sourceforge.net/), a web based interface used to manage mailboxes, virtual domains and aliases.
 
 Also creates the required *MySQL* database and tables. No other databases are supported yet.
 
-The first time it runs, generates automatically some passwords if not specified:
+The first time it runs, automatically generates some passwords if not specified. Generated passwords are:
 
 ## From the PostfixAdmin default recipe
 
@@ -25,7 +25,7 @@ Requirements
 
 ## Platform:
 
-The following platforms have been tested:
+This cookbook has been tested on the following platforms:
 
 * Centos
 * Debian
@@ -500,6 +500,10 @@ end
 Usage Example
 =============
 
+## Including in a Cookbook Recipe
+
+A complete example:
+
 ```ruby
 include_recipe 'postfixadmin::default'
 include_recipe 'postfixadmin::map_files'
@@ -528,6 +532,31 @@ postfixadmin_alias 'billing@foobar.com' do
 end
 ```
 
+Don't forget to include the `postfixadmin` cookbook as a dependency in the metadata.
+
+```ruby
+# metadata.rb
+[...]
+
+depends 'postfixadmin'
+```
+
+## Including in the Run List
+
+Another alternative is to include the recipes in your Run List.
+
+```json
+{
+  "name": "mail.onddo.com",
+  [...]
+  "run_list": [
+    [...]
+    "recipe[postfixadmin]",
+    "recipe[postfixadmin::map_files]"
+  ]
+}
+```
+
 Testing
 =======
 
@@ -542,6 +571,8 @@ Testing
 
 ```bash
 $ kitchen test
+$ kitchen verify
+[...]
 ```
 
 Contributing
