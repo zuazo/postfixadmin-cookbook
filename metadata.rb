@@ -18,10 +18,15 @@ depends 'mysql'
 recipe 'postfixadmin::default', 'Installs and configures PostfixAdmin'
 recipe 'postfixadmin::map_files', 'Installs PostfixAdmin SQL map files to be used by Postfix'
 
-provides 'postfixadmin_admin[user]'
-provides 'postfixadmin_alias[address]'
-provides 'postfixadmin_domain[domain]'
-provides 'postfixadmin_mailbox[mailbox]'
+provides 'postfixadmin_admin'
+provides 'postfixadmin_alias'
+provides 'postfixadmin_domain'
+provides 'postfixadmin_mailbox'
+# Commented until 11.0.10 server release (CHEF-3976)
+# provides 'postfixadmin_admin[user]'
+# provides 'postfixadmin_alias[address]'
+# provides 'postfixadmin_domain[domain]'
+# provides 'postfixadmin_mailbox[mailbox]'
 
 attribute 'postfixadmin/version',
   :display_name => 'postfixadmin version',
