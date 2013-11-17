@@ -23,7 +23,11 @@ module PostfixAdmin
       else
         request = Net::HTTP::Get.new(uri.request_uri)
       end
-      request['User-Agent'] = Chef::REST::RESTRequest.user_agent
+      request['User-Agent'] = if defined?(Chef::HTTP::HTTPRequest)
+        Chef::HTTP::HTTPRequest.user_agent
+      else
+        Chef::REST::RESTRequest.user_agent
+      end
       unless @@cookie.nil?
         request['Cookie'] = @@cookie
       end
