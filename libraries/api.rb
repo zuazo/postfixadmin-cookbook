@@ -1,12 +1,4 @@
 
-require 'uri'
-require 'net/http'
-begin
-  require 'chef/http/http_request' # Chef >= 11.8
-rescue LoadError
-  require 'chef/rest/rest_request' # Chef <= 11.6.2
-end
-
 module PostfixAdmin
   module API
     @@cookie = nil
