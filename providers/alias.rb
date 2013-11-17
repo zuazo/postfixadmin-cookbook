@@ -20,15 +20,16 @@ action :create do
   db_host = new_resource.db_host || node['postfixadmin']['database']['host']
   ssl = new_resource.ssl || node['postfixadmin']['ssl']
 
-  converge_by("Create #{new_resource}") do
-    db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-    ruby_block "create alias #{address}" do
-      block do
-        result = PostfixAdmin::API.createAlias(username, domain, goto, active, login_username, login_password, ssl)
-        Chef::Log.info("Created #{new_resource}: #{result}")
+  db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
+  unless db.aliasExists?(address)
+    converge_by("Create #{new_resource}") do
+      ruby_block "create alias #{address}" do
+        block do
+          result = PostfixAdmin::API.createAlias(username, domain, goto, active, login_username, login_password, ssl)
+          Chef::Log.info("Created #{new_resource}: #{result}")
+        end
+        action :create
       end
-      not_if do db.aliasExists?(address) end
-      action :create
     end
   end
 

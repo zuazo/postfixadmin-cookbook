@@ -17,15 +17,16 @@ action :create do
   db_host = new_resource.db_host || node['postfixadmin']['database']['host']
   ssl = new_resource.ssl || node['postfixadmin']['ssl']
 
-  converge_by("Create #{new_resource}") do
-    db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-    ruby_block "create domain #{domain}" do
-      block do
-        result = PostfixAdmin::API.createDomain(domain, description, aliases, mailboxes, login_username, login_password, ssl)
-        Chef::Log.info("Created #{new_resource}: #{result}")
+  db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
+  unless db.domainExists?(domain)
+    converge_by("Create #{new_resource}") do
+      ruby_block "create domain #{domain}" do
+        block do
+          result = PostfixAdmin::API.createDomain(domain, description, aliases, mailboxes, login_username, login_password, ssl)
+          Chef::Log.info("Created #{new_resource}: #{result}")
+        end
+        action :create
       end
-      not_if do db.domainExists?(domain) end
-      action :create
     end
   end
 
