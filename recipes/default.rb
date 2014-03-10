@@ -57,8 +57,12 @@ package pkg_php_imap do
   action :install
 end
 
-package pkg_php_mbstring do
+# pkg_php_mbstring may be nil; we thus cannot use the 
+# variable value as the package resource name but have
+# to specify the package name as an explicit attribute
+package "optional_php-mbstring" do
   not_if do pkg_php_mbstring.nil? end
+  package_name pkg_php_mbstring
   action :install
 end
 
