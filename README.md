@@ -592,6 +592,7 @@ License and Author
 |                      |                                          |
 |:---------------------|:-----------------------------------------|
 | **Author:**          | Xabier de Zuazo (<xabier@onddo.com>)
+| **Contributor:**     | [chrludwig](https://github.com/chrludwig)
 | **Copyright:**       | Copyright (c) 2013 Onddo Labs, SL. (www.onddo.com)
 | **License:**         | Apache License, Version 2.0
 
