@@ -85,6 +85,11 @@ Attributes
     <td><em>calculated</em></td>
   </tr>
   <tr>
+    <td><code>node['postfixadmin']['httpd']</code></td>
+    <td>installs httpd which runs PostfixAdmin (`apache` or `false`)</td>
+    <td><em>"apache"</em></td>
+  </tr>
+  <tr>
     <td><code>node['postfixadmin']['setup_password_encrypted']</code></td>
     <td>PostfixAdmin encrypted Password</td>
     <td><em>calculated</em></td>

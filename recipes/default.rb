@@ -20,8 +20,6 @@
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 ::Chef::Recipe.send(:include, PostfixAdmin::PHP)
 
-include_recipe 'apache2::default'
-include_recipe 'apache2::mod_php5'
 include_recipe 'database::mysql'
 include_recipe 'mysql::server'
 
@@ -114,7 +112,6 @@ ark 'postfixadmin' do
 end
 
 if node['postfixadmin']['ssl']
-  include_recipe 'apache2::mod_ssl'
   package 'ssl-cert' # generates a self-signed (snakeoil) certificate
 end
 
@@ -134,24 +131,7 @@ template 'config.local.php' do
   )
 end
 
-# required by the lwrps
-ruby_block 'web_app-postfixadmin-reload' do
-  block {}
-  subscribes :create, 'execute[a2ensite postfixadmin.conf]', :immediately
-  notifies :reload, 'service[apache2]', :immediately
+case node['postfixadmin']['httpd']
+when 'apache'
+  include_recipe 'postfixadmin::apache'
 end
-
-web_app 'postfixadmin' do
-  cookbook 'postfixadmin'
-  template 'vhost.erb'
-  docroot "#{node['ark']['prefix_root']}/postfixadmin"
-  server_name node['postfixadmin']['server_name']
-  server_aliases []
-  if node['postfixadmin']['ssl']
-    port '443'
-  else
-    port '80'
-  end
-  enable true
-end
-
