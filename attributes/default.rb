@@ -9,7 +9,7 @@ default['postfixadmin']['setup_password'] = nil # randomly generated
 default['postfixadmin']['setup_password_salt'] = nil # required for chef-solo
 default['postfixadmin']['setup_password_encrypted'] = nil # randomly generated
 
-default['postfixadmin']['httpd'] = 'apache'
+default['postfixadmin']['web_server'] = 'apache'
 
 default['postfixadmin']['database']['name'] = 'postfix'
 default['postfixadmin']['database']['host'] = 'localhost'

@@ -131,7 +131,7 @@ template 'config.local.php' do
   )
 end
 
-case node['postfixadmin']['httpd']
+case node['postfixadmin']['web_server']
 when 'apache'
   include_recipe 'postfixadmin::apache'
 end

@@ -85,9 +85,9 @@ Attributes
     <td><em>calculated</em></td>
   </tr>
   <tr>
-    <td><code>node['postfixadmin']['httpd']</code></td>
-    <td>installs httpd which runs PostfixAdmin (`apache` or `false`)</td>
-    <td><em>"apache"</em></td>
+    <td><code>node['postfixadmin']['web_server']</code></td>
+    <td>Web server to use: <code>"apache"</code> or <code>"false"</code></td>
+    <td><code>"apache"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['setup_password_encrypted']</code></td>
