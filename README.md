@@ -85,6 +85,11 @@ Attributes
     <td><em>calculated</em></td>
   </tr>
   <tr>
+    <td><code>node['postfixadmin']['web_server']</code></td>
+    <td>Web server to use: <code>"apache"</code> or <code>"false"</code></td>
+    <td><code>"apache"</code></td>
+  </tr>
+  <tr>
     <td><code>node['postfixadmin']['setup_password_encrypted']</code></td>
     <td>PostfixAdmin encrypted Password</td>
     <td><em>calculated</em></td>

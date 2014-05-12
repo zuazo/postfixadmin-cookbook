@@ -85,6 +85,14 @@ attribute 'postfixadmin/setup_password_encrypted',
   :type => 'string',
   :required => 'optional'
 
+attribute 'postfixadmin/web_server',
+  :display_name => 'Web Server',
+  :description => 'Web server to use: apache or false',
+  :choice => [ '"apache"', '"false"' ],
+  :type => 'string',
+  :required => 'optional',
+  :default => '"apache"'
+
 grouping 'postfixadmin/database',
  :title => 'postfixadmin database',
  :description => 'PostfixAdmin database configuration options'
