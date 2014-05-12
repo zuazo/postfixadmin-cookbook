@@ -41,7 +41,7 @@ suites:
       setup_password_salt: salt
     }
   }
-- name: without-httpd
+- name: without-webserver
   run_list:
   - recipe[postfixadmin_test]
   attributes: {
@@ -56,7 +56,7 @@ suites:
       },
       setup_password: admin,
       setup_password_salt: salt,
-      httpd: false
+      web_server: false
     }
   }
 - name: map_files
