@@ -41,6 +41,24 @@ suites:
       setup_password_salt: salt
     }
   }
+- name: without-webserver
+  run_list:
+  - recipe[postfixadmin_test]
+  attributes: {
+    mysql: {
+      server_root_password: vagrant,
+      server_debian_password: vagrant_debian,
+      server_repl_password: vagrant_repl
+    },
+    postfixadmin: {
+      database: {
+        password: postfix_pass
+      },
+      setup_password: admin,
+      setup_password_salt: salt,
+      web_server: false
+    }
+  }
 - name: map_files
   run_list:
   - recipe[postfixadmin_test::map_files]
