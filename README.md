@@ -506,11 +506,11 @@ end
 
 Create domain aliases. The `alias_domain` must already exist.
 
-### postfixadmin_alias actions
+### postfixadmin_alias_domain actions
 
 * `create`
 
-### postfixadmin_alias attributes
+### postfixadmin_alias_domain attributes
 
 <table>
   <tr>
@@ -569,6 +569,8 @@ Create domain aliases. The `alias_domain` must already exist.
     <td><code>node['postfixadmin']['ssl']</code></td>
   </tr>
 </table>
+
+### postfixadmin_alias_domain example
 
 ```ruby
 # admin user copied from the previous example
