@@ -133,6 +133,17 @@ module PostfixAdmin
       post('/create-alias.php', body, ssl)
     end
 
+    def self.createAliasDomain(alias_domain, target_domain, active, login_username, login_password, ssl=false)
+      login(login_username, login_password, ssl)
+      body = {
+        'alias_domain' => alias_domain,
+        'target_domain' => target_domain,
+        'submit' => 'Add+Alias+Domain',
+      }
+      body['active'] = '1' if (active)
+      post('/create-alias-domain.php', body, ssl)
+    end
+
   end
 end
 

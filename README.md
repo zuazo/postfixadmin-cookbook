@@ -502,6 +502,83 @@ postfixadmin_alias 'billing@foobar.com' do
 end
 ```
 
+## postfixadmin_alias_domain[address]
+
+Create domain aliases. The `alias_domain` must already exist.
+
+### postfixadmin_alias actions
+
+* `create`
+
+### postfixadmin_alias attributes
+
+<table>
+  <tr>
+    <th>Attribute</th>
+    <th>Description</th>
+    <th>Default</th>
+  </tr>
+  <tr>
+    <td>alias_domain</td>
+    <td>Alias domain</td>
+    <td><em>name attribute</em></td>
+  </tr>
+  <tr>
+    <td>target_domain</td>
+    <td>Target domain</td>
+    <td><em>required</em></td>
+  </tr>
+  <tr>
+    <td>active</td>
+    <td>Active status</td>
+    <td><code>true</code></td>
+  </tr>
+  <tr>
+    <td>login_username</td>
+    <td>Admin user to use</td>
+    <td><em>required</em></td>
+  </tr>
+  <tr>
+    <td>login_password</td>
+    <td>Admin password </td>
+    <td><em>required</em></td>
+  </tr>
+  <tr>
+    <td>db_user</td>
+    <td>Database username</td>
+    <td><code>node['postfixadmin']['database']['user']</code></td>
+  </tr>
+  <tr>
+    <td>db_password</td>
+    <td>Database password</td>
+    <td><code>node['postfixadmin']['database']['password']</code></td>
+  </tr>
+  <tr>
+    <td>db_name</td>
+    <td>Database name</td>
+    <td><code>node['postfixadmin']['database']['name']</code></td>
+  </tr>
+  <tr>
+    <td>db_host</td>
+    <td>Database hostname</td>
+    <td><code>node['postfixadmin']['database']['host']</code></td>
+  </tr>
+  <tr>
+    <td>ssl</td>
+    <td>Whether to use SSL on HTTP requests</td>
+    <td><code>node['postfixadmin']['ssl']</code></td>
+  </tr>
+</table>
+
+```ruby
+# admin user copied from the previous example
+postfixadmin_alias_domain 'aliasdomain.com' do
+  target_domain 'foobar.com'
+  login_username 'admin@admindomain.com'
+  login_password 'sup3r-s3cr3t-p4ss'
+end
+```
+
 Usage Example
 =============
 
@@ -532,6 +609,12 @@ end
 
 postfixadmin_alias 'billing@foobar.com' do
   goto 'bob@foobar.com'
+  login_username 'admin@admindomain.com'
+  login_password 'sup3r-s3cr3t-p4ss'
+end
+
+postfixadmin_alias_domain 'aliasdomain.com' do
+  target_domain 'foobar.com'
   login_username 'admin@admindomain.com'
   login_password 'sup3r-s3cr3t-p4ss'
 end
@@ -568,8 +651,8 @@ Testing
 ## Requirements
 
 * `vagrant`
-* `berkshelf` >= `1.4.0`
-* `test-kitchen` >= `1.0.0.alpha`
+* `berkshelf` >= `2.0.0`
+* `test-kitchen` >= `1.2`
 * `kitchen-vagrant` >= `0.10.0`
 
 ## Running the tests
@@ -599,7 +682,7 @@ License and Author
 | **Author:**          | [Xabier de Zuazo](https://github.com/zuazo) (<xabier@onddo.com>)
 | **Contributor:**     | [chrludwig](https://github.com/chrludwig)
 | **Contributor:**     | [MATSUI Shinsuke (poppen)](https://github.com/poppen)
-| **Copyright:**       | Copyright (c) 2013 Onddo Labs, SL. (www.onddo.com)
+| **Copyright:**       | Copyright (c) 2013-2014 Onddo Labs, SL. (www.onddo.com)
 | **License:**         | Apache License, Version 2.0
 
     Licensed under the Apache License, Version 2.0 (the "License");

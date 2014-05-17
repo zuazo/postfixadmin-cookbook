@@ -22,11 +22,13 @@ provides 'postfixadmin_admin'
 provides 'postfixadmin_alias'
 provides 'postfixadmin_domain'
 provides 'postfixadmin_mailbox'
+provides 'postfixadmin_alias_domain'
 # Commented until 11.0.10 server release (CHEF-3976)
 # provides 'postfixadmin_admin[user]'
 # provides 'postfixadmin_alias[address]'
 # provides 'postfixadmin_domain[domain]'
 # provides 'postfixadmin_mailbox[mailbox]'
+# provides 'postfixadmin_alias_domain[alias_domain]'
 
 attribute 'postfixadmin/version',
   :display_name => 'postfixadmin version',

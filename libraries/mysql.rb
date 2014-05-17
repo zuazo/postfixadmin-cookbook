@@ -97,6 +97,17 @@ module PostfixAdmin
       result
     end
 
+    def aliasDomainExists?(alias_domain)
+      connect
+      if @db.table_exists?('alias_domain')
+        result = @db['SELECT 1 FROM alias_domain WHERE alias_domain = ? LIMIT 1', alias_domain].count > 0
+      else
+        result = false
+      end
+      disconnect
+      result
+    end
+
   end
 end
 
