@@ -3,7 +3,7 @@ default['postfixadmin']['version'] = '2.3.7'
 default['postfixadmin']['url'] = "http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-#{node['postfixadmin']['version']}/postfixadmin-#{node['postfixadmin']['version']}.tar.gz"
 default['postfixadmin']['checksum'] = '761074e711ab618deda425dc013133b9d5968e0859bb883f10164061fd87006e'
 
-default['postfixadmin']['server_name'] = 'postfixadmin.onddo.com' # change this
+default['postfixadmin']['server_name'] = node['fqdn'] || 'postfixadmin.local'
 default['postfixadmin']['ssl'] = false
 default['postfixadmin']['setup_password'] = nil # randomly generated
 default['postfixadmin']['setup_password_salt'] = nil # required for chef-solo

@@ -54,9 +54,9 @@ attribute 'postfixadmin/checksum',
 attribute 'postfixadmin/server_name',
   :display_name => 'server name',
   :description => 'PostfixAdmin server name',
+  :calculated => true,
   :type => 'string',
-  :required => 'recommended',
-  :default => '"postfixadmin.onddo.com"'
+  :required => 'recommended'
 
 attribute 'postfixadmin/ssl',
   :display_name => 'enable ssl',

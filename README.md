@@ -68,7 +68,7 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['server_name']</code></td>
     <td>PostfixAdmin server name</td>
-    <td><code>"postfixadmin.onddo.com"</code></td>
+    <td><em>calculated</em></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['ssl']</code></td>
