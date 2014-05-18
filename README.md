@@ -53,7 +53,7 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['version']</code></td>
     <td>PostfixAdmin version</td>
-    <td><code>"2.3.6"</code></td>
+    <td><code>"2.3.7"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['url']</code></td>
