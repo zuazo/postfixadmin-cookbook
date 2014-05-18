@@ -36,10 +36,10 @@ Let me know if you use it successfully on any other platform.
 
 ## Cookbooks:
 
-* apache2
-* ark
-* database
-* mysql
+* [apache2](https://community.opscode.com/cookbooks/apache2)
+* [ark](https://community.opscode.com/cookbooks/ark)
+* [database](https://community.opscode.com/cookbooks/database)
+* [mysql](https://community.opscode.com/cookbooks/mysql)
 
 Attributes
 ==========
@@ -671,14 +671,14 @@ Contributing
 
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
-3. Write you change
+3. Write your change
 4. Write tests for your change (if applicable)
 5. Run the tests, ensuring they all pass
 6. Submit a Pull Request using Github
 
 
 License and Author
-=====================
+==================
 
 |                      |                                          |
 |:---------------------|:-----------------------------------------|
