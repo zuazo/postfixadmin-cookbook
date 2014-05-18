@@ -1,5 +1,6 @@
 Description
 ===========
+[![Cookbook Version](https://img.shields.io/cookbook/v/postfixadmin.svg)](https://community.opscode.com/cookbooks/postfixadmin)
 
 Installs and configures [PostfixAdmin](http://postfixadmin.sourceforge.net/), a web based interface used to manage mailboxes, virtual domains and aliases.
 
