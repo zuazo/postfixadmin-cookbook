@@ -63,7 +63,7 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['checksum']</code></td>
     <td>PostfixAdmin download file checksum</td>
-    <td><code>"ea505281b6c04bda887eb4e6aa6c023b354c4ef4864aa60dcb1425942bf2af63"</code></td>
+    <td><code>"761074e711ab618deda425dc013133b9d5968e0859bb883f10164061fd87006e"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['server_name']</code></td>
