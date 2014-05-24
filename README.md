@@ -1,5 +1,6 @@
 Description
 ===========
+[![Cookbook Version](https://img.shields.io/cookbook/v/postfixadmin.svg)](https://community.opscode.com/cookbooks/postfixadmin)
 
 Installs and configures [PostfixAdmin](http://postfixadmin.sourceforge.net/), a web based interface used to manage mailboxes, virtual domains and aliases.
 
@@ -35,10 +36,10 @@ Let me know if you use it successfully on any other platform.
 
 ## Cookbooks:
 
-* apache2
-* ark
-* database
-* mysql
+* [apache2](https://community.opscode.com/cookbooks/apache2)
+* [ark](https://community.opscode.com/cookbooks/ark)
+* [database](https://community.opscode.com/cookbooks/database)
+* [mysql](https://community.opscode.com/cookbooks/mysql)
 
 Attributes
 ==========
@@ -52,7 +53,7 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['version']</code></td>
     <td>PostfixAdmin version</td>
-    <td><code>"2.3.6"</code></td>
+    <td><code>"2.3.7"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['url']</code></td>
@@ -62,12 +63,12 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['checksum']</code></td>
     <td>PostfixAdmin download file checksum</td>
-    <td><code>"ea505281b6c04bda887eb4e6aa6c023b354c4ef4864aa60dcb1425942bf2af63"</code></td>
+    <td><code>"761074e711ab618deda425dc013133b9d5968e0859bb883f10164061fd87006e"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['server_name']</code></td>
     <td>PostfixAdmin server name</td>
-    <td><code>"postfixadmin.onddo.com"</code></td>
+    <td><em>calculated</em></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['ssl']</code></td>
@@ -502,6 +503,85 @@ postfixadmin_alias 'billing@foobar.com' do
 end
 ```
 
+## postfixadmin_alias_domain[address]
+
+Create domain aliases. The `alias_domain` must already exist.
+
+### postfixadmin_alias_domain actions
+
+* `create`
+
+### postfixadmin_alias_domain attributes
+
+<table>
+  <tr>
+    <th>Attribute</th>
+    <th>Description</th>
+    <th>Default</th>
+  </tr>
+  <tr>
+    <td>alias_domain</td>
+    <td>Alias domain</td>
+    <td><em>name attribute</em></td>
+  </tr>
+  <tr>
+    <td>target_domain</td>
+    <td>Target domain</td>
+    <td><em>required</em></td>
+  </tr>
+  <tr>
+    <td>active</td>
+    <td>Active status</td>
+    <td><code>true</code></td>
+  </tr>
+  <tr>
+    <td>login_username</td>
+    <td>Admin user to use</td>
+    <td><em>required</em></td>
+  </tr>
+  <tr>
+    <td>login_password</td>
+    <td>Admin password </td>
+    <td><em>required</em></td>
+  </tr>
+  <tr>
+    <td>db_user</td>
+    <td>Database username</td>
+    <td><code>node['postfixadmin']['database']['user']</code></td>
+  </tr>
+  <tr>
+    <td>db_password</td>
+    <td>Database password</td>
+    <td><code>node['postfixadmin']['database']['password']</code></td>
+  </tr>
+  <tr>
+    <td>db_name</td>
+    <td>Database name</td>
+    <td><code>node['postfixadmin']['database']['name']</code></td>
+  </tr>
+  <tr>
+    <td>db_host</td>
+    <td>Database hostname</td>
+    <td><code>node['postfixadmin']['database']['host']</code></td>
+  </tr>
+  <tr>
+    <td>ssl</td>
+    <td>Whether to use SSL on HTTP requests</td>
+    <td><code>node['postfixadmin']['ssl']</code></td>
+  </tr>
+</table>
+
+### postfixadmin_alias_domain example
+
+```ruby
+# admin user copied from the previous example
+postfixadmin_alias_domain 'aliasdomain.com' do
+  target_domain 'foobar.com'
+  login_username 'admin@admindomain.com'
+  login_password 'sup3r-s3cr3t-p4ss'
+end
+```
+
 Usage Example
 =============
 
@@ -532,6 +612,12 @@ end
 
 postfixadmin_alias 'billing@foobar.com' do
   goto 'bob@foobar.com'
+  login_username 'admin@admindomain.com'
+  login_password 'sup3r-s3cr3t-p4ss'
+end
+
+postfixadmin_alias_domain 'aliasdomain.com' do
+  target_domain 'foobar.com'
   login_username 'admin@admindomain.com'
   login_password 'sup3r-s3cr3t-p4ss'
 end
@@ -568,8 +654,8 @@ Testing
 ## Requirements
 
 * `vagrant`
-* `berkshelf` >= `1.4.0`
-* `test-kitchen` >= `1.0.0.alpha`
+* `berkshelf` >= `2.0.0`
+* `test-kitchen` >= `1.2`
 * `kitchen-vagrant` >= `0.10.0`
 
 ## Running the tests
@@ -585,21 +671,21 @@ Contributing
 
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
-3. Write you change
+3. Write your change
 4. Write tests for your change (if applicable)
 5. Run the tests, ensuring they all pass
 6. Submit a Pull Request using Github
 
 
 License and Author
-=====================
+==================
 
 |                      |                                          |
 |:---------------------|:-----------------------------------------|
 | **Author:**          | [Xabier de Zuazo](https://github.com/zuazo) (<xabier@onddo.com>)
 | **Contributor:**     | [chrludwig](https://github.com/chrludwig)
 | **Contributor:**     | [MATSUI Shinsuke (poppen)](https://github.com/poppen)
-| **Copyright:**       | Copyright (c) 2013 Onddo Labs, SL. (www.onddo.com)
+| **Copyright:**       | Copyright (c) 2013-2014 Onddo Labs, SL. (www.onddo.com)
 | **License:**         | Apache License, Version 2.0
 
     Licensed under the Apache License, Version 2.0 (the "License");

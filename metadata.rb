@@ -22,18 +22,20 @@ provides 'postfixadmin_admin'
 provides 'postfixadmin_alias'
 provides 'postfixadmin_domain'
 provides 'postfixadmin_mailbox'
+provides 'postfixadmin_alias_domain'
 # Commented until 11.0.10 server release (CHEF-3976)
 # provides 'postfixadmin_admin[user]'
 # provides 'postfixadmin_alias[address]'
 # provides 'postfixadmin_domain[domain]'
 # provides 'postfixadmin_mailbox[mailbox]'
+# provides 'postfixadmin_alias_domain[alias_domain]'
 
 attribute 'postfixadmin/version',
   :display_name => 'postfixadmin version',
   :description => 'PostfixAdmin version',
   :type => 'string',
   :required => 'optional',
-  :default => '"2.3.6"'
+  :default => '"2.3.7"'
   
 attribute 'postfixadmin/url',
   :display_name => 'postfixadmin URL',
@@ -47,14 +49,14 @@ attribute 'postfixadmin/checksum',
   :description => 'PostfixAdmin download file checksum',
   :type => 'string',
   :required => 'optional',
-  :default => '"ea505281b6c04bda887eb4e6aa6c023b354c4ef4864aa60dcb1425942bf2af63"'
+  :default => '"761074e711ab618deda425dc013133b9d5968e0859bb883f10164061fd87006e"'
 
 attribute 'postfixadmin/server_name',
   :display_name => 'server name',
   :description => 'PostfixAdmin server name',
+  :calculated => true,
   :type => 'string',
-  :required => 'recommended',
-  :default => '"postfixadmin.onddo.com"'
+  :required => 'recommended'
 
 attribute 'postfixadmin/ssl',
   :display_name => 'enable ssl',
