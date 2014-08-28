@@ -17,15 +17,14 @@ action :create do
   ssl = new_resource.ssl || node['postfixadmin']['ssl']
 
   db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-  unless db.aliasDomainExists?(alias_domain)
-    converge_by("Create #{new_resource}") do
-      ruby_block "create alias domain #{alias_domain}" do
-        block do
-          result = PostfixAdmin::API.createAliasDomain(alias_domain, target_domain, active, login_username, login_password, ssl)
-          Chef::Log.info("Created #{new_resource}: #{result}")
-        end
-        action :create
+  return if db.aliasDomainExists?(alias_domain)
+  converge_by("Create #{new_resource}") do
+    ruby_block "create alias domain #{alias_domain}" do
+      block do
+        result = PostfixAdmin::API.createAliasDomain(alias_domain, target_domain, active, login_username, login_password, ssl)
+        Chef::Log.info("Created #{new_resource}: #{result}")
       end
+      action :create
     end
   end
 
