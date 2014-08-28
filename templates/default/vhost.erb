@@ -11,10 +11,14 @@
   DocumentRoot <%= @params[:docroot] %>
 
   <Directory <%= @params[:docroot] %>>
-    Options -Indexes FollowSymLinks MultiViews
+    Options -Indexes +FollowSymLinks +MultiViews
     AllowOverride None
+<% if node['apache']['version'].to_f >= 2.4 -%>
+    Require all granted
+<% else -%>
     Order allow,deny
     allow from all
+<% end -%>
   </Directory>
   <Directory />
     Options FollowSymLinks
