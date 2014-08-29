@@ -6,59 +6,52 @@ provisioner:
   require_chef_omnibus: latest
 
 platforms:
-- name: ubuntu-12.04
 - name: ubuntu-10.04
-- name: centos-6.4
+  run_list:
+    - recipe[apt]
+- name: ubuntu-12.04
+  run_list:
+    - recipe[apt]
+- name: ubuntu-14.04
+  run_list:
+    - recipe[apt]
 - name: centos-5.9
-- name: debian-6.0-chef11
-  driver_config:
-    box: debian-6.0.7-chef_11.4.4-2-amd64
-    box_url: https://onddo-vm.s3.amazonaws.com/vagrant/debian-6.0.7-chef_11.4.4-2-amd64.box
-- name: debian-7.0-chef10
-  driver_config:
-    box: debian-7.0.0-chef_10.26.0-1-amd64
-    box_url: https://onddo-vm.s3.amazonaws.com/vagrant/debian-7.0.0-chef_10.26.0-1-amd64.box
-- name: debian-7.0-chef11
-  driver_config:
-    box: debian-7.0.0-chef_11.4.4-2-amd64
-    box_url: https://onddo-vm.s3.amazonaws.com/vagrant/debian-7.0.0-chef_11.4.4-2-amd64.box
+- name: centos-6.5
+- name: debian-6.0.10
+  run_list:
+    - recipe[apt]
+- name: debian-7.6
+  run_list:
+    - recipe[apt]
 
 suites:
 - name: default
   run_list:
   - recipe[postfixadmin_test]
-  attributes: {
-    mysql: {
+  attributes:
+    mysql:
       server_root_password: vagrant,
       server_debian_password: vagrant_debian,
       server_repl_password: vagrant_repl
-    },
-    postfixadmin: {
-      database: {
+    postfixadmin:
+      database:
         password: postfix_pass
-      },
       setup_password: admin,
       setup_password_salt: salt
-    }
-  }
 - name: without-webserver
   run_list:
   - recipe[postfixadmin_test]
-  attributes: {
-    mysql: {
+  attributes:
+    mysql:
       server_root_password: vagrant,
       server_debian_password: vagrant_debian,
       server_repl_password: vagrant_repl
-    },
-    postfixadmin: {
-      database: {
+    postfixadmin:
+      database:
         password: postfix_pass
-      },
       setup_password: admin,
       setup_password_salt: salt,
       web_server: false
-    }
-  }
 - name: map_files
   run_list:
   - recipe[postfixadmin_test::map_files]
@@ -70,8 +63,6 @@ suites:
 - name: lwrp_ssl
   run_list:
   - recipe[postfixadmin_test::lwrp]
-  attributes: {
-    postfixadmin: {
+  attributes:
+    postfixadmin:
       ssl: true
-    }
-  }
