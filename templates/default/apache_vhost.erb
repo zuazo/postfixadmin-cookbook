@@ -9,10 +9,14 @@
   ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %>
 <% end -%>
   DocumentRoot <%= @params[:docroot] %>
+<% @params[:headers].each do |header, value| -%>
+  Header set <%= header %> "<%= value %>"
+<% end -%>
 
   <Directory <%= @params[:docroot] %>>
-    Options -Indexes +FollowSymLinks +MultiViews
-    AllowOverride None
+    Options <%= [@params[:directory_options] || "FollowSymLinks" ].flatten.join " " %>
+    AllowOverride <%= [@params[:allow_override] || "None" ].flatten.join " " %>
+
 <% if node['apache']['version'].to_f >= 2.4 -%>
     Require all granted
 <% else -%>
@@ -20,15 +24,27 @@
     allow from all
 <% end -%>
   </Directory>
+
   <Directory />
     Options FollowSymLinks
     AllowOverride None
   </Directory>
 
+  <Location /server-status>
+    SetHandler server-status
+
+<% if node['apache']['version'].to_f >= 2.4 -%>
+    Require ip 127.0.0.1
+<% else -%>
+    Order Deny,Allow
+    Deny from all
+    Allow from 127.0.0.1
+<% end -%>
+  </Location>
+
   # Logs
-<% log_prefix = ( @params[:server_name] || @params[:name] ) + ( @params[:port].to_s == '443' ? '_ssl_' : '_' ) -%>
-  CustomLog <%= node['apache']['log_dir'] %>/<%= log_prefix %>access.log combined
-  ErrorLog <%= node['apache']['log_dir'] %>/<%= log_prefix %>error.log
+  CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-access.log combined
+  ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-error.log
   # Possible values include: debug, info, notice, warn, error, crit,
   # alert, emerg.
   LogLevel warn
@@ -45,8 +61,8 @@
   #   /usr/share/doc/apache2.2-common/README.Debian.gz for more info.
   #   If both key and certificate are stored in the same file, only the
   #   SSLCertificateFile directive is needed.
-  SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
-  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+  SSLCertificateFile    <%= @params[:ssl_cert] %>
+  SSLCertificateKeyFile <%= @params[:ssl_key] %>
 
   BrowserMatch "MSIE [2-6]" \
     nokeepalive ssl-unclean-shutdown \

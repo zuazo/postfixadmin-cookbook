@@ -20,10 +20,6 @@
 include_recipe 'apache2::default'
 include_recipe 'apache2::mod_php5'
 
-if node['postfixadmin']['ssl']
-  include_recipe 'apache2::mod_ssl'
-end
-
 # required by the lwrps
 ruby_block 'web_app-postfixadmin-reload' do
   block {}
@@ -31,16 +27,40 @@ ruby_block 'web_app-postfixadmin-reload' do
   notifies :reload, 'service[apache2]', :immediately
 end
 
+
+# Create virtualhost for PostfixAdmin
 web_app 'postfixadmin' do
   cookbook 'postfixadmin'
-  template 'vhost.erb'
+  template 'apache_vhost.erb'
   docroot "#{node['ark']['prefix_root']}/postfixadmin"
   server_name node['postfixadmin']['server_name']
-  server_aliases []
-  if node['postfixadmin']['ssl']
-    port '443'
-  else
-    port '80'
-  end
+  server_aliases node['postfixadmin']['server_aliases']
+  headers node['postfixadmin']['headers']
+  port '80'
+  directory_options %w(-Indexes +FollowSymLinks +MultiViews)
   enable true
+end
+
+if node['postfixadmin']['ssl']
+ cert = ssl_certificate 'postfixadmin' do
+    namespace node['postfixadmin']
+    notifies :restart, 'service[apache2]'
+  end
+
+  include_recipe 'apache2::mod_ssl'
+
+ # Create SSL virtualhost
+  web_app 'postfixadmin-ssl' do
+    cookbook 'postfixadmin'
+    template 'apache_vhost.erb'
+    docroot "#{node['ark']['prefix_root']}/postfixadmin"
+    server_name node['postfixadmin']['server_name']
+    server_aliases node['postfixadmin']['server_aliases']
+    headers node['postfixadmin']['headers']
+    port '443'
+    directory_options %w(-Indexes +FollowSymLinks +MultiViews)
+    ssl_key cert.key_path
+    ssl_cert cert.cert_path
+    enable true
+  end
 end

@@ -111,8 +111,9 @@ ark 'postfixadmin' do
   checksum node['postfixadmin']['checksum']
 end
 
-if node['postfixadmin']['ssl']
-  package 'ssl-cert' # generates a self-signed (snakeoil) certificate
+case node['postfixadmin']['web_server']
+when 'apache'
+  include_recipe 'postfixadmin::apache'
 end
 
 template 'config.local.php' do
@@ -129,9 +130,4 @@ template 'config.local.php' do
     :setup_password => node['postfixadmin']['setup_password_encrypted'],
     :conf => node['postfixadmin']['conf']
   )
-end
-
-case node['postfixadmin']['web_server']
-when 'apache'
-  include_recipe 'postfixadmin::apache'
 end

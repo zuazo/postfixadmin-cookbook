@@ -17,7 +17,7 @@ action :create do
   ssl = new_resource.ssl || node['postfixadmin']['ssl']
 
   db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-  return if db.aliasDomainExists?(alias_domain)
+  next if db.aliasDomainExists?(alias_domain)
   converge_by("Create #{new_resource}") do
     ruby_block "create alias domain #{alias_domain}" do
       block do

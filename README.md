@@ -71,8 +71,18 @@ Attributes
     <td><em>calculated</em></td>
   </tr>
   <tr>
+    <td><code>node['postfixadmin']['server_aliases']</code></td>
+    <td>PostfixAdmin server aliases</td>
+    <td><code>[]</code></td>
+  </tr>
+  <tr>
+    <td><code>node['postfixadmin']['headers']</code></td>
+    <td>PostfixAdmin HTTP headers to set as hash</td>
+    <td><code>{}</code></td>
+  </tr>
+  <tr>
     <td><code>node['postfixadmin']['ssl']</code></td>
-    <td>enables HTTPS (with SSL), only tested on Debian and Ubuntu</td>
+    <td>enables HTTPS (with SSL)</td>
     <td><code>false</code></td>
   </tr>
   <tr>
@@ -169,6 +179,17 @@ Attributes
       ]</code></td>
   </tr>
 </table>
+
+## The HTTPS Certificate
+
+This cookbook uses the [`ssl_certificate`](https://supermarket.getchef.com/cookbooks/ssl_certificate) cookbook to create the HTTPS certificate. The namespace used is `node['postfixadmin']`. For example:
+
+```ruby
+node.default['postfixadmin']['common_name'] = 'postfixadmin.example.com'
+include_recipe 'postfixadmin'
+```
+
+See the [`ssl_certificate` namespace documentation](https://supermarket.getchef.com/cookbooks/ssl_certificate#namespaces) for more information.
 
 Recipes
 =======

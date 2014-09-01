@@ -4,6 +4,8 @@ default['postfixadmin']['url'] = "http://downloads.sourceforge.net/project/postf
 default['postfixadmin']['checksum'] = '761074e711ab618deda425dc013133b9d5968e0859bb883f10164061fd87006e'
 
 default['postfixadmin']['server_name'] = node['fqdn'] || 'postfixadmin.local'
+default['postfixadmin']['server_aliases'] = []
+default['postfixadmin']['headers'] = {}
 default['postfixadmin']['ssl'] = false
 default['postfixadmin']['setup_password'] = nil # randomly generated
 default['postfixadmin']['setup_password_salt'] = nil # required for chef-solo

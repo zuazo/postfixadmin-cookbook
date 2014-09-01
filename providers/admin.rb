@@ -14,7 +14,7 @@ action :create do
   ssl = new_resource.ssl || node['postfixadmin']['ssl']
 
   db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-  return if db.adminExists?(user)
+  next if db.adminExists?(user)
   converge_by("Create #{new_resource}") do
     ruby_block "create admin user #{user}" do
       block do
@@ -36,7 +36,7 @@ action :remove do
   db_host = new_resource.db_host || node['postfixadmin']['database']['host']
 
   db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-  return unless db.adminExists?(user)
+  next unless db.adminExists?(user)
   converge_by("Remove #{new_resource}") do
     ruby_block "remove admin user #{user}" do
       block do

@@ -23,7 +23,7 @@ action :create do
   ssl = new_resource.ssl || node['postfixadmin']['ssl']
 
   db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-  return if db.mailboxExists?(mailbox)
+  next if db.mailboxExists?(mailbox)
   converge_by("Create #{new_resource}") do
     ruby_block "create mailbox #{mailbox}" do
       block do

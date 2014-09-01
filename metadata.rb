@@ -14,6 +14,7 @@ depends 'apache2'
 depends 'ark'
 depends 'database'
 depends 'mysql'
+depends 'ssl_certificate'
 
 recipe 'postfixadmin::default', 'Installs and configures PostfixAdmin'
 recipe 'postfixadmin::map_files', 'Installs PostfixAdmin SQL map files to be used by Postfix'
@@ -58,9 +59,22 @@ attribute 'postfixadmin/server_name',
   :type => 'string',
   :required => 'recommended'
 
+attribute 'postfixadmin/server_aliases',
+  :display_name => 'server aliases',
+  :description => 'PostfixAdmin server aliases',
+  :type => 'string',
+  :required => 'optional',
+  :default => '[]'
+
+attribute 'postfixadmin/headers',
+  :display_name => 'postfixadmin headers',
+  :description => 'PostfixAdmin HTTP headers to set as hash',
+  :type => 'string',
+  :default => '{}'
+
 attribute 'postfixadmin/ssl',
   :display_name => 'enable ssl',
-  :description => 'enables HTTPS (with SSL), only tested on Debian and Ubuntu',
+  :description => 'enables HTTPS (with SSL)',
   :choice => [ 'true', 'false' ],
   :type => 'string',
   :required => 'optional',
