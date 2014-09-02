@@ -20,14 +20,6 @@
 include_recipe 'apache2::default'
 include_recipe 'apache2::mod_php5'
 
-# required by the lwrps
-ruby_block 'web_app-postfixadmin-reload' do
-  block {}
-  subscribes :create, 'execute[a2ensite postfixadmin.conf]', :immediately
-  notifies :reload, 'service[apache2]', :immediately
-end
-
-
 # Create virtualhost for PostfixAdmin
 web_app 'postfixadmin' do
   cookbook 'postfixadmin'
@@ -63,4 +55,11 @@ if node['postfixadmin']['ssl']
     ssl_cert cert.cert_path
     enable true
   end
+end
+
+# required by the lwrps
+ruby_block 'web_app-postfixadmin-reload' do
+  block {}
+  subscribes :create, 'execute[a2ensite postfixadmin.conf]', :immediately
+  notifies :reload, 'service[apache2]', :immediately
 end
