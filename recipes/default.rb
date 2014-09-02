@@ -55,11 +55,11 @@ package pkg_php_imap do
   action :install
 end
 
-# pkg_php_mbstring may be nil; we thus cannot use the 
-# variable value as the package resource name but have
-# to specify the package name as an explicit attribute
-package "optional_php-mbstring" do
-  not_if do pkg_php_mbstring.nil? end
+# pkg_php_mbstring may be nil; we thus cannot use the variable value as the
+# package resource name but have to specify the package name as an explicit
+# attribute
+package 'optional_php-mbstring' do
+  not_if { pkg_php_mbstring.nil? }
   package_name pkg_php_mbstring
   action :install
 end
@@ -67,9 +67,9 @@ end
 chef_gem 'sequel'
 
 mysql_connection_info = {
-  :host => node['postfixadmin']['database']['host'],
-  :username => 'root',
-  :password => node['mysql']['server_root_password']
+  host: node['postfixadmin']['database']['host'],
+  username: 'root',
+  password: node['mysql']['server_root_password']
 }
 
 mysql_database node['postfixadmin']['database']['name'] do
@@ -79,20 +79,31 @@ end
 
 if Chef::Config[:solo]
   if node['postfixadmin']['database']['password'].nil?
-    Chef::Application.fatal!("You must set node['postfixadmin']['database']['password'] in chef-solo mode.");
+    fail 'You must set node["postfixadmin"]["database"]["password"] in '\
+      'chef-solo mode.'
   end
   if node['postfixadmin']['setup_password'].nil?
-    Chef::Application.fatal!("You must set node['postfixadmin']['setup_password'] in chef-solo mode.");
+    fail 'You must set node["postfixadmin"]["setup_password"] in chef-solo '\
+      'mode.'
   end
   if node['postfixadmin']['setup_password_salt'].nil?
-    Chef::Application.fatal!("You must set node['postfixadmin']['setup_password_salt'] in chef-solo mode.");
+    fail 'You must set node["postfixadmin"]["setup_password_salt"] in '\
+      'chef-solo mode.'
   end
-  node.set_unless['postfixadmin']['setup_password_encrypted'] = encrypt_setup_password(node['postfixadmin']['setup_password'], node['postfixadmin']['setup_password_salt'])
+  node.set_unless['postfixadmin']['setup_password_encrypted'] =
+    encrypt_setup_password(
+      node['postfixadmin']['setup_password'],
+      node['postfixadmin']['setup_password_salt']
+    )
 else
   # generate required passwords
   node.set_unless['postfixadmin']['database']['password'] = secure_password
   node.set_unless['postfixadmin']['setup_password'] = secure_password
-  node.set_unless['postfixadmin']['setup_password_encrypted'] = encrypt_setup_password(node['postfixadmin']['setup_password'], generate_setup_password_salt)
+  node.set_unless['postfixadmin']['setup_password_encrypted'] =
+    encrypt_setup_password(
+      node['postfixadmin']['setup_password'],
+      generate_setup_password_salt
+    )
   node.save
 end
 
@@ -123,11 +134,11 @@ template 'config.local.php' do
   group node['apache']['group']
   mode '0640'
   variables(
-    :name => node['postfixadmin']['database']['name'],
-    :host => node['postfixadmin']['database']['host'],
-    :user => node['postfixadmin']['database']['user'],
-    :password => node['postfixadmin']['database']['password'],
-    :setup_password => node['postfixadmin']['setup_password_encrypted'],
-    :conf => node['postfixadmin']['conf']
+    name: node['postfixadmin']['database']['name'],
+    host: node['postfixadmin']['database']['host'],
+    user: node['postfixadmin']['database']['user'],
+    password: node['postfixadmin']['database']['password'],
+    setup_password: node['postfixadmin']['setup_password_encrypted'],
+    conf: node['postfixadmin']['conf']
   )
 end

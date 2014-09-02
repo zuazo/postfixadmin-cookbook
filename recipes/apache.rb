@@ -34,14 +34,14 @@ web_app 'postfixadmin' do
 end
 
 if node['postfixadmin']['ssl']
- cert = ssl_certificate 'postfixadmin' do
+  cert = ssl_certificate 'postfixadmin' do
     namespace node['postfixadmin']
     notifies :restart, 'service[apache2]'
   end
 
   include_recipe 'apache2::mod_ssl'
 
- # Create SSL virtualhost
+  # Create SSL virtualhost
   web_app 'postfixadmin-ssl' do
     cookbook 'postfixadmin'
     template 'apache_vhost.erb'

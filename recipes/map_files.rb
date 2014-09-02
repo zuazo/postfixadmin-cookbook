@@ -22,7 +22,7 @@ directory node['postfixadmin']['map_files']['path'] do
   owner node['postfixadmin']['map_files']['owner']
   group node['postfixadmin']['map_files']['group']
   recursive true
-  not_if do ::File.exists?(node['postfixadmin']['map_files']['path']) end
+  not_if { ::File.exist?(node['postfixadmin']['map_files']['path']) }
   action :create
 end
 
@@ -33,13 +33,11 @@ node['postfixadmin']['map_files']['list'].each do |map_file|
     owner node['postfixadmin']['map_files']['owner']
     group node['postfixadmin']['map_files']['group']
     variables(
-      :user => node['postfixadmin']['database']['user'],
-      :password => node['postfixadmin']['database']['password'],
-      :host => node['postfixadmin']['database']['host'],
-      :dbname => node['postfixadmin']['database']['name']
+      user: node['postfixadmin']['database']['user'],
+      password: node['postfixadmin']['database']['password'],
+      host: node['postfixadmin']['database']['host'],
+      dbname: node['postfixadmin']['database']['name']
     )
     action :create
   end
 end
-
-
