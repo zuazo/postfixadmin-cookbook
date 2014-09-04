@@ -1,13 +1,15 @@
+# encoding: UTF-8
+
 require 'spec_helper'
 
-describe package('httpd'), :if => property[:os][:family] == 'RedHat' do
+describe package('httpd'), if: property[:os][:family] == 'RedHat' do
   it 'is installed' do
     expect(subject).to be_installed
   end
 end
 
 describe package('apache2'),
-  :if => property[:os][:family] == 'Ubuntu' ||  property[:os][:family] == 'Debian' do
+         if: %w(Ubuntu Debian).include?(property[:os][:family]) do
   it 'is installed' do
     expect(subject).to be_installed
   end

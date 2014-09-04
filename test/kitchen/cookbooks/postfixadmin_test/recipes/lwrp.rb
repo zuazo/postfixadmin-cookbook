@@ -1,3 +1,4 @@
+# encoding: UTF-8
 #
 # Cookbook Name:: postfixadmin_test
 # Recipe:: lwrp
@@ -55,4 +56,3 @@ postfixadmin_alias_domain 'aliasdomain.com' do
   login_username 'admin@admin.org'
   login_password 'p@ssw0rd1'
 end
-

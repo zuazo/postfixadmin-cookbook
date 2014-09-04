@@ -1,24 +1,86 @@
+# encoding: UTF-8
 
 def whyrun_supported?
   true
 end
 
-action :create do
-  new_resource = @new_resource
-  user = new_resource.user
-  setup_password = new_resource.setup_password || node['postfixadmin']['setup_password']
-  db_user = new_resource.db_user || node['postfixadmin']['database']['user']
-  db_password = new_resource.db_password || node['postfixadmin']['database']['password']
-  db_name = new_resource.db_name || node['postfixadmin']['database']['name']
-  db_host = new_resource.db_host || node['postfixadmin']['database']['host']
-  ssl = new_resource.ssl || node['postfixadmin']['ssl']
+def user
+  new_resource.user
+end
 
+def password
+  new_resource.password
+end
+
+def setup_password
+  new_resource.setup_password(
+    if new_resource.setup_password.nil?
+      node['postfixadmin']['setup_password']
+    else
+      new_resource.setup_password
+    end
+  )
+end
+
+def db_user
+  new_resource.db_user(
+    if new_resource.db_user.nil?
+      node['postfixadmin']['database']['user']
+    else
+      new_resource.db_user
+    end
+  )
+end
+
+def db_password
+  new_resource.db_password(
+    if new_resource.db_password.nil?
+      node['postfixadmin']['database']['password']
+    else
+      new_resource.db_password
+    end
+  )
+end
+
+def db_name
+  new_resource.db_name(
+    if new_resource.db_name.nil?
+      node['postfixadmin']['database']['name']
+    else
+      new_resource.db_name
+    end
+  )
+end
+
+def db_host
+  new_resource.db_host(
+    if new_resource.db_host.nil?
+      node['postfixadmin']['database']['host']
+    else
+      new_resource.db_host
+    end
+  )
+end
+
+def ssl
+  new_resource.ssl(
+    if new_resource.ssl.nil?
+      node['postfixadmin']['ssl']
+    else
+      new_resource.ssl
+    end
+  )
+end
+
+action :create do
   db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
   next if db.adminExists?(user)
   converge_by("Create #{new_resource}") do
     ruby_block "create admin user #{user}" do
       block do
-        result = PostfixAdmin::API.createAdmin(user, new_resource.password, setup_password, ssl)
+        result = PostfixAdmin::API.create_admin(
+          user, password, setup_password, ssl
+        )
         Chef::Log.info("Created #{new_resource}: #{result}")
       end
       action :create
@@ -28,13 +90,6 @@ action :create do
 end
 
 action :remove do
-  new_resource = @new_resource
-  user = new_resource.user
-  db_user = new_resource.db_user || node['postfixadmin']['database']['user']
-  db_password = new_resource.db_password || node['postfixadmin']['database']['password']
-  db_name = new_resource.db_name || node['postfixadmin']['database']['name']
-  db_host = new_resource.db_host || node['postfixadmin']['database']['host']
-
   db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
   next unless db.adminExists?(user)
   converge_by("Remove #{new_resource}") do
@@ -46,6 +101,4 @@ action :remove do
       action :create
     end
   end
-
 end
-

@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'serverspec'
 
 include Serverspec::Helper::Ssh

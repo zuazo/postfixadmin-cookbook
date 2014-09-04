@@ -1,3 +1,4 @@
+# encoding: UTF-8
 #
 # Cookbook Name:: postfixadmin_test
 # Recipe:: map_files
@@ -19,4 +20,3 @@
 
 include_recipe 'postfixadmin'
 include_recipe 'postfixadmin::map_files'
-

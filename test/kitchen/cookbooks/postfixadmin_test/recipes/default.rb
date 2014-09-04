@@ -1,3 +1,4 @@
+# encoding: UTF-8
 #
 # Cookbook Name:: postfixadmin_test
 # Recipe:: default
@@ -26,4 +27,3 @@ node.default['postfixadmin']['setup_password'] = 'admin'
 node.default['postfixadmin']['setup_password_salt'] = 'salt'
 
 include_recipe 'postfixadmin'
-

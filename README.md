@@ -1,6 +1,6 @@
 Description
 ===========
-[![Cookbook Version](https://img.shields.io/cookbook/v/postfixadmin.svg)](https://community.opscode.com/cookbooks/postfixadmin)
+[![Cookbook Version](https://img.shields.io/cookbook/v/postfixadmin.svg)](https://supermarket.getchef.com/cookbooks/postfixadmin)
 
 Installs and configures [PostfixAdmin](http://postfixadmin.sourceforge.net/), a web based interface used to manage mailboxes, virtual domains and aliases.
 
@@ -24,7 +24,7 @@ The first time it runs, automatically generates some passwords if not specified.
 Requirements
 ============
 
-## Platform:
+## Supported Platforms
 
 This cookbook has been tested on the following platforms:
 
@@ -32,14 +32,19 @@ This cookbook has been tested on the following platforms:
 * Debian
 * Ubuntu
 
-Let me know if you use it successfully on any other platform.
+Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?title=I%20have%20used%20it%20successfully%20on%20...) if you use it successfully on any other platform.
 
-## Cookbooks:
+## Required Cookbooks
 
-* [apache2](https://community.opscode.com/cookbooks/apache2)
-* [ark](https://community.opscode.com/cookbooks/ark)
-* [database](https://community.opscode.com/cookbooks/database)
-* [mysql](https://community.opscode.com/cookbooks/mysql)
+* [apache2](https://supermarket.getchef.com/cookbooks/apache2)
+* [ark](https://supermarket.getchef.com/cookbooks/ark)
+* [database](https://supermarket.getchef.com/cookbooks/database)
+* [mysql](https://supermarket.getchef.com/cookbooks/mysql)
+* [ssl_certificate](https://supermarket.getchef.com/cookbooks/ssl_certificate)
+
+## Required Applications
+
+* Ruby `1.9.3` or higher.
 
 Attributes
 ==========
