@@ -82,7 +82,7 @@ action :create do
          'have the following format: user@domain.tld'
   end
   db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-  next if db.aliasExists?(address)
+  next if db.alias_exist?(address)
   converge_by("Create #{new_resource}") do
     ruby_block "create alias #{address}" do
       block do

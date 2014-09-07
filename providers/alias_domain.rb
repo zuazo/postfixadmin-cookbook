@@ -76,7 +76,7 @@ end
 
 action :create do
   db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-  next if db.aliasDomainExists?(alias_domain)
+  next if db.alias_domain_exist?(alias_domain)
   converge_by("Create #{new_resource}") do
     ruby_block "create alias domain #{alias_domain}" do
       block do

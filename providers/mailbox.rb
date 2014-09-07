@@ -86,7 +86,7 @@ action :create do
          'have the following format: user@domain.tld'
   end
   db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-  next if db.mailboxExists?(mailbox)
+  next if db.mailbox_exist?(mailbox)
   converge_by("Create #{new_resource}") do
     ruby_block "create mailbox #{mailbox}" do
       block do

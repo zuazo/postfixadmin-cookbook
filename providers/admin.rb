@@ -74,7 +74,7 @@ end
 
 action :create do
   db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-  next if db.adminExists?(user)
+  next if db.admin_exist?(user)
   converge_by("Create #{new_resource}") do
     ruby_block "create admin user #{user}" do
       block do
@@ -91,11 +91,11 @@ end
 
 action :remove do
   db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
-  next unless db.adminExists?(user)
+  next unless db.admin_exist?(user)
   converge_by("Remove #{new_resource}") do
     ruby_block "remove admin user #{user}" do
       block do
-        deleted = db.removeAdmin(user)
+        deleted = db.remove_admin(user)
         Chef::Log.info("Deleted #{new_resource}") if deleted
       end
       action :create

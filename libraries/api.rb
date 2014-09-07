@@ -3,8 +3,10 @@
 module PostfixAdmin
   # Static class to make PostfixAdmin HTTP API requests
   module API
+    # rubocop:disable Style/ClassVars
     @@cookie = nil
     @@authenticated = nil
+    # rubocop:enable Style/ClassVars
 
     def self.request(method, path, body, ssl = false)
       proto = ssl ? 'https' : 'http'
@@ -31,13 +33,13 @@ module PostfixAdmin
         else
           Chef::REST::RESTRequest.user_agent
         end
-      request['Cookie'] = @@cookie unless @@cookie.nil?
+      request['Cookie'] = @@cookie unless @@cookie.nil? # rubocop:disable Style/ClassVars
       request.set_form_data(body) unless body.nil?
 
       response = http.request(request)
       if response['Set-Cookie'].is_a?(String)
-        @@cookie = response['set-cookie'].split(';')[0]
-        Chef::Log.debug("#{name}##{__method__} cookie: #{@@cookie}")
+        @@cookie = response['set-cookie'].split(';')[0] # rubocop:disable Style/ClassVars
+        Chef::Log.debug("#{name}##{__method__} cookie: #{@@cookie}") # rubocop:disable Style/ClassVars
       end
       if response.code.to_i >= 400
         error_msg = "#{name}##{__method__}: #{response.code} #{response.message}"
@@ -77,7 +79,7 @@ module PostfixAdmin
     end
 
     def self.login(username, password, ssl = false)
-      return if @@authenticated
+      return if @@authenticated # rubocop:disable Style/ClassVars
       index(ssl)
       body = {
         fUsername: username,
@@ -86,7 +88,7 @@ module PostfixAdmin
         submit: 'Login'
       }
       post('/login.php', body, ssl)
-      @@authenticated = true
+      @@authenticated = true # rubocop:disable Style/ClassVars
     end
 
     def self.create_admin(username, password, setup_password, ssl = false)
@@ -118,7 +120,7 @@ module PostfixAdmin
 
     def self.create_mailbox(
       username, domain, password, name, active, mail, login_username,
-      login_password, ssl=false
+      login_password, ssl = false
     )
       login(login_username, login_password, ssl)
       body = {
