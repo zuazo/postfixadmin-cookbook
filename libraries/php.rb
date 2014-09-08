@@ -35,27 +35,30 @@ module PostfixAdmin
       end
     end
 
+    def self.php_from_template(template, obj)
+      eruby = Erubis::Eruby.new(template)
+      eruby.evaluate(obj: obj, PostfixAdmin_Conf: PostfixAdmin::Conf)
+    end
+
     def self.array(ary)
       template =
 'array(<%=
-  list = @list.kind_of?(Array) ? @list : [ @list ]
+  list = @obj.kind_of?(Array) ? @obj : [ @obj ]
   list.map do |item|
     @PostfixAdmin_Conf.value(item)
   end.join(", ")
 %>)'
-      eruby = Erubis::Eruby.new(template)
-      eruby.evaluate(list: ary, PostfixAdmin_Conf: PostfixAdmin::Conf)
+      php_from_template(template, ary)
     end
 
     def self.hash(hs)
       template =
 'array(<%=
-  @hash.to_hash.sort.map do |k, v|
+  @obj.to_hash.sort.map do |k, v|
     "#{@PostfixAdmin_Conf.value(v)} => #{@PostfixAdmin_Conf.value(k)}"
   end.join(", ")
 %>)'
-      eruby = Erubis::Eruby.new(template)
-      eruby.evaluate(hash: hs, PostfixAdmin_Conf: PostfixAdmin::Conf)
+      php_from_template(template, hs)
     end
   end
 end
