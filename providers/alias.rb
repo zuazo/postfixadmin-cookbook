@@ -86,9 +86,8 @@ action :create do
   converge_by("Create #{new_resource}") do
     ruby_block "create alias #{address}" do
       block do
-        result = PostfixAdmin::API.create_alias(
-          username, domain, goto, active, login_username, login_password, ssl
-        )
+        api = PostfixAdmin::API.new(ssl, login_username, login_password)
+        result = api.create_alias(username, domain, goto, active)
         Chef::Log.info("Created #{new_resource}: #{result}")
       end
       action :create

@@ -84,10 +84,8 @@ action :create do
   converge_by("Create #{new_resource}") do
     ruby_block "create domain #{domain}" do
       block do
-        result = PostfixAdmin::API.create_domain(
-          domain, description, aliases, mailboxes, login_username,
-          login_password, ssl
-        )
+        api = PostfixAdmin::API.new(ssl, login_username, login_password)
+        result = api.create_domain(domain, description, aliases, mailboxes)
         Chef::Log.info("Created #{new_resource}: #{result}")
       end
       action :create

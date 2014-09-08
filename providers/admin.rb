@@ -78,9 +78,8 @@ action :create do
   converge_by("Create #{new_resource}") do
     ruby_block "create admin user #{user}" do
       block do
-        result = PostfixAdmin::API.create_admin(
-          user, password, setup_password, ssl
-        )
+        api = PostfixAdmin::API.new(ssl)
+        result = api.create_admin(user, password, setup_password)
         Chef::Log.info("Created #{new_resource}: #{result}")
       end
       action :create

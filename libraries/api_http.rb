@@ -1,0 +1,194 @@
+# encoding: UTF-8
+
+module PostfixAdmin
+  class API
+    # Internal wrapper to send PostfixAdmin HTTP calls
+    class HTTP
+      # Internal wrapper to ruby HTTP requests
+      class Request
+        # rubocop:disable Style/ClassVars
+
+        @@cookie = nil
+
+        def self.cookie
+          @@cookie
+        end
+
+        def self.cookie=(arg)
+          @@cookie = arg
+        end
+
+        # rubocop:enable Style/ClassVars
+
+        def self.proto(ssl)
+          ssl ? 'https' : 'http'
+        end
+
+        def self.port(ssl)
+          ssl ? 443 : 80
+        end
+
+        def self.create_uri(path, ssl)
+          proto = self.proto(ssl)
+          port = self.port(ssl)
+          URI.parse("#{proto}://localhost:#{port}#{path}")
+        end
+
+        def self.user_agent
+          if defined?(Chef::HTTP::HTTPRequest)
+            Chef::HTTP::HTTPRequest.user_agent
+          else
+            Chef::REST::RESTRequest.user_agent
+          end
+        end
+
+        def self.create_http(uri, ssl)
+          http = Net::HTTP.new(uri.host, uri.port)
+          if ssl
+            require 'net/https'
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          end
+          http.set_debug_output $stderr if Chef::Config[:log_level] == :debug
+          http
+        end
+
+        def self.create_request(method, uri)
+          case method.downcase
+          when 'post'
+            request = Net::HTTP::Post.new(uri.request_uri)
+            request['Content-Type'] = 'application/x-www-form-urlencoded'
+          else
+            request = Net::HTTP::Get.new(uri.request_uri)
+          end
+          request['User-Agent'] = user_agent
+          request['Cookie'] = cookie unless cookie.nil?
+          request
+        end
+
+        def self.parse_cookie(response)
+          if response['Set-Cookie'].is_a?(String)
+            self.cookie = response['set-cookie'].split(';')[0]
+            Chef::Log.debug("#{name}##{__method__} cookie: #{cookie}")
+          end
+        end
+
+        def self.parse_response(response)
+          parse_cookie(response)
+          response
+        end
+
+        def initialize(method, path, body, ssl)
+          uri = self.class.create_uri(path, ssl)
+          @http = self.class.create_http(uri, ssl)
+          @request = self.class.create_request(method, uri)
+          @request.set_form_data(body) unless body.nil?
+        end
+
+        def response
+          response = @http.request(@request)
+          self.class.parse_response(response)
+        end
+      end # Request
+
+      STDOUT_REGEXP = /^.*class=['"]standout['"][^>]*>([^<]*)<.*$/m
+      ERROR_REGEXP = /^.*class=['"]error_msg['"][^>]*>([^<]*)<.*$/m
+
+      # rubocop:disable Style/ClassVars
+
+      @@authenticated = false
+
+      def self.authenticated=(arg)
+        @@authenticated = arg
+      end
+
+      def self.authenticated?
+        @@authenticated == true
+      end
+
+      # rubocop:enable Style/ClassVars
+
+      def self.parse_response_body(body)
+        if body.match(ERROR_REGEXP)
+          error_msg = "#{name}##{__method__}: #{body.gsub(ERROR_REGEXP, '\1')}"
+          Chef::Log.fatal(error_msg)
+          fail error_msg
+        elsif body.match(STDOUT_REGEXP)
+          body.gsub(STDOUT_REGEXP, '\1')
+        else
+          nil
+        end
+      end
+
+      def self.request(method, path, body, ssl)
+        response = API::HTTP::Request.new(method, path, body, ssl).response
+        if response.code.to_i >= 400
+          error_msg =
+            "#{name}##{__method__}: #{response.code} #{response.message}"
+          Chef::Log.fatal(error_msg)
+          fail error_msg
+        else
+          parse_response_body(response.body)
+        end
+      end
+
+      def self.get(path, ssl = false)
+        request('get', path, nil, ssl)
+      end
+
+      def self.post(path, body, ssl = false)
+        request('post', path, body, ssl)
+      end
+
+      def self.index(ssl = false)
+        get('/login.php', ssl)
+      end
+
+      def self.setup(body, ssl = false)
+        post('/setup.php', body, ssl)
+      end
+
+      attr_writer :username, :password, :ssl
+
+      def initialize(username = nil, password = nil, ssl = false)
+        @username = username
+        @password = password
+        @ssl = ssl
+      end
+
+      def setup(username, password, setup_password)
+        body = {
+          form: 'createadmin',
+          setup_password: setup_password,
+          fUsername: username,
+          fPassword: password, fPassword2: password,
+          submit: 'Add+Admin'
+        }
+        self.class.setup(body, @ssl)
+      end
+
+      def login
+        return if self.class.authenticated?
+        self.class.index(@ssl)
+        body = {
+          fUsername: @username,
+          fPassword: @password,
+          lang: 'en',
+          submit: 'Login'
+        }
+        self.class.post('/login.php', body, @ssl)
+        self.class.authenticated = true
+      end
+
+      def get(path)
+        login
+        self.class.get(path, @ssl)
+      end
+
+      def post(path, body)
+        login
+        self.class.post(path, body, @ssl)
+      end
+    end
+  end
+end

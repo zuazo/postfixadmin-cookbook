@@ -11,6 +11,7 @@ end
 
 group :style do
   gem 'foodcritic', '~> 4.0'
+  gem 'rubocop', '~> 0.24'
 end
 
 group :integration do

@@ -680,9 +680,11 @@ Testing
 ## Requirements
 
 * `vagrant`
-* `berkshelf` >= `2.0.0`
-* `test-kitchen` >= `1.2`
-* `kitchen-vagrant` >= `0.10.0`
+* `foodcritic`
+* `rubocop`
+* `berkshelf`
+* `test-kitchen`
+* `kitchen-vagrant`
 
 ## Running the tests
 

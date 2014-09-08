@@ -90,9 +90,9 @@ action :create do
   converge_by("Create #{new_resource}") do
     ruby_block "create mailbox #{mailbox}" do
       block do
-        result = PostfixAdmin::API.create_mailbox(
-          username, domain, password, mailbox, active, mail, login_username,
-          login_password, ssl
+        api = PostfixAdmin::API.new(ssl, login_username, login_password)
+        result = api.create_mailbox(
+          username, domain, password, mailbox, active, mail
         )
         Chef::Log.info("Created #{new_resource}: #{result}")
       end
