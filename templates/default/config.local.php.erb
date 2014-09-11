@@ -4,11 +4,11 @@
 $CONF['configured'] = true;
 $CONF['setup_password'] = '<%= @setup_password %>';
 
-$CONF['database_type'] = 'mysqli';
-$CONF['database_host'] = '<%= @host %>';
-$CONF['database_user'] = '<%= @user %>';
-$CONF['database_password'] = '<%= @password %>';
-$CONF['database_name'] = '<%= @name %>';
+$CONF['database_type'] = '<%= @db_type == 'mysql' ? 'mysqli' : 'pgsql' %>';
+$CONF['database_host'] = '<%= @db_host %>';
+$CONF['database_user'] = '<%= @db_user %>';
+$CONF['database_password'] = '<%= @db_password %>';
+$CONF['database_name'] = '<%= @db_name %>';
 
 <% @conf.sort.each do |k, v| -%>
 $CONF['<%= k %>'] = <%= PostfixAdmin::Conf.value(v) %>;

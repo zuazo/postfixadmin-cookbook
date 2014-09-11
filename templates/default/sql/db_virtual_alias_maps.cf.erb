@@ -4,5 +4,5 @@ user = <%= @user %>
 password = <%= @password %>
 hosts = <%= @host %>
 dbname = <%= @dbname %>
-query           = SELECT maildir FROM mailbox WHERE username='%s' AND active = '1'
+query = SELECT goto FROM alias WHERE address = '%s' AND active = true
 #expansion_limit = 100

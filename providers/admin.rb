@@ -22,6 +22,16 @@ def setup_password
   )
 end
 
+def db_type
+  new_resource.db_type(
+    if new_resource.db_type.nil?
+      node['postfixadmin']['database']['type']
+    else
+      new_resource.db_type
+    end
+  )
+end
+
 def db_user
   new_resource.db_user(
     if new_resource.db_user.nil?
@@ -38,6 +48,27 @@ def db_password
       node['postfixadmin']['database']['password']
     else
       new_resource.db_password
+    end
+  )
+end
+
+def default_db_port
+  case db_type
+  when 'mysql'
+    node['mysql']['port']
+  when 'postgresql'
+    node['postgresql']['config']['port']
+  else
+    fail "Port for \"#{db_type}\" type not known."
+  end
+end
+
+def db_port
+  new_resource.db_port(
+    if new_resource.db_port.nil?
+      default_db_port
+    else
+      new_resource.db_port
     end
   )
 end
@@ -73,7 +104,10 @@ def ssl
 end
 
 action :create do
-  db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
+  db = PostfixAdmin::DB.new(
+    type: db_type, user: db_user, password: db_password, dbname: db_name,
+    host: db_host, port: db_port
+  )
   next if db.admin_exist?(user)
   converge_by("Create #{new_resource}") do
     ruby_block "create admin user #{user}" do
@@ -89,7 +123,10 @@ action :create do
 end
 
 action :remove do
-  db = PostfixAdmin::MySQL.new(db_user, db_password, db_name, db_host)
+  db = PostfixAdmin::DB.new(
+    type: db_type, user: db_user, password: db_password, dbname: db_name,
+    host: db_host, port: db_port
+  )
   next unless db.admin_exist?(user)
   converge_by("Remove #{new_resource}") do
     ruby_block "remove admin user #{user}" do

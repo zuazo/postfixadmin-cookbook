@@ -8,13 +8,22 @@ end
 
 module PostfixAdmin
   # A class to read PostfixAdmin data from its MySQL database
-  class MySQL
-    def initialize(user, password, dbname, host = '127.0.0.1', port = 3306)
-      @user = user
-      @password = password
-      @dbname = dbname
-      @host = host
-      @port = port
+  class DB
+    DEFAULT_OPTIONS = {
+      type: 'mysql',
+      user: 'root',
+      password: '',
+      dbname: 'postfix',
+      host: '127.0.0.1',
+      port: 3306
+    }
+
+    def initialize(options)
+      opts = DEFAULT_OPTIONS.merge(options)
+      opts[:type] = opts[:type] == 'postgresql' ? 'postgres' : opts[:type]
+      @uri =
+        "#{opts[:type]}://#{opts[:user]}:#{opts[:password]}@"\
+        "#{opts[:host]}:#{opts[:port]}/#{opts[:dbname]}"
       load_depends
     end
 
@@ -33,12 +42,7 @@ module PostfixAdmin
 
     def connect
       return unless @db.nil?
-      @db = Sequel.mysql(
-        host: @host,
-        user: @user,
-        password: @password,
-        database: @dbname
-      ) if @db.nil?
+      @db = Sequel.connect(@uri)
       setup_logging
     end
 

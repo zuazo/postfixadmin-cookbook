@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe 'postfixadmin_test::default'
+include_recipe 'postfixadmin_test'
 
 postfixadmin_admin 'admin@admin.org' do
   action :remove

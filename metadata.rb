@@ -5,7 +5,7 @@ maintainer 'Onddo Labs, Sl.'
 maintainer_email 'team@onddo.com'
 license 'Apache 2.0'
 description 'Installs and configures PostfixAdmin, a web based interface used '\
-                    'to manage mailboxes, virtual domains and aliases.'
+            'to manage mailboxes, virtual domains and aliases.'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '0.3.0' # WiP
 
@@ -16,7 +16,8 @@ supports 'ubuntu'
 depends 'apache2'
 depends 'ark'
 depends 'database'
-depends 'mysql'
+recommends 'mysql'
+recommends 'postgresql', '>= 1.0.0'
 depends 'ssl_certificate'
 
 recipe 'postfixadmin::default', 'Installs and configures PostfixAdmin'
@@ -118,6 +119,14 @@ grouping 'postfixadmin/database',
          title: 'postfixadmin database',
          description: 'PostfixAdmin database configuration options'
 
+attribute 'postfixadmin/database/type',
+          display_name: 'database type',
+          description: 'PostfixAdmin database type',
+          choice: %w("mysql" "postgresql"),
+          type: 'string',
+          required: 'optional',
+          default: '"mysql"'
+
 attribute 'postfixadmin/database/name',
           display_name: 'database name',
           description: 'PostfixAdmin database name',
@@ -182,6 +191,31 @@ attribute 'postfixadmin/conf/fetchmail',
           required: 'optional',
           default: '"NO"'
 
+grouping 'postfixadmin/packages',
+         title: 'postfixadmin packages',
+         description: 'PostfixAdmin required packages'
+
+attribute 'postfixadmin/packages/requirements',
+          display_name: 'postfixadmin packages requirements',
+          description: 'PostfixAdmin required packages array',
+          type: 'string',
+          required: 'optional',
+          calculated: true
+
+attribute 'postfixadmin/packages/mysql',
+          display_name: 'postfixadmin packages mysql',
+          description: 'PostfixAdmin required packages array for MySQL support',
+          type: 'string',
+          required: 'optional',
+          calculated: true
+
+attribute 'postfixadmin/packages/postgresql',
+          display_name: 'postfixadmin packages postgresql',
+          description: 'PostfixAdmin required packages array for PostgreSQL support',
+          type: 'string',
+          required: 'optional',
+          calculated: true
+
 grouping 'postfixadmin/map_files',
          title: 'postfixadmin map files',
          description: 'PostfixAdmin map-files configuration options'
@@ -220,11 +254,11 @@ attribute 'postfixadmin/map_files/list',
           type: 'array',
           required: 'optional',
           default: [
-            'mysql_virtual_alias_maps.cf',
-            'mysql_virtual_alias_domain_maps.cf',
-            'mysql_virtual_alias_domain_catchall_maps.cf',
-            'mysql_virtual_domains_maps.cf',
-            'mysql_virtual_mailbox_maps.cf',
-            'mysql_virtual_alias_domain_mailbox_maps.cf',
-            'mysql_virtual_mailbox_limit_maps.cf'
+            'db_virtual_alias_maps.cf',
+            'db_virtual_alias_domain_maps.cf',
+            'db_virtual_alias_domain_catchall_maps.cf',
+            'db_virtual_domains_maps.cf',
+            'db_virtual_mailbox_maps.cf',
+            'db_virtual_alias_domain_mailbox_maps.cf',
+            'db_virtual_mailbox_limit_maps.cf'
           ]

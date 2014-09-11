@@ -91,8 +91,9 @@ module PostfixAdmin
         end
       end # Request
 
-      STDOUT_REGEXP = /^.*class=['"]standout['"][^>]*>([^<]*)<.*$/m
+      STDOUT_REGEXP = /^.*class=['"]standout['"][^>]*>([^\n]*?)\n.*$/m
       ERROR_REGEXP = /^.*class=['"]error_msg['"][^>]*>([^<]*)<.*$/m
+      SETUP_ERROR_REGEXP = /Setup +password +not +specified +correctly/
 
       # rubocop:disable Style/ClassVars
 
@@ -108,13 +109,24 @@ module PostfixAdmin
 
       # rubocop:enable Style/ClassVars
 
-      def self.parse_response_body(body)
+      def self.strip_html(html)
+        html.gsub(/<\/?[^>]+?>/, ' ')
+      end
+
+      def self.parse_response_error(body)
         if body.match(ERROR_REGEXP)
           error_msg = "#{name}##{__method__}: #{body.gsub(ERROR_REGEXP, '\1')}"
           Chef::Log.fatal(error_msg)
           fail error_msg
-        elsif body.match(STDOUT_REGEXP)
-          body.gsub(STDOUT_REGEXP, '\1')
+        elsif body.match(SETUP_ERROR_REGEXP)
+          fail strip_html(body.gsub(STDOUT_REGEXP, '\1'))
+        end
+      end
+
+      def self.parse_response_body(body)
+        parse_response_error(body)
+        if body.match(STDOUT_REGEXP)
+          strip_html(body.gsub(STDOUT_REGEXP, '\1'))
         else
           nil
         end

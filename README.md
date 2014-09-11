@@ -21,6 +21,10 @@ The first time it runs, automatically generates some passwords if not specified.
 * `mysql/server_debian_password`
 * `mysql/server_repl_password`
 
+## From the PostgreSQL cookbook
+
+* `postgresql/password/postgres`
+
 Requirements
 ============
 
@@ -39,7 +43,8 @@ Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?
 * [apache2](https://supermarket.getchef.com/cookbooks/apache2)
 * [ark](https://supermarket.getchef.com/cookbooks/ark)
 * [database](https://supermarket.getchef.com/cookbooks/database)
-* [mysql](https://supermarket.getchef.com/cookbooks/mysql)
+* [mysql](https://supermarket.getchef.com/cookbooks/mysql) (recommended)
+* [postgresql (>= 1.0.0)](https://supermarket.getchef.com/cookbooks/postgresql) (recommended)
 * [ssl_certificate](https://supermarket.getchef.com/cookbooks/ssl_certificate)
 
 ## Required Applications
@@ -111,6 +116,11 @@ Attributes
     <td><em>calculated</em></td>
   </tr>
   <tr>
+    <td><code>node['postfixadmin']['database']['type']</code></td>
+    <td>PostfixAdmin database type. Possible values are: <code>"mysql"</code>, <code>"postgresql"</code></td>
+    <td><code>"mysql"</code></td>
+  </tr>
+  <tr>
     <td><code>node['postfixadmin']['database']['name']</code></td>
     <td>PostfixAdmin database name</td>
     <td><code>"postfix"</code></td>
@@ -151,6 +161,21 @@ Attributes
     <td><code>"NO"</code></td>
   </tr>
   <tr>
+    <td><code>node['postfixadmin']['packages']['requirements']</code></td>
+    <td>PostfixAdmin required packages array</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
+    <td><code>node['postfixadmin']['packages']['mysql']</code></td>
+    <td>PostfixAdmin required packages array for MySQL support</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
+    <td><code>node['postfixadmin']['packages']['postgresql']</code></td>
+    <td>PostfixAdmin required packages array for PostgreSQL support</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
     <td><code>node['postfixadmin']['map_files']['path']</code></td>
     <td>Path to generate map-files into</td>
     <td><code>"/etc/postfix/tables"</code></td>
@@ -174,13 +199,13 @@ Attributes
     <td><code>node['postfixadmin']['map_files']['list']</code></td>
     <td>An array with map file names to generate</td>
     <td><code>[<br/>
-      &nbsp;&nbsp;"mysql_virtual_alias_maps.cf",<br/>
-      &nbsp;&nbsp;"mysql_virtual_alias_domain_maps.cf",<br/>
-      &nbsp;&nbsp;"mysql_virtual_alias_domain_catchall_maps.cf",<br/>
-      &nbsp;&nbsp;"mysql_virtual_domains_maps.cf",<br/>
-      &nbsp;&nbsp;"mysql_virtual_mailbox_maps.cf",<br/>
-      &nbsp;&nbsp;"mysql_virtual_alias_domain_mailbox_maps.cf",<br/>
-      &nbsp;&nbsp;"mysql_virtual_mailbox_limit_maps.cf"<br/>
+      &nbsp;&nbsp;"db_virtual_alias_maps.cf",<br/>
+      &nbsp;&nbsp;"db_virtual_alias_domain_maps.cf",<br/>
+      &nbsp;&nbsp;"db_virtual_alias_domain_catchall_maps.cf",<br/>
+      &nbsp;&nbsp;"db_virtual_domains_maps.cf",<br/>
+      &nbsp;&nbsp;"db_virtual_mailbox_maps.cf",<br/>
+      &nbsp;&nbsp;"db_virtual_alias_domain_mailbox_maps.cf",<br/>
+      &nbsp;&nbsp;"db_virtual_mailbox_limit_maps.cf"<br/>
       ]</code></td>
   </tr>
 </table>

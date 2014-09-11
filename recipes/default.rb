@@ -21,61 +21,27 @@
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 ::Chef::Recipe.send(:include, PostfixAdmin::PHP)
 
-include_recipe 'database::mysql'
-include_recipe 'mysql::server'
+db_type = node['postfixadmin']['database']['type']
 
-pkg_php_mysql = value_for_platform(
-  %w(centos redhat scientific fedora amazon) => {
-    %w(5.0 5.1 5.2 5.3 5.4 5.5 5.6 5.7 5.8 5.9) => 'php53-mysql',
-    'default' => 'php-mysql'
-  },
-  'default' => 'php5-mysql'
-)
+include_recipe "#{db_type}::server"
+include_recipe "database::#{db_type}"
 
-pkg_php_imap = value_for_platform(
-  %w(centos redhat scientific fedora amazon) => {
-    %w(5.0 5.1 5.2 5.3 5.4 5.5 5.6 5.7 5.8 5.9) => 'php53-imap',
-    'default' => 'php-imap'
-  },
-  'default' => 'php5-imap'
-)
-
-pkg_php_mbstring = value_for_platform(
-  %w(centos redhat scientific fedora amazon) => {
-    %w(5.0 5.1 5.2 5.3 5.4 5.5 5.6 5.7 5.8 5.9) => 'php53-mbstring',
-    'default' => 'php-mbstring'
-  },
-  'default' => nil
-)
-
-package pkg_php_mysql do
-  action :install
+pkgs_php_db =
+  if db_type != 'requirements' && node['postfixadmin']['packages'].key?(db_type)
+    node['postfixadmin']['packages'][db_type]
+  else
+    fail "Unknown database type: #{db_type}"
+  end
+pkgs_php_db.each do |pkg|
+  package pkg do
+    action :install
+  end
 end
 
-package pkg_php_imap do
-  action :install
-end
-
-# pkg_php_mbstring may be nil; we thus cannot use the variable value as the
-# package resource name but have to specify the package name as an explicit
-# attribute
-package 'optional_php-mbstring' do
-  not_if { pkg_php_mbstring.nil? }
-  package_name pkg_php_mbstring
-  action :install
-end
-
-chef_gem 'sequel'
-
-mysql_connection_info = {
-  host: node['postfixadmin']['database']['host'],
-  username: 'root',
-  password: node['mysql']['server_root_password']
-}
-
-mysql_database node['postfixadmin']['database']['name'] do
-  connection mysql_connection_info
-  action :create
+node['postfixadmin']['packages']['requirements'].each do |pkg|
+  package pkg do
+    action :install
+  end
 end
 
 if Chef::Config[:solo]
@@ -108,13 +74,72 @@ else
   node.save
 end
 
-mysql_database_user node['postfixadmin']['database']['user'] do
-  connection mysql_connection_info
-  database_name node['postfixadmin']['database']['name']
-  host node['postfixadmin']['database']['host']
-  password node['postfixadmin']['database']['password']
-  privileges [:all]
-  action :grant
+chef_gem 'sequel'
+
+case db_type
+when 'mysql'
+
+  mysql_connection_info = {
+    host: node['postfixadmin']['database']['host'],
+    username: 'root',
+    password: node['mysql']['server_root_password']
+  }
+
+  mysql_database node['postfixadmin']['database']['name'] do
+    connection mysql_connection_info
+    action :create
+  end
+
+  mysql_database_user node['postfixadmin']['database']['user'] do
+    connection mysql_connection_info
+    database_name node['postfixadmin']['database']['name']
+    host node['postfixadmin']['database']['host']
+    password node['postfixadmin']['database']['password']
+    privileges [:all]
+    action :grant
+  end
+
+when 'postgresql'
+
+  postgresql_connection_info = {
+    host: 'localhost',
+    username: 'postgres',
+    password: node['postgresql']['password']['postgres']
+  }
+
+  postgresql_database node['postfixadmin']['database']['name'] do
+    connection postgresql_connection_info
+    action :create
+  end
+
+  postgresql_database_user node['postfixadmin']['database']['user'] do
+    connection postgresql_connection_info
+    host node['postfixadmin']['database']['host']
+    password node['postfixadmin']['database']['password']
+    action :create
+  end
+
+  postgresql_database_user node['postfixadmin']['database']['user'] do
+    connection postgresql_connection_info
+    database_name node['postfixadmin']['database']['name']
+    host node['postfixadmin']['database']['host']
+    password node['postfixadmin']['database']['password']
+    privileges [:all]
+    action :grant
+  end
+
+  # Based on @phlipper work from:
+  # https://github.com/phlipper/chef-postgresql
+  language = 'plpgsql'
+  dbname = node['postfixadmin']['database']['name']
+  execute "createlang #{language} #{dbname}" do
+    user 'postgres'
+    not_if "psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{dbname} \
+      | grep '^ #{language}$'", user: 'postgres'
+  end
+
+else
+  fail "Unknown database type: #{db_type}"
 end
 
 ark 'postfixadmin' do
@@ -126,19 +151,23 @@ end
 case node['postfixadmin']['web_server']
 when 'apache'
   include_recipe 'postfixadmin::apache'
+  web_group = node['apache']['group']
+else
+  web_group = nil
 end
 
 template 'config.local.php' do
   path "#{node['ark']['prefix_root']}/postfixadmin/config.local.php"
   source 'config.local.php.erb'
   owner 'root'
-  group node['apache']['group']
+  group web_group
   mode '0640'
   variables(
-    name: node['postfixadmin']['database']['name'],
-    host: node['postfixadmin']['database']['host'],
-    user: node['postfixadmin']['database']['user'],
-    password: node['postfixadmin']['database']['password'],
+    db_type: db_type,
+    db_host: node['postfixadmin']['database']['host'],
+    db_user: node['postfixadmin']['database']['user'],
+    db_password: node['postfixadmin']['database']['password'],
+    db_name: node['postfixadmin']['database']['name'],
     setup_password: node['postfixadmin']['setup_password_encrypted'],
     conf: node['postfixadmin']['conf']
   )

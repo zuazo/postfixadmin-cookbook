@@ -1,9 +1,9 @@
 # encoding: UTF-8
 #
 # Cookbook Name:: postfixadmin_test
-# Recipe:: map_files
+# Recipe:: mysql
 #
-# Copyright 2013, Onddo Labs, Sl.
+# Copyright 2014, Onddo Labs, Sl.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,5 +18,6 @@
 # limitations under the License.
 #
 
+node.default['postfixadmin']['database']['type'] = 'mysql'
+
 include_recipe 'postfixadmin_test'
-include_recipe 'postfixadmin::map_files'

@@ -62,5 +62,7 @@ end
 ruby_block 'web_app-postfixadmin-reload' do
   block {}
   subscribes :create, 'execute[a2ensite postfixadmin.conf]', :immediately
+  # required by lwrp-ssl-centos-510:
+  subscribes :create, 'template[config.local.php]', :immediately
   notifies :reload, 'service[apache2]', :immediately
 end

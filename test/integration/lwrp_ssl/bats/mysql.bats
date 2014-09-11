@@ -23,4 +23,3 @@
     | mysql -upostfix -ppostfix_pass postfix \
     | grep -Fq OK
 }
-
