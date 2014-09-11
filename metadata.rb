@@ -211,7 +211,8 @@ attribute 'postfixadmin/packages/mysql',
 
 attribute 'postfixadmin/packages/postgresql',
           display_name: 'postfixadmin packages postgresql',
-          description: 'PostfixAdmin required packages array for PostgreSQL support',
+          description:
+            'PostfixAdmin required packages array for PostgreSQL support',
           type: 'string',
           required: 'optional',
           calculated: true
