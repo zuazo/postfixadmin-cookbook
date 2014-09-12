@@ -14,6 +14,7 @@ attribute :db_name, kind_of: String
 attribute :db_host, kind_of: String
 attribute :db_port, kind_of: [Fixnum, String]
 attribute :ssl, kind_of: [TrueClass, FalseClass]
+attribute :port, kind_of: [Fixnum, String]
 
 def initialize(*args)
   super

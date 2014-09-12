@@ -76,6 +76,11 @@ Attributes
     <td><code>"761074e711ab618deda425dc013133b9d5968e0859bb883f10164061fd87006e"</code></td>
   </tr>
   <tr>
+    <td><code>node['postfixadmin']['port']</code></td>
+    <td>PostfixAdmin listen port</td>
+    <td><em>calculated: </em><code>"80"</code><em> or </em><code>"443"</code></td>
+  </tr>
+  <tr>
     <td><code>node['postfixadmin']['server_name']</code></td>
     <td>PostfixAdmin server name</td>
     <td><em>calculated</em></td>

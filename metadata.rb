@@ -58,6 +58,13 @@ attribute 'postfixadmin/checksum',
           default:
             '"761074e711ab618deda425dc013133b9d5968e0859bb883f10164061fd87006e"'
 
+attribute 'postfixadmin/port',
+          display_name: 'postfixadmin port',
+          description: 'PostfixAdmin listen port',
+          calculated: true,
+          type: 'string',
+          required: 'optional'
+
 attribute 'postfixadmin/server_name',
           display_name: 'server name',
           description: 'PostfixAdmin server name',

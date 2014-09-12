@@ -3,8 +3,8 @@
 module PostfixAdmin
   # Static class to make PostfixAdmin API calls
   class API
-    def initialize(ssl = false, username = nil, password = nil)
-      @http = API::HTTP.new(username, password, ssl)
+    def initialize(ssl = false, port = nil, username = nil, password = nil)
+      @http = API::HTTP.new(username, password, ssl, port)
     end
 
     def create_admin(username, password, setup_password)

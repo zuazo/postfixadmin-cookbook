@@ -18,21 +18,21 @@
 # limitations under the License.
 #
 
+def default_http_port
+  node['postfixadmin']['ssl'] ? 443 : 80
+end
+
+def update_listen_ports(port)
+  return if node['apache']['listen_ports'].include?(port)
+  node.set['apache']['listen_ports'] =
+    node['apache']['listen_ports'] + [port]
+end
+
+http_port = node['postfixadmin']['port'] || default_http_port
+update_listen_ports(http_port)
+
 include_recipe 'apache2::default'
 include_recipe 'apache2::mod_php5'
-
-# Create virtualhost for PostfixAdmin
-web_app 'postfixadmin' do
-  cookbook 'postfixadmin'
-  template 'apache_vhost.erb'
-  docroot "#{node['ark']['prefix_root']}/postfixadmin"
-  server_name node['postfixadmin']['server_name']
-  server_aliases node['postfixadmin']['server_aliases']
-  headers node['postfixadmin']['headers']
-  port '80'
-  directory_options %w(-Indexes +FollowSymLinks +MultiViews)
-  enable true
-end
 
 if node['postfixadmin']['ssl']
   cert = ssl_certificate 'postfixadmin' do
@@ -50,10 +50,24 @@ if node['postfixadmin']['ssl']
     server_name node['postfixadmin']['server_name']
     server_aliases node['postfixadmin']['server_aliases']
     headers node['postfixadmin']['headers']
-    port '443'
+    port http_port
     directory_options %w(-Indexes +FollowSymLinks +MultiViews)
     ssl_key cert.key_path
     ssl_cert cert.cert_path
+    ssl true
+    enable true
+  end
+else
+  # Create non-SSL virtualhost
+  web_app 'postfixadmin' do
+    cookbook 'postfixadmin'
+    template 'apache_vhost.erb'
+    docroot "#{node['ark']['prefix_root']}/postfixadmin"
+    server_name node['postfixadmin']['server_name']
+    server_aliases node['postfixadmin']['server_aliases']
+    headers node['postfixadmin']['headers']
+    port http_port
+    directory_options %w(-Indexes +FollowSymLinks +MultiViews)
     enable true
   end
 end

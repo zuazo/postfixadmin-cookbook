@@ -103,6 +103,16 @@ def ssl
   )
 end
 
+def port
+  new_resource.port(
+    if new_resource.port.nil?
+      node['postfixadmin']['port']
+    else
+      new_resource.port
+    end
+  )
+end
+
 action :create do
   db = PostfixAdmin::DB.new(
     type: db_type, user: db_user, password: db_password, dbname: db_name,
@@ -112,7 +122,7 @@ action :create do
   converge_by("Create #{new_resource}") do
     ruby_block "create admin user #{user}" do
       block do
-        api = PostfixAdmin::API.new(ssl)
+        api = PostfixAdmin::API.new(ssl, port)
         result = api.create_admin(user, password, setup_password)
         Chef::Log.info("Created #{new_resource}: #{result}")
       end

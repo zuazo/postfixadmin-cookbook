@@ -105,6 +105,16 @@ def ssl
   )
 end
 
+def port
+  new_resource.port(
+    if new_resource.port.nil?
+      node['postfixadmin']['port']
+    else
+      new_resource.port
+    end
+  )
+end
+
 action :create do
   username, domain = address.split('@', 2)
   if domain.nil?
@@ -120,7 +130,7 @@ action :create do
   converge_by("Create #{new_resource}") do
     ruby_block "create alias #{address}" do
       block do
-        api = PostfixAdmin::API.new(ssl, login_username, login_password)
+        api = PostfixAdmin::API.new(ssl, port, login_username, login_password)
         result = api.create_alias(username, domain, goto, active)
         Chef::Log.info("Created #{new_resource}: #{result}")
       end

@@ -20,17 +20,17 @@ module PostfixAdmin
 
         # rubocop:enable Style/ClassVars
 
-        def self.proto(ssl)
+        def self.default_proto(ssl)
           ssl ? 'https' : 'http'
         end
 
-        def self.port(ssl)
+        def self.default_port(ssl)
           ssl ? 443 : 80
         end
 
-        def self.create_uri(path, ssl)
-          proto = self.proto(ssl)
-          port = self.port(ssl)
+        def self.create_uri(path, ssl, port)
+          proto = default_proto(ssl)
+          port = default_port(ssl) if port.nil?
           URI.parse("#{proto}://localhost:#{port}#{path}")
         end
 
@@ -78,8 +78,9 @@ module PostfixAdmin
           response
         end
 
-        def initialize(method, path, body, ssl)
-          uri = self.class.create_uri(path, ssl)
+        def initialize(method, path, body, ssl, port)
+          uri = self.class.create_uri(path, ssl, port)
+          Chef::Log.debug("#{self.class}: #{method} #{uri}")
           @http = self.class.create_http(uri, ssl)
           @request = self.class.create_request(method, uri)
           @request.set_form_data(body) unless body.nil?
@@ -132,8 +133,9 @@ module PostfixAdmin
         end
       end
 
-      def self.request(method, path, body, ssl)
-        response = API::HTTP::Request.new(method, path, body, ssl).response
+      def self.request(method, path, body, ssl, port)
+        response = API::HTTP::Request.new(method, path, body, ssl, port)
+          .response
         if response.code.to_i >= 400
           error_msg =
             "#{name}##{__method__}: #{response.code} #{response.message}"
@@ -144,28 +146,29 @@ module PostfixAdmin
         end
       end
 
-      def self.get(path, ssl = false)
-        request('get', path, nil, ssl)
+      def self.get(path, ssl = false, port = nil)
+        request('get', path, nil, ssl, port)
       end
 
-      def self.post(path, body, ssl = false)
-        request('post', path, body, ssl)
+      def self.post(path, body, ssl = false, port = nil)
+        request('post', path, body, ssl, port)
       end
 
-      def self.index(ssl = false)
-        get('/login.php', ssl)
+      def self.index(ssl = false, port = nil)
+        get('/login.php', ssl, port)
       end
 
-      def self.setup(body, ssl = false)
-        post('/setup.php', body, ssl)
+      def self.setup(body, ssl = false, port = nil)
+        post('/setup.php', body, ssl, port)
       end
 
       attr_writer :username, :password, :ssl
 
-      def initialize(username = nil, password = nil, ssl = false)
+      def initialize(username = nil, password = nil, ssl = false, port = nil)
         @username = username
         @password = password
         @ssl = ssl
+        @port = port
       end
 
       def setup(username, password, setup_password)
@@ -176,30 +179,30 @@ module PostfixAdmin
           fPassword: password, fPassword2: password,
           submit: 'Add+Admin'
         }
-        self.class.setup(body, @ssl)
+        self.class.setup(body, @ssl, @port)
       end
 
       def login
         return if self.class.authenticated?
-        self.class.index(@ssl)
+        self.class.index(@ssl, @port)
         body = {
           fUsername: @username,
           fPassword: @password,
           lang: 'en',
           submit: 'Login'
         }
-        self.class.post('/login.php', body, @ssl)
+        self.class.post('/login.php', body, @ssl, @port)
         self.class.authenticated = true
       end
 
       def get(path)
         login
-        self.class.get(path, @ssl)
+        self.class.get(path, @ssl, @port)
       end
 
       def post(path, body)
         login
-        self.class.post(path, body, @ssl)
+        self.class.post(path, body, @ssl, @port)
       end
     end
   end

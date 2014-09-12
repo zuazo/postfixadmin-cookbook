@@ -84,3 +84,16 @@ suites:
       password:
         postgres: vagrant_postgres
       ssl: true
+- name: lwrp_port
+  run_list:
+  - recipe[postfixadmin_test::lwrp]
+  attributes:
+    postfixadmin:
+      port: 8080
+- name: lwrp_port_ssl
+  run_list:
+  - recipe[postfixadmin_test::lwrp]
+  attributes:
+    postfixadmin:
+      port: 8443
+      ssl: true

@@ -8,6 +8,7 @@ default['postfixadmin']['url'] =
 default['postfixadmin']['checksum'] =
   '761074e711ab618deda425dc013133b9d5968e0859bb883f10164061fd87006e'
 
+default['postfixadmin']['port'] = nil # calculated
 default['postfixadmin']['server_name'] = node['fqdn'] || 'postfixadmin.local'
 default['postfixadmin']['server_aliases'] = []
 default['postfixadmin']['headers'] = {}
