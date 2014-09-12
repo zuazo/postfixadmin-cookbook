@@ -724,6 +724,56 @@ $ kitchen verify
 [...]
 ```
 
+## ChefSpec Matchers
+
+### create_postfixadmin_admin(user)
+
+Assert that the *Chef Run* creates a PostfixAdmin admin user.
+
+```ruby
+expect(chef_run).to create_postfixadmin_admin(user)
+```
+
+### remove_postfixadmin_admin(path)
+
+Assert that the *Chef Run* removes a PostfixAdmin admin user.
+
+```ruby
+expect(chef_run).to remove_postfixadmin_admin(user)
+```
+
+### create_postfixadmin_alias(address)
+
+Assert that the *Chef Run* creates a PostfixAdmin alias.
+
+```ruby
+expect(chef_run).to create_postfixadmin_alias(address)
+```
+
+### create_postfixadmin_alias_domain(alias_domain)
+
+Assert that the *Chef Run* creates a PostfixAdmin alias domain.
+
+```ruby
+expect(chef_run).to create_postfixadmin_alias_domain(alias_domain)
+```
+
+### create_postfixadmin_domain(domain)
+
+Assert that the *Chef Run* creates a PostfixAdmin domain.
+
+```ruby
+expect(chef_run).to create_postfixadmin_domain(domain)
+```
+
+### create_postfixadmin_mailbox(mailbox)
+
+Assert that the *Chef Run* creates a PostfixAdmin mailbox.
+
+```ruby
+expect(chef_run).to create_postfixadmin_mailbox(mailbox)
+```
+
 Contributing
 ============
 
