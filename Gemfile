@@ -24,3 +24,8 @@ group :integration do
   gem 'test-kitchen', '~> 1.2'
   gem 'kitchen-vagrant', '~> 0.10'
 end
+
+group :integration, :integration_cloud do
+  gem 'kitchen-ec2', '~> 0.8'
+  gem 'kitchen-digitalocean', '~> 0.8'
+end

@@ -1,0 +1,47 @@
+---
+driver:
+  aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+  aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  aws_ssh_key_id: <%= ENV['AWS_KEYPAIR_NAME'] %>
+  ssh:
+    forward_agent: true
+
+platforms:
+- name: centos-5-8-x64
+  driver_plugin: digitalocean
+  driver_config:
+    flavor: 512MB
+    region: ams2
+
+- name: centos-6-5-x64
+  driver_plugin: digitalocean
+  driver_config:
+    flavor: 512MB
+    region: ams2
+
+- name: debian-7-0-x64
+  driver_plugin: digitalocean
+  driver_config:
+    flavor: 512MB
+    region: ams2
+  run_list:
+    - recipe[apt]
+
+# https://github.com/opscode-cookbooks/mysql/issues/228
+# - name: ubuntu-10-04-x32
+#   driver_plugin: digitalocean
+#   driver_config:
+#     flavor: 512MB
+#     region: ams2
+#   run_list:
+#     - recipe[apt]
+
+- name: amazon-2013-09-2
+  driver_plugin: ec2
+  driver_config:
+    image_id: ami-bba18dd2
+    flavor_id: t1.micro
+    username: ec2-user
+<% if ENV['SSH_AGENT_PID'].nil? %>
+    ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
+<% end %>

@@ -42,6 +42,7 @@ suites:
   - ubuntu-14.04
   - debian-6.0.10
   - debian-7.6
+  - debian-7-0-x64
   run_list:
   - recipe[postfixadmin_test::postgresql]
   attributes: {}
@@ -76,6 +77,7 @@ suites:
   - ubuntu-14.04
   - debian-6.0.10
   - debian-7.6
+  - debian-7-0-x64
   attributes:
     postfixadmin:
       database:
