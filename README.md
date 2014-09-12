@@ -7,7 +7,7 @@ Description
 
 Installs and configures [PostfixAdmin](http://postfixadmin.sourceforge.net/), a web based interface used to manage mailboxes, virtual domains and aliases.
 
-Also creates the required *MySQL* database and tables. No other databases are supported yet.
+Also creates the required *MySQL* or *PostgreSQL* database and tables.
 
 The first time it runs, automatically generates some passwords if not specified. Generated passwords are:
 
