@@ -2,6 +2,9 @@ TODO
 ====
 
 * Integrate with `encrypted_attributes`.
-* ChefSpec tests.
+ * Fix random database password generation.
 * Library unit tests.
-* Fix random database password generation.
+* travis-ci
+* README: fix titles.
+* README: split into multiple files.
+* Add kitchen.cloud.yml.

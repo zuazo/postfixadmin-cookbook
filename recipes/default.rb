@@ -134,8 +134,8 @@ when 'postgresql'
   dbname = node['postfixadmin']['database']['name']
   execute "createlang #{language} #{dbname}" do
     user 'postgres'
-    not_if "psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{dbname} \
-      | grep '^ #{language}$'", user: 'postgres'
+    not_if "psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{dbname} "\
+      "| grep '^ #{language}$'", user: 'postgres'
   end
 
 else

@@ -41,35 +41,29 @@ if node['postfixadmin']['ssl']
   end
 
   include_recipe 'apache2::mod_ssl'
+end
 
-  # Create SSL virtualhost
-  web_app 'postfixadmin-ssl' do
-    cookbook 'postfixadmin'
-    template 'apache_vhost.erb'
-    docroot "#{node['ark']['prefix_root']}/postfixadmin"
-    server_name node['postfixadmin']['server_name']
-    server_aliases node['postfixadmin']['server_aliases']
-    headers node['postfixadmin']['headers']
-    port http_port
-    directory_options %w(-Indexes +FollowSymLinks +MultiViews)
+# Create virtualhost
+web_app 'postfixadmin' do
+  cookbook 'postfixadmin'
+  template 'apache_vhost.erb'
+  docroot "#{node['ark']['prefix_root']}/postfixadmin"
+  server_name node['postfixadmin']['server_name']
+  server_aliases node['postfixadmin']['server_aliases']
+  headers node['postfixadmin']['headers']
+  port http_port
+  directory_options %w(-Indexes +FollowSymLinks +MultiViews)
+  if node['postfixadmin']['ssl']
     ssl_key cert.key_path
     ssl_cert cert.cert_path
     ssl true
-    enable true
   end
-else
-  # Create non-SSL virtualhost
-  web_app 'postfixadmin' do
-    cookbook 'postfixadmin'
-    template 'apache_vhost.erb'
-    docroot "#{node['ark']['prefix_root']}/postfixadmin"
-    server_name node['postfixadmin']['server_name']
-    server_aliases node['postfixadmin']['server_aliases']
-    headers node['postfixadmin']['headers']
-    port http_port
-    directory_options %w(-Indexes +FollowSymLinks +MultiViews)
-    enable true
-  end
+  enable true
+end
+
+# Disable old cookbook versions SSL VirtualHost
+web_app 'postfixadmin-ssl' do
+  enable false
 end
 
 # required by the lwrps

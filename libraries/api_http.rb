@@ -92,9 +92,15 @@ module PostfixAdmin
         end
       end # Request
 
-      STDOUT_REGEXP = /^.*class=['"]standout['"][^>]*>([^\n]*?)\n.*$/m
-      ERROR_REGEXP = /^.*class=['"]error_msg['"][^>]*>([^<]*)<.*$/m
-      SETUP_ERROR_REGEXP = /Setup +password +not +specified +correctly/
+      unless defined?(::PostfixAdmin::API::HTTP::STDOUT_REGEXP)
+        STDOUT_REGEXP = /^.*class=['"]standout['"][^>]*>([^\n]*?)\n.*$/m
+      end
+      unless defined?(::PostfixAdmin::API::HTTP::ERROR_REGEXP)
+        ERROR_REGEXP = /^.*class=['"]error_msg['"][^>]*>([^<]*)<.*$/m
+      end
+      unless defined?(::PostfixAdmin::API::HTTP::SETUP_ERROR_REGEXP)
+        SETUP_ERROR_REGEXP = /Setup +password +not +specified +correctly/
+      end
 
       # rubocop:disable Style/ClassVars
 

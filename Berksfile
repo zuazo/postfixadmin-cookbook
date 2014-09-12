@@ -7,5 +7,5 @@ metadata
 cookbook 'apt'
 cookbook 'yum'
 cookbook 'postfix-full'
-cookbook 'ark', git: 'git://github.com/bryanwb/chef-ark.git' # bug https://github.com/bryanwb/chef-ark/issues/35
+cookbook 'ark', git: 'git://github.com/burtlo/ark.git' # until f6f9650 released
 cookbook 'postfixadmin_test', path: "./test/cookbooks/postfixadmin_test"

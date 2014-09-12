@@ -16,7 +16,7 @@ module PostfixAdmin
       dbname: 'postfix',
       host: '127.0.0.1',
       port: 3306
-    }
+    } unless defined?(::PostfixAdmin::DB::DEFAULT_OPTIONS)
 
     def initialize(options)
       opts = DEFAULT_OPTIONS.merge(options)
