@@ -62,7 +62,7 @@ web_app 'postfixadmin' do
 end
 
 # Disable old cookbook versions SSL VirtualHost
-web_app 'postfixadmin-ssl' do
+apache_site 'postfixadmin-ssl' do
   enable false
 end
 
