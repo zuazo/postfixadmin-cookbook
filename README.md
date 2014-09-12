@@ -11,20 +11,20 @@ Also creates the required *MySQL* or *PostgreSQL* database and tables.
 
 The first time it runs, automatically generates some passwords if not specified. Generated passwords are:
 
-## From the PostfixAdmin default recipe
+## From the PostfixAdmin Default Recipe
 
 * `setup_password`
 * `setup_password_salt`
 * `setup_password_encrypted`
 * `database/password`
 
-## From the MySQL cookbook
+## From the MySQL Cookbook
 
 * `mysql/server_root_password`
 * `mysql/server_debian_password`
 * `mysql/server_repl_password`
 
-## From the PostgreSQL cookbook
+## From the PostgreSQL Cookbook
 
 * `postgresql/password/postgres`
 
@@ -247,12 +247,12 @@ Resources
 
 Create or remove a PostfixAdmin admin user. This kind of user is used to create the domains and mailboxes.
 
-### postfixadmin_admin actions
+### postfixadmin_admin Actions
 
 * `create`: Create a PostfixAdmin admin user (default).
 * `remove`: Remove a PostfixAdmin admin user.
 
-### postfixadmin_admin attributes
+### postfixadmin_admin Attributes
 
 <table>
   <tr>
@@ -302,7 +302,7 @@ Create or remove a PostfixAdmin admin user. This kind of user is used to create 
   </tr>
 </table>
 
-### postfixadmin_admin example
+### postfixadmin_admin Example
 
 ```ruby
 postfixadmin_admin 'admin@admindomain.com' do
@@ -315,11 +315,11 @@ end
 
 Create domains.
 
-### postfixadmin_domain actions
+### postfixadmin_domain Actions
 
 * `create`
 
-### postfixadmin_domain attributes
+### postfixadmin_domain Attributes
 
 <table>
   <tr>
@@ -384,7 +384,7 @@ Create domains.
   </tr>
 </table>
 
-### postfixadmin_domain example
+### postfixadmin_domain Example
 
 ```ruby
 # admin user copied from the previous example
@@ -398,11 +398,11 @@ end
 
 Create a mailbox.
 
-### postfixadmin_mailbox actions
+### postfixadmin_mailbox Actions
 
 * `create`
 
-### postfixadmin_mailbox attributes
+### postfixadmin_mailbox Attributes
 
 <table>
   <tr>
@@ -472,7 +472,7 @@ Create a mailbox.
   </tr>
 </table>
 
-### postfixadmin_mailbox example
+### postfixadmin_mailbox Example
 
 ```ruby
 # admin user copied from the previous example
@@ -487,11 +487,11 @@ end
 
 Create mailbox aliases.
 
-### postfixadmin_alias actions
+### postfixadmin_alias Actions
 
 * `create`
 
-### postfixadmin_alias attributes
+### postfixadmin_alias Attributes
 
 <table>
   <tr>
@@ -551,7 +551,7 @@ Create mailbox aliases.
   </tr>
 </table>
 
-### postfixadmin_alias example
+### postfixadmin_alias Example
 
 ```ruby
 # admin user copied from the previous example
@@ -566,11 +566,11 @@ end
 
 Create domain aliases. The `alias_domain` must already exist.
 
-### postfixadmin_alias_domain actions
+### postfixadmin_alias_domain Actions
 
 * `create`
 
-### postfixadmin_alias_domain attributes
+### postfixadmin_alias_domain Attributes
 
 <table>
   <tr>
@@ -630,7 +630,7 @@ Create domain aliases. The `alias_domain` must already exist.
   </tr>
 </table>
 
-### postfixadmin_alias_domain example
+### postfixadmin_alias_domain Example
 
 ```ruby
 # admin user copied from the previous example
@@ -710,82 +710,19 @@ Another alternative is to include the recipes in your Run List.
 Testing
 =======
 
-## Requirements
-
-* `vagrant`
-* `foodcritic`
-* `rubocop`
-* `berkshelf`
-* `test-kitchen`
-* `kitchen-vagrant`
-
-## Running the tests
-
-```bash
-$ kitchen test
-$ kitchen verify
-[...]
-```
-
-## ChefSpec Matchers
-
-### create_postfixadmin_admin(user)
-
-Assert that the *Chef Run* creates a PostfixAdmin admin user.
-
-```ruby
-expect(chef_run).to create_postfixadmin_admin(user)
-```
-
-### remove_postfixadmin_admin(path)
-
-Assert that the *Chef Run* removes a PostfixAdmin admin user.
-
-```ruby
-expect(chef_run).to remove_postfixadmin_admin(user)
-```
-
-### create_postfixadmin_alias(address)
-
-Assert that the *Chef Run* creates a PostfixAdmin alias.
-
-```ruby
-expect(chef_run).to create_postfixadmin_alias(address)
-```
-
-### create_postfixadmin_alias_domain(alias_domain)
-
-Assert that the *Chef Run* creates a PostfixAdmin alias domain.
-
-```ruby
-expect(chef_run).to create_postfixadmin_alias_domain(alias_domain)
-```
-
-### create_postfixadmin_domain(domain)
-
-Assert that the *Chef Run* creates a PostfixAdmin domain.
-
-```ruby
-expect(chef_run).to create_postfixadmin_domain(domain)
-```
-
-### create_postfixadmin_mailbox(mailbox)
-
-Assert that the *Chef Run* creates a PostfixAdmin mailbox.
-
-```ruby
-expect(chef_run).to create_postfixadmin_mailbox(mailbox)
-```
+See [TESTING.md](https://github.com/onddo/postfixadmin-cookbook/blob/master/TESTING.md).
 
 Contributing
 ============
 
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write your change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
+Please do not hesitate to [open an issue](https://github.com/onddo/postfixadmin-cookbook/issues/new) with any questions or problems.
+
+See [CONTRIBUTING.md](https://github.com/onddo/postfixadmin-cookbook/blob/master/CONTRIBUTING.md).
+
+TODO
+====
+
+See [TODO.md](https://github.com/onddo/postfixadmin-cookbook/blob/master/TODO.md).
 
 
 License and Author
@@ -810,4 +747,3 @@ License and Author
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
