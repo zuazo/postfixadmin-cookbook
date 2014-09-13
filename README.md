@@ -46,6 +46,7 @@ Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?
 * [apache2](https://supermarket.getchef.com/cookbooks/apache2)
 * [ark](https://supermarket.getchef.com/cookbooks/ark)
 * [database](https://supermarket.getchef.com/cookbooks/database)
+* [encrypted_attributes (~> 0.2)](https://supermarket.getchef.com/cookbooks/encrypted_attributes)
 * [mysql](https://supermarket.getchef.com/cookbooks/mysql) (recommended)
 * [postgresql (>= 1.0.0)](https://supermarket.getchef.com/cookbooks/postgresql) (recommended)
 * [ssl_certificate](https://supermarket.getchef.com/cookbooks/ssl_certificate)
@@ -101,6 +102,11 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['ssl']</code></td>
     <td>enables HTTPS (with SSL)</td>
+    <td><code>false</code></td>
+  </tr>
+  <tr>
+    <td><code>node['postfixadmin']['encrypt_attributes']</code></td>
+    <td>Whether to encrypt PostfixAdmin attributes containing credential secrets.</td>
     <td><code>false</code></td>
   </tr>
   <tr>
@@ -229,6 +235,29 @@ include_recipe 'postfixadmin'
 
 See the [`ssl_certificate` namespace documentation](https://supermarket.getchef.com/cookbooks/ssl_certificate#namespaces) for more information.
 
+## Encrypted Attributes
+
+This cookbook can use the [encrypted_attributes](https://supermarket.getchef.com/cookbooks/encrypted_attributes) cookbook to encrypt the secrets generated during the *Chef Run*. This feature is disabled by default, but can be enabled setting the `node["postfixadmin"]["encrypt_attributes"]` attribute to `true`. For example:
+
+```ruby
+include_recipe 'encrypted_attributes::users_data_bag'
+node.default['postfixadmin']['encrypt_attributes'] = true
+inclure_recipe 'postfixadmin'
+```
+
+This will create the following encrypted attributes:
+
+* `node['postfixadmin']['setup_password']`: PostfixAdmin *setup.php* setup password.
+* `node['postfixadmin']['setup_password_encrypted']`: PostfixAdmin *setup.php* setup password encrypted with a salt.
+* `node['postfixadmin']['mysql']['root']`: MySQL *root* user password.
+* `node['postfixadmin']['mysql']['debian']`: MySQL *debian* user password.
+* `node['postfixadmin']['mysql']['repl']`: MySQL *repl* user password.
+* `node['postfixadmin']['database']['password']`: MySQL PostfixAdmin user password.
+
+Read the [`chef-encrypted-attributes` gem documentation](http://onddo.github.io/chef-encrypted-attributes/) to learn how to read them.
+
+**Warning:** When PostgreSQL is used, the database root password will still remain unencrypted in the `node['postgresql']['password']['postgres']` attribute due to limitations of the [postgresql cookbook](https://supermarket.getchef.com/cookbooks/postgresql).
+
 Recipes
 =======
 
@@ -239,6 +268,14 @@ Installs and configures PostfixAdmin.
 ## postfixadmin::map_files
 
 Installs PostfixAdmin SQL map files to be used by Postfix.
+
+## postfixadmin::mysql
+
+Installs MySQL server for PostfixAdmin.
+
+## postfixadmin::postgresql
+
+Installs PostgreSQL server for PostfixAdmin.
 
 Resources
 =========

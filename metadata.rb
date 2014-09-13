@@ -16,6 +16,7 @@ supports 'ubuntu'
 depends 'apache2'
 depends 'ark'
 depends 'database'
+depends 'encrypted_attributes', '~> 0.2'
 recommends 'mysql'
 recommends 'postgresql', '>= 1.0.0'
 depends 'ssl_certificate'
@@ -23,6 +24,10 @@ depends 'ssl_certificate'
 recipe 'postfixadmin::default', 'Installs and configures PostfixAdmin'
 recipe 'postfixadmin::map_files',
        'Installs PostfixAdmin SQL map files to be used by Postfix'
+recipe 'postfixadmin::mysql',
+       'Installs MySQL server for PostfixAdmin'
+recipe 'postfixadmin::postgresql',
+       'Installs PostgreSQL server for PostfixAdmin'
 
 provides 'postfixadmin_admin'
 provides 'postfixadmin_alias'
@@ -91,6 +96,14 @@ attribute 'postfixadmin/ssl',
           choice: %w(true false),
           type: 'string',
           required: 'optional',
+          default: 'false'
+
+attribute 'postfixadmin/encrypt_attributes',
+          display_name: 'postfixadmin encrypt attributes',
+          description: 'Whether to encrypt PostfixAdmin attributes containing '\
+            'credential secrets.',
+          type: 'string',
+          choice: %w(true false),
           default: 'false'
 
 attribute 'postfixadmin/setup_password',

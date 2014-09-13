@@ -49,6 +49,8 @@ describe 'postfixadmin::default' do
   end
   before do
     allow(Kernel).to receive(:require).with('sequel')
+    allow(Kernel).to receive(:require).with('openssl')
+    allow(Kernel).to receive(:require).with('digest/md5')
     allow(Kernel).to receive(:require).with('digest/sha1')
     allow(Kernel).to receive(:require).with('pg')
     stub_command('/usr/sbin/apache2 -t').and_return(true)
@@ -59,8 +61,12 @@ describe 'postfixadmin::default' do
     ).and_return(false)
   end
 
-  it 'should include mysql::server recipe' do
-    expect(chef_run).to include_recipe('mysql::server')
+  it 'should install the sequel gem' do
+    expect(chef_run).to install_chef_gem('sequel')
+  end
+
+  it 'should include postfixadmin::mysql recipe' do
+    expect(chef_run).to include_recipe('postfixadmin::mysql')
   end
 
   it 'should include database::mysql recipe' do
@@ -150,6 +156,14 @@ describe 'postfixadmin::default' do
   context 'with PostgreSQL' do
     before do
       chef_runner.node.set['postfixadmin']['database']['type'] = 'postgresql'
+    end
+
+    it 'should include postfixadmin::postgresql recipe' do
+      expect(chef_run).to include_recipe('postfixadmin::postgresql')
+    end
+
+    it 'should include database::postgresql recipe' do
+      expect(chef_run).to include_recipe('database::postgresql')
     end
 
     it 'should create postgresql database' do
