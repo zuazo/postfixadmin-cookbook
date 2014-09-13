@@ -47,8 +47,8 @@ Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?
 * [ark](https://supermarket.getchef.com/cookbooks/ark)
 * [database](https://supermarket.getchef.com/cookbooks/database)
 * [encrypted_attributes (~> 0.2)](https://supermarket.getchef.com/cookbooks/encrypted_attributes)
-* [mysql](https://supermarket.getchef.com/cookbooks/mysql) (recommended)
-* [postgresql (>= 1.0.0)](https://supermarket.getchef.com/cookbooks/postgresql) (recommended)
+* [mysql](https://supermarket.getchef.com/cookbooks/mysql)
+* [postgresql (>= 1.0.0)](https://supermarket.getchef.com/cookbooks/postgresql)
 * [ssl_certificate](https://supermarket.getchef.com/cookbooks/ssl_certificate)
 
 ## Required Applications
