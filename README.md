@@ -35,8 +35,10 @@ Requirements
 
 This cookbook has been tested on the following platforms:
 
+* Amazon Linux
 * CentOS
 * Debian
+* Fedora
 * Ubuntu
 
 Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?title=I%20have%20used%20it%20successfully%20on%20...) if you use it successfully on any other platform.
