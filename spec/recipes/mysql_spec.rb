@@ -27,6 +27,10 @@ describe 'postfixadmin::mysql' do
     end.converge(described_recipe)
   end
 
+  it 'should include mysql::server recipe' do
+    expect(chef_run).to include_recipe('mysql::server')
+  end
+
   it 'should install mysql' do
     expect(chef_run).to create_mysql_service(mysql_service)
   end
