@@ -90,15 +90,6 @@ if %w(localhost 127.0.0.1).include?(node['postfixadmin']['database']['host'])
 
   when 'postgresql'
 
-    # Warning: saves the PostgreSQL password unencrypted
-    if Chef::Config[:solo] && node['postgresql']['password']['postgres'].nil?
-      fail 'You must set node["postgresql"]["password"]["postgres"] in '\
-        'chef-solo mode.'
-    elsif !Chef::Config[:solo]
-      node.set_unless['postgresql']['password']['postgres'] = secure_password
-      node.save
-    end
-
     postgresql_connection_info = {
       host: 'localhost',
       username: 'postgres',

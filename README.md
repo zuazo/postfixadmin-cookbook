@@ -3,7 +3,7 @@ Description
 [![Cookbook Version](https://img.shields.io/cookbook/v/postfixadmin.svg?style=flat)](https://supermarket.getchef.com/cookbooks/postfixadmin)
 [![Dependency Status](http://img.shields.io/gemnasium/onddo/postfixadmin-cookbook.svg?style=flat)](https://gemnasium.com/onddo/postfixadmin-cookbook)
 [![Code Climate](http://img.shields.io/codeclimate/github/onddo/postfixadmin-cookbook.svg?style=flat)](https://codeclimate.com/github/onddo/postfixadmin-cookbook)
-[![Build Status](http://img.shields.io/travis/onddo/postfixadmin-cookbook/1.0.0.svg?style=flat)](https://travis-ci.org/onddo/postfixadmin-cookbook)
+[![Build Status](http://img.shields.io/travis/onddo/postfixadmin-cookbook.svg?style=flat)](https://travis-ci.org/onddo/postfixadmin-cookbook)
 
 Installs and configures [PostfixAdmin](http://postfixadmin.sourceforge.net/), a web based interface used to manage mailboxes, virtual domains and aliases.
 
@@ -13,18 +13,18 @@ The first time it runs, automatically generates some passwords if not specified.
 
 ## From the PostfixAdmin Default Recipe
 
-* `setup_password`
-* `setup_password_salt`
-* `setup_password_encrypted`
-* `database/password`
+* `postfixadmin/setup_password`
+* `postfixadmin/setup_password_salt`
+* `postfixadmin/setup_password_encrypted`
+* `postfixadmin/database/password`
 
-## From the MySQL Cookbook
+## When MySQL Is Used
 
-* `mysql/server_root_password`
-* `mysql/server_debian_password`
-* `mysql/server_repl_password`
+* `postfixadmin/mysql/server_root_password`
+* `postfixadmin/mysql/server_debian_password`
+* `postfixadmin/mysql/server_repl_password`
 
-## From the PostgreSQL Cookbook
+## When PostgreSQL Is Used
 
 * `postgresql/password/postgres`
 
@@ -35,8 +35,10 @@ Requirements
 
 This cookbook has been tested on the following platforms:
 
+* Amazon Linux
 * CentOS
 * Debian
+* Fedora
 * Ubuntu
 
 Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?title=I%20have%20used%20it%20successfully%20on%20...) if you use it successfully on any other platform.
@@ -190,6 +192,21 @@ Attributes
     <td><em>calculated</em></td>
   </tr>
   <tr>
+    <td><code>node["boxbilling"]["mysql"]["server_root_password"]</code></td>
+    <td>PostfixAdmin MySQL <em>root</em> password.</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
+    <td><code>node["boxbilling"]["mysql"]["server_debian_password"]</code></td>
+    <td>PostfixAdmin MySQL <em>debian</em> user password.</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
+    <td><code>node["boxbilling"]["mysql"]["server_repl_password"]</code></td>
+    <td>PostfixAdmin MySQL <em>repl</em> user password.</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
     <td><code>node['postfixadmin']['map_files']['path']</code></td>
     <td>Path to generate map-files into</td>
     <td><code>"/etc/postfix/tables"</code></td>
@@ -249,9 +266,9 @@ This will create the following encrypted attributes:
 
 * `node['postfixadmin']['setup_password']`: PostfixAdmin *setup.php* setup password.
 * `node['postfixadmin']['setup_password_encrypted']`: PostfixAdmin *setup.php* setup password encrypted with a salt.
-* `node['postfixadmin']['mysql']['root']`: MySQL *root* user password.
-* `node['postfixadmin']['mysql']['debian']`: MySQL *debian* user password.
-* `node['postfixadmin']['mysql']['repl']`: MySQL *repl* user password.
+* `node['postfixadmin']['mysql']['server_root_password']`: MySQL *root* user password.
+* `node['postfixadmin']['mysql']['server_debian_password']`: MySQL *debian* user password.
+* `node['postfixadmin']['mysql']['server_repl_password']`: MySQL *repl* user password.
 * `node['postfixadmin']['database']['password']`: MySQL PostfixAdmin user password.
 
 Read the [`chef-encrypted-attributes` gem documentation](http://onddo.github.io/chef-encrypted-attributes/) to learn how to read them.

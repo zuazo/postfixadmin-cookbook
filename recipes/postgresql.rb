@@ -18,4 +18,13 @@
 # limitations under the License.
 #
 
+# Warning: saves the PostgreSQL password unencrypted
+if Chef::Config[:solo] && node['postgresql']['password']['postgres'].nil?
+  fail 'You must set node["postgresql"]["password"]["postgres"] in '\
+    'chef-solo mode.'
+elsif !Chef::Config[:solo]
+  node.set_unless['postgresql']['password']['postgres'] = secure_password
+  node.save
+end
+
 include_recipe 'postgresql::server'

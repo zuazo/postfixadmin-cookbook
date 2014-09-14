@@ -9,8 +9,10 @@ description 'Installs and configures PostfixAdmin, a web based interface used '\
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '1.0.1' # WiP
 
+supports 'amazon'
 supports 'debian'
 supports 'centos'
+supports 'fedora'
 supports 'ubuntu'
 
 depends 'apache2'
@@ -235,6 +237,28 @@ attribute 'postfixadmin/packages/postgresql',
             'PostfixAdmin required packages array for PostgreSQL support',
           type: 'string',
           required: 'optional',
+          calculated: true
+
+grouping 'postfixadmin/mysql',
+         title: 'postfixadmin mysql',
+         description: 'PostfixAdmin MySQL server credentials'
+
+attribute 'postfixadmin/mysql/server_root_password',
+          display_name: 'postfixadmin mysql server root password',
+          description: 'PostfixAdmin MySQL root password.',
+          type: 'string',
+          calculated: true
+
+attribute 'postfixadmin/mysql/server_debian_password',
+          display_name: 'postfixadmin mysql server debian password',
+          description: 'PostfixAdmin MySQL debian user password.',
+          type: 'string',
+          calculated: true
+
+attribute 'postfixadmin/mysql/server_repl_password',
+          display_name: 'postfixadmin mysql server repl password',
+          description: 'PostfixAdmin MySQL repl user password.',
+          type: 'string',
           calculated: true
 
 grouping 'postfixadmin/map_files',
