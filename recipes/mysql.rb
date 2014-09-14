@@ -43,6 +43,3 @@ mysql_service node['mysql']['service_name'] do
   root_network_acl node['mysql']['root_network_acl']
   action :create
 end
-
-# reset global Encrypted Attributes Enabled configuration value
-self.encrypted_attributes_enabled = nil

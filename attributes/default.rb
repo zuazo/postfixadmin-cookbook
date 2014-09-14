@@ -13,6 +13,7 @@ default['postfixadmin']['server_name'] = node['fqdn'] || 'postfixadmin.local'
 default['postfixadmin']['server_aliases'] = []
 default['postfixadmin']['headers'] = {}
 default['postfixadmin']['ssl'] = false
+default['postfixadmin']['encrypt_attributes'] = false
 default['postfixadmin']['setup_password'] = nil # randomly generated
 default['postfixadmin']['setup_password_salt'] = nil # required for chef-solo
 default['postfixadmin']['setup_password_encrypted'] = nil # randomly generated

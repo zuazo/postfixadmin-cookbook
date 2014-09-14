@@ -171,6 +171,3 @@ template 'config.local.php' do
     conf: node['postfixadmin']['conf']
   )
 end
-
-# reset global Encrypted Attributes Enabled configuration value
-self.encrypted_attributes_enabled = nil
