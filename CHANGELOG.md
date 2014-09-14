@@ -2,6 +2,14 @@
 
 This file is used to list changes made in each version of `postfixadmin`.
 
+## 1.0.1
+
+* Do not include `mysql::server` recipe.
+* Added MySQL attributes documentation.
+* PostgreSQL password generation moved to `recipe::postgresql`.
+* `README`: generated password documentation fixed.
+* Added Fedora and Amazon Linux support.
+
 ## 1.0.0
 
 * Fixed Apache `2.4` support.
