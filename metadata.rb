@@ -237,6 +237,28 @@ attribute 'postfixadmin/packages/postgresql',
           required: 'optional',
           calculated: true
 
+grouping 'postfixadmin/mysql',
+         title: 'postfixadmin mysql',
+         description: 'PostfixAdmin MySQL server credentials'
+
+attribute 'postfixadmin/mysql/server_root_password',
+          display_name: 'postfixadmin mysql server root password',
+          description: 'PostfixAdmin MySQL root password.',
+          type: 'string',
+          calculated: true
+
+attribute 'postfixadmin/mysql/server_debian_password',
+          display_name: 'postfixadmin mysql server debian password',
+          description: 'PostfixAdmin MySQL debian user password.',
+          type: 'string',
+          calculated: true
+
+attribute 'postfixadmin/mysql/server_repl_password',
+          display_name: 'postfixadmin mysql server repl password',
+          description: 'PostfixAdmin MySQL repl user password.',
+          type: 'string',
+          calculated: true
+
 grouping 'postfixadmin/map_files',
          title: 'postfixadmin map files',
          description: 'PostfixAdmin map-files configuration options'
