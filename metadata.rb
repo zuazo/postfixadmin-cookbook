@@ -19,7 +19,7 @@ depends 'apache2'
 depends 'ark'
 depends 'database'
 depends 'encrypted_attributes', '~> 0.2'
-depends 'mysql'
+depends 'mysql', '~> 5.0'
 depends 'postgresql', '>= 1.0.0'
 depends 'ssl_certificate'
 
