@@ -32,6 +32,7 @@ http_port = node['postfixadmin']['port'] || default_http_port
 update_listen_ports(http_port)
 
 include_recipe 'apache2::default'
+include_recipe 'php'
 include_recipe 'apache2::mod_php5'
 
 if node['postfixadmin']['ssl']

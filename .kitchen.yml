@@ -28,6 +28,8 @@ platforms:
     - recipe[apt]
 - name: centos-5.10
 - name: centos-6.5
+- name: fedora-19
+- name: fedora-20
 
 suites:
 - name: mysql

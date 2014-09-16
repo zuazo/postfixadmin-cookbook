@@ -50,6 +50,7 @@ Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?
 * [database](https://supermarket.getchef.com/cookbooks/database)
 * [encrypted_attributes (~> 0.2)](https://supermarket.getchef.com/cookbooks/encrypted_attributes)
 * [mysql](https://supermarket.getchef.com/cookbooks/mysql)
+* [php](https://supermarket.getchef.com/cookbooks/php)
 * [postgresql (>= 1.0.0)](https://supermarket.getchef.com/cookbooks/postgresql)
 * [ssl_certificate](https://supermarket.getchef.com/cookbooks/ssl_certificate)
 

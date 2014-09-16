@@ -33,6 +33,10 @@ describe 'postfixadmin::apache' do
     expect(chef_run).to include_recipe('apache2::default')
   end
 
+  it 'should include php recipe' do
+    expect(chef_run).to include_recipe('php')
+  end
+
   it 'should include apache2::mod_php5 recipe' do
     expect(chef_run).to include_recipe('apache2::mod_php5')
   end
