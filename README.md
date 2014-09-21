@@ -788,6 +788,7 @@ License and Author
 | **Author:**          | [Xabier de Zuazo](https://github.com/zuazo) (<xabier@onddo.com>)
 | **Contributor:**     | [chrludwig](https://github.com/chrludwig)
 | **Contributor:**     | [MATSUI Shinsuke (poppen)](https://github.com/poppen)
+| **Contributor:**     | [Brian Racer](https://github.com/anveo)
 | **Copyright:**       | Copyright (c) 2013-2014 Onddo Labs, SL. (www.onddo.com)
 | **License:**         | Apache License, Version 2.0
 
