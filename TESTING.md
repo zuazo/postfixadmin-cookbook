@@ -1,7 +1,7 @@
 Testing
 =======
 
-## Requirements
+## Required Gems
 
 * `vagrant`
 * `foodcritic`
@@ -10,6 +10,18 @@ Testing
 * `chefspec`
 * `test-kitchen`
 * `kitchen-vagrant`
+
+### Required Gems for Guard
+
+* `guard`
+* `guard-foodcritic`
+* `guard-rubocop`
+* `guard-rspec`
+* `guard-kitchen`
+
+More info at [Guard Readme](https://github.com/guard/guard#readme).
+
+## Installing the Requirements
 
 You must have [VirtualBox](https://www.virtualbox.org/) and [Vagrant](http://www.vagrantup.com/) installed.
 
