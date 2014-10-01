@@ -18,8 +18,11 @@
 # limitations under the License.
 #
 
-package 'lsof'
-package 'curl'
+# Debian/Ubuntu requires locale cookbook:
+# https://github.com/hw-cookbooks/postgresql/issues/108
+ENV['LANGUAGE'] = ENV['LANG'] = node['locale']['lang']
+ENV['LC_ALL'] = node['locale']['lang']
+include_recipe 'locale'
 
 node.default['mysql']['server_root_password'] = 'vagrant_root'
 node.default['mysql']['server_debian_password'] = 'vagrant_debian'
@@ -30,3 +33,6 @@ node.default['postfixadmin']['setup_password'] = 'admin'
 node.default['postfixadmin']['setup_password_salt'] = 'salt'
 
 include_recipe 'postfixadmin'
+
+package 'lsof' # requried for integration tests
+package 'curl' # requried for integration tests

@@ -127,6 +127,10 @@ describe 'postfixadmin::default' do
       end
     end
 
+    it 'should not include yum-epel' do
+      expect(chef_run).to_not include_recipe('yum-epel')
+    end
+
   end # context on CentOS 5.10
 
   context 'on CentOS 6.5' do
@@ -141,7 +145,23 @@ describe 'postfixadmin::default' do
       end
     end
 
+    it 'should not include yum-epel' do
+      expect(chef_run).to_not include_recipe('yum-epel')
+    end
+
   end # context on CentOS 6.5
+
+  context 'on CentOS 7.0' do
+    before do
+      chef_runner.node.automatic['platform'] = 'centos'
+      chef_runner.node.automatic['platform_version'] = '7.0'
+    end
+
+    it 'should include yum-epel' do
+      expect(chef_run).to include_recipe('yum-epel')
+    end
+
+  end # context on CentOS 7.0
 
   context 'without Apache' do
     before do

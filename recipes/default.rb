@@ -22,6 +22,10 @@
 ::Chef::Recipe.send(:include, PostfixAdmin::PHP)
 ::Chef::Recipe.send(:include, Chef::EncryptedAttributesHelpers)
 
+if %w(centos).include?(node['platform']) && node['platform_version'].to_i >= 7
+  include_recipe 'yum-epel' # required for php-imap
+end
+
 db_type = node['postfixadmin']['database']['type']
 
 pkgs_php_db =

@@ -53,6 +53,7 @@ Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?
 * [php](https://supermarket.getchef.com/cookbooks/php)
 * [postgresql (>= 1.0.0)](https://supermarket.getchef.com/cookbooks/postgresql)
 * [ssl_certificate](https://supermarket.getchef.com/cookbooks/ssl_certificate)
+* [yum-epel](https://supermarket.getchef.com/cookbooks/yum-epel)
 
 ## Required Applications
 
@@ -134,7 +135,7 @@ Attributes
   </tr>
   <tr>
     <td><code>node['postfixadmin']['database']['type']</code></td>
-    <td>PostfixAdmin database type. Possible values are: <code>"mysql"</code>, <code>"postgresql"</code></td>
+    <td>PostfixAdmin database type. Possible values are: <code>"mysql"</code>, <code>"postgresql" (Please, see <a href="#postgresql-support">below<a/>)</code></td>
     <td><code>"mysql"</code></td>
   </tr>
   <tr>
@@ -760,6 +761,26 @@ Another alternative is to include the recipes in your Run List.
     "recipe[postfixadmin::map_files]"
   ]
 }
+```
+
+PostgreSQL Support
+==================
+
+PostgreSQL support should be considered **experimental** at the moment. Use at your own risk.
+
+[Any feedback you can provide regarding the PostgreSQL support](https://github.com/onddo/postfixadmin-cookbook/issues/new?title=PostgreSQL%20Support) will be greatly appreciated.
+
+## PostgreSQL Support on Debian and Ubuntu
+
+Due to [`postgresql` cookbook issue #108](https://github.com/hw-cookbooks/postgresql/issues/108), you should configure your system locale correctly for PostgreSQL to work. You can use the `locale` cookbook to fix this. For example:
+
+```ruby
+ENV['LANGUAGE'] = ENV['LANG'] = node['locale']['lang']
+ENV['LC_ALL'] = node['locale']['lang']
+include_recipe 'locale'
+# ...
+node.default['postfixadmin']['database']['type'] = 'postgresql'
+include_recipe 'postfixadmin'
 ```
 
 Testing

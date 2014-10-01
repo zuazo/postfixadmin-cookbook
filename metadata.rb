@@ -23,6 +23,7 @@ depends 'mysql', '~> 5.0'
 depends 'php'
 depends 'postgresql', '>= 1.0.0'
 depends 'ssl_certificate'
+depends 'yum-epel'
 
 recipe 'postfixadmin::default', 'Installs and configures PostfixAdmin'
 recipe 'postfixadmin::map_files',
