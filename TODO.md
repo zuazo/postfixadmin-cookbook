@@ -2,4 +2,4 @@ TODO
 ====
 
 * [ ] Library unit tests.
-* [ ] Add Serverspec tests.
+* [x] Add Serverspec tests.

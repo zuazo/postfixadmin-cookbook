@@ -24,6 +24,11 @@ ENV['LANGUAGE'] = ENV['LANG'] = node['locale']['lang']
 ENV['LC_ALL'] = node['locale']['lang']
 include_recipe 'locale'
 
+# Configure PostgreSQL shared memory
+if node['postfixadmin']['database']['type'] == 'postgresql'
+  include_recipe 'postfixadmin_test::postgresql_memory'
+end
+
 node.default['mysql']['server_root_password'] = 'vagrant_root'
 node.default['mysql']['server_debian_password'] = 'vagrant_debian'
 node.default['mysql']['server_repl_password'] = 'vagrant_repl'

@@ -783,6 +783,10 @@ node.default['postfixadmin']['database']['type'] = 'postgresql'
 include_recipe 'postfixadmin'
 ```
 
+## PostgreSQL Versions < 9.3
+
+If you are using PostgreSQL version `< 9.3`, you may need to adjust the `shmmax` and `shmall` kernel parameters to configure the shared memory. You can see [the example used for the integration tests](test/cookbooks/postfixadmin_test/recipes/postgresql_memory.rb).
+
 Testing
 =======
 
