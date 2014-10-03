@@ -3,10 +3,32 @@
 # vi: set ft=ruby :
 
 source 'https://supermarket.getchef.com'
+my_cookbook = ::File.basename(Dir.pwd)
+
+# Helper to include a local cookbook from disk
+def local_cookbook(name, version = '>= 0.0.0', options = {})
+  cookbook(name, version, {
+    path: "../../cookbooks/#{name}"
+  }.merge(options))
+end
 
 metadata
 cookbook 'apt'
-cookbook 'yum'
-cookbook 'postfix-full'
-cookbook 'ark', git: 'git://github.com/burtlo/ark.git' # until f6f9650 released
-cookbook 'postfixadmin_test', path: './test/cookbooks/postfixadmin_test'
+
+# Until f6f9650 release
+cookbook 'ark', git: 'git://github.com/burtlo/ark.git'
+
+# Minitest Chef Handler
+# More info at https://github.com/calavera/minitest-chef-handler
+if ::File.directory?(::File.join('files', 'default', 'tests', 'minitest')) ||
+   ::File.directory?(::File.join(
+     'test', 'cookbooks', 'postfix-dovecot_test', 'files', 'default', 'tests',
+     'minitest'
+   ))
+  cookbook 'minitest-handler'
+end
+
+# Integration tests cookbook:
+if ::File.directory?("./test/cookbooks/#{my_cookbook}_test")
+  cookbook "#{my_cookbook}_test", path: "./test/cookbooks/#{my_cookbook}_test"
+end
