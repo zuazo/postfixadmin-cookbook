@@ -2,7 +2,24 @@
 
 This file is used to list changes made in each version of `postfixadmin`.
 
-## 1.0.1
+## 1.1.0 (2014-10-03)
+
+* Added depends `mysql` cookbook `~> 5.0`.
+* Include PHP recipe to fix Fedora support.
+* Added `LICENSE` file.
+* `travis.yml`: exclude some groups from bundle install.
+* `Gemfile`:
+ * Replaced `vagrant` git by `vagrant-wrapper`.
+ * Berkshelf updated to `3.1`.
+* `Rakefile`: require kitchen inside integration task.
+* `Guardfile` added.
+* `Vagrantfile` updated to work properly and documented in `TESTING`.
+* PostgreSQL support improved and documented.
+* Added Serverspec tests.
+* Set `PATH` for bats integration tests to avoid `$LSOF` monkey-patch.
+* Some integration tests improved.
+
+## 1.0.1 (2014-09-14)
 
 * Do not include `mysql::server` recipe.
 * Added MySQL attributes documentation.
@@ -10,7 +27,7 @@ This file is used to list changes made in each version of `postfixadmin`.
 * `README`: generated password documentation fixed.
 * Added Fedora and Amazon Linux support.
 
-## 1.0.0
+## 1.0.0 (2014-09-14)
 
 * Fixed Apache `2.4` support.
 * FC001: Use strings in preference to symbols to access node attributes.
@@ -57,7 +74,7 @@ This file is used to list changes made in each version of `postfixadmin`.
  * attributes: disable `encrypt_attributes` by default.
 * Create MySQL database only for localhost.
 
-## 0.2.0:
+## 0.2.0 (2014-05-24)
 
 * Default PostfixAdmin version updated to `2.3.7`.
 * `server_name` attribute *calculated*.
@@ -70,20 +87,19 @@ This file is used to list changes made in each version of `postfixadmin`.
 * `Gemfile`: switch to using the new version of vagrant (issue [#4](https://github.com/onddo/postfixadmin-cookbook/pull/4), thanks [MATSUI Shinsuke (poppen)](https://github.com/poppen)).
 * `kitchen.yml`: updated to latest format.
 
-## 0.1.3:
+## 0.1.3 (2014-03-16)
 
 * Avoid nil package resource name for pkg_php_mbstring (issues [#2](https://github.com/onddo/postfixadmin-cookbook/pull/2) and [#3](https://github.com/onddo/postfixadmin-cookbook/pull/3), thanks [chrludwig](https://github.com/chrludwig)).
 
-## 0.1.2:
+## 0.1.2 (2013-11-17)
 
 * Fixed compatibility issues with Chef 11.8 (issue [#1](https://github.com/onddo/postfixadmin-cookbook/pull/1), thanks [mikelococo](https://github.com/mikelococo) for reporting).
 * LWRPs fixed to notify only when an action is executed.
 
-## 0.1.1:
+## 0.1.1 (2013-10-28)
 
 * metadata: provides without square brackets to avoid [CHEF-3976](https://tickets.opscode.com/browse/CHEF-3976)
 
-## 0.1.0:
+## 0.1.0 (2013-06-11)
 
 * Initial release of `postfixadmin`
-
