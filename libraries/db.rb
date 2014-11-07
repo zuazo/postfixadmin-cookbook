@@ -18,6 +18,8 @@ module PostfixAdmin
       port: 3306
     } unless defined?(::PostfixAdmin::DB::DEFAULT_OPTIONS)
 
+    attr_reader :db
+
     def initialize(options)
       opts = DEFAULT_OPTIONS.merge(options)
       opts[:type] = opts[:type] == 'postgresql' ? 'postgres' : opts[:type]
