@@ -141,7 +141,7 @@ module PostfixAdmin
 
       def self.request(method, path, body, ssl, port)
         response = API::HTTP::Request.new(method, path, body, ssl, port)
-          .response
+                   .response
         if response.code.to_i >= 400
           error_msg =
             "#{name}##{__method__}: #{response.code} #{response.message}"
