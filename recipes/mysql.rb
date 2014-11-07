@@ -29,14 +29,17 @@ end
 
 self.encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
 
-recipe = self
+root_password = mysql_password('root')
+debian_password = mysql_password('debian')
+repl_password = mysql_password('repl')
+
 mysql_service node['mysql']['service_name'] do
   version node['mysql']['version']
   port node['mysql']['port']
   data_dir node['mysql']['data_dir']
-  server_root_password recipe.mysql_password('root')
-  server_debian_password recipe.mysql_password('debian')
-  server_repl_password recipe.mysql_password('repl')
+  server_root_password root_password
+  server_debian_password debian_password
+  server_repl_password repl_password
   allow_remote_root node['mysql']['allow_remote_root']
   remove_anonymous_users node['mysql']['remove_anonymous_users']
   remove_test_database node['mysql']['remove_test_database']

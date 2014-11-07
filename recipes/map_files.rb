@@ -27,6 +27,9 @@ directory node['postfixadmin']['map_files']['path'] do
   action :create
 end
 
+self.encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
+password = encrypted_attribute_read(%w(postfixadmin database password))
+
 node['postfixadmin']['map_files']['list'].each do |map_file|
   template "#{node['postfixadmin']['map_files']['path']}/#{map_file}" do
     source "sql/#{map_file}.erb"
@@ -35,7 +38,7 @@ node['postfixadmin']['map_files']['list'].each do |map_file|
     group node['postfixadmin']['map_files']['group']
     variables(
       user: node['postfixadmin']['database']['user'],
-      password: node['postfixadmin']['database']['password'],
+      password: password,
       host: node['postfixadmin']['database']['host'],
       dbname: node['postfixadmin']['database']['name']
     )

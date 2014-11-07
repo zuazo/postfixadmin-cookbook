@@ -47,7 +47,7 @@ end
 def db_password
   new_resource.db_password(
     if new_resource.db_password.nil?
-      node['postfixadmin']['database']['password']
+      encrypted_attribute_read(%w(postfixadmin database password))
     else
       new_resource.db_password
     end
@@ -116,6 +116,8 @@ def port
 end
 
 action :create do
+  self.class.send(:include, Chef::EncryptedAttributesHelpers)
+  @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
   username, domain = address.split('@', 2)
   if domain.nil?
     fail Chef::Exceptions::ArgumentError,
