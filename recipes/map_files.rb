@@ -27,6 +27,7 @@ directory node['postfixadmin']['map_files']['path'] do
   action :create
 end
 
+::Chef::Recipe.send(:include, Chef::EncryptedAttributesHelpers)
 self.encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
 password = encrypted_attribute_read(%w(postfixadmin database password))
 
