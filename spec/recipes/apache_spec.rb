@@ -29,29 +29,29 @@ describe 'postfixadmin::apache' do
     stub_command('/usr/sbin/apache2 -t').and_return(true)
   end
 
-  it 'should include apache2::default recipe' do
+  it 'includes apache2::default recipe' do
     expect(chef_run).to include_recipe('apache2::default')
   end
 
-  it 'should include php recipe' do
+  it 'includes php recipe' do
     expect(chef_run).to include_recipe('php')
   end
 
-  it 'should include apache2::mod_php5 recipe' do
+  it 'includes apache2::mod_php5 recipe' do
     expect(chef_run).to include_recipe('apache2::mod_php5')
   end
 
-  it 'should create ssl_certificate' do
+  it 'creates ssl_certificate' do
     expect(chef_run).to create_ssl_certificate('postfixadmin')
   end
 
-  it 'ssl_certificate resource should notify apache' do
+  it 'ssl_certificate resource notifies apache' do
     resource = chef_run.find_resource(:ssl_certificate, 'postfixadmin')
     expect(resource).to notify('service[apache2]').to(:restart).delayed
   end
 
   context 'web_app postfixadmin definition' do
-    it 'should create apache2 site' do
+    it 'creates apache2 site' do
       expect(chef_run)
         .to create_template(%r{/sites-available/postfixadmin\.conf$})
     end
@@ -62,11 +62,11 @@ describe 'postfixadmin::apache' do
       chef_run.find_resource(:ruby_block, 'web_app-postfixadmin-reload')
     end
 
-    it 'should notify apache restart' do
+    it 'notifies apache restart' do
       expect(resource).to notify('service[apache2]').to(:reload).immediately
     end
 
-    it 'should subscribe to a2ensite postfixadmin' do
+    it 'subscribes to a2ensite postfixadmin' do
       expect(resource).to subscribe_to('execute[a2ensite postfixadmin.conf]')
         .on(:create).immediately
     end

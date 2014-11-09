@@ -22,7 +22,7 @@ require 'spec_helper'
 describe 'postfixadmin::map_files' do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
 
-  it 'should create tables directory' do
+  it 'creates tables directory' do
     allow(::File).to receive(:exist?).and_return(false)
     allow(::File).to receive(:exist?).with('/etc/postfix/tables')
       .and_return(false)
@@ -43,7 +43,7 @@ describe 'postfixadmin::map_files' do
     db_virtual_mailbox_limit_maps.cf
   ).each do |map_file|
 
-    it "should create #{map_file} file" do
+    it "creates #{map_file} file" do
       file = "/etc/postfix/tables/#{map_file}"
       source = "sql/#{map_file}.erb"
       expect(chef_run).to create_template(file)

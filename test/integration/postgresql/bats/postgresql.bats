@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
 
-@test "postgresql should be running" {
+@test "postgresql is running" {
   ps axu | grep -q 'postgre[s]'
 }

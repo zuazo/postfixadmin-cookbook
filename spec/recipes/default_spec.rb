@@ -61,23 +61,23 @@ describe 'postfixadmin::default' do
     ).and_return(false)
   end
 
-  it 'should install the sequel gem' do
+  it 'installs the sequel gem' do
     expect(chef_run).to install_chef_gem('sequel')
   end
 
-  it 'should include postfixadmin::mysql recipe' do
+  it 'includes postfixadmin::mysql recipe' do
     expect(chef_run).to include_recipe('postfixadmin::mysql')
   end
 
-  it 'should include database::mysql recipe' do
+  it 'includes database::mysql recipe' do
     expect(chef_run).to include_recipe('database::mysql')
   end
 
-  it 'should create mysql database' do
+  it 'creates mysql database' do
     expect(chef_run).to create_mysql_database(db_name)
   end
 
-  it 'should create mysql database user' do
+  it 'creates mysql database user' do
     expect(chef_run).to grant_mysql_database_user(db_user)
       .with_database_name(db_name)
       .with_host('localhost')
@@ -85,15 +85,15 @@ describe 'postfixadmin::default' do
       .with_privileges([:all])
   end
 
-  it 'should install postfixadmin' do
+  it 'installs postfixadmin' do
     expect(chef_run).to install_ark('postfixadmin')
   end
 
-  it 'should include apache recipe' do
+  it 'includes apache recipe' do
     expect(chef_run).to include_recipe('postfixadmin::apache')
   end
 
-  it 'should create configuration file' do
+  it 'creates configuration file' do
     expect(chef_run).to create_template('config.local.php')
       .with_source('config.local.php.erb')
       .with_owner('root')
@@ -108,7 +108,7 @@ describe 'postfixadmin::default' do
     end
 
     %w(php5-imap php5-mysql).each do |pkg|
-      it "should install #{pkg} package" do
+      it "installs #{pkg} package" do
         expect(chef_run).to install_package(pkg)
       end
     end
@@ -122,12 +122,12 @@ describe 'postfixadmin::default' do
     end
 
     %w(php53-imap php53-mbstring php53-mysql).each do |pkg|
-      it "should install #{pkg} package" do
+      it "installs #{pkg} package" do
         expect(chef_run).to install_package(pkg)
       end
     end
 
-    it 'should not include yum-epel' do
+    it 'does not include yum-epel' do
       expect(chef_run).to_not include_recipe('yum-epel')
     end
 
@@ -140,12 +140,12 @@ describe 'postfixadmin::default' do
     end
 
     %w(php-imap php-mbstring php-mysql).each do |pkg|
-      it "should install #{pkg} package" do
+      it "installs #{pkg} package" do
         expect(chef_run).to install_package(pkg)
       end
     end
 
-    it 'should not include yum-epel' do
+    it 'does not include yum-epel' do
       expect(chef_run).to_not include_recipe('yum-epel')
     end
 
@@ -157,7 +157,7 @@ describe 'postfixadmin::default' do
       chef_runner.node.automatic['platform_version'] = '7.0'
     end
 
-    it 'should include yum-epel' do
+    it 'includes yum-epel' do
       expect(chef_run).to include_recipe('yum-epel')
     end
 
@@ -168,7 +168,7 @@ describe 'postfixadmin::default' do
       chef_runner.node.set['postfixadmin']['web_server'] = 'other'
     end
 
-    it 'should not include apache recipe' do
+    it 'does not include apache recipe' do
       expect(chef_run).not_to include_recipe('postfixadmin::apache')
     end
   end
@@ -178,19 +178,19 @@ describe 'postfixadmin::default' do
       chef_runner.node.set['postfixadmin']['database']['type'] = 'postgresql'
     end
 
-    it 'should include postfixadmin::postgresql recipe' do
+    it 'includes postfixadmin::postgresql recipe' do
       expect(chef_run).to include_recipe('postfixadmin::postgresql')
     end
 
-    it 'should include database::postgresql recipe' do
+    it 'includes database::postgresql recipe' do
       expect(chef_run).to include_recipe('database::postgresql')
     end
 
-    it 'should create postgresql database' do
+    it 'creates postgresql database' do
       expect(chef_run).to create_postgresql_database(db_name)
     end
 
-    it 'should create postgresql database user' do
+    it 'creates postgresql database user' do
       expect(chef_run).to grant_postgresql_database_user(db_user)
         .with_database_name(db_name)
         .with_host('localhost')
@@ -198,7 +198,7 @@ describe 'postfixadmin::default' do
         .with_privileges([:all])
     end
 
-    it 'should create plpgsql language' do
+    it 'creates plpgsql language' do
       expect(chef_run).to run_execute("createlang plpgsql #{db_name}")
         .with_user('postgres')
     end
@@ -210,7 +210,7 @@ describe 'postfixadmin::default' do
       end
 
       %w(php5-pgsql).each do |pkg|
-        it "should install #{pkg} package" do
+        it "installs #{pkg} package" do
           expect(chef_run).to install_package(pkg)
         end
       end
@@ -224,7 +224,7 @@ describe 'postfixadmin::default' do
       end
 
       %w(php53-pgsql).each do |pkg|
-        it "should install #{pkg} package" do
+        it "installs #{pkg} package" do
           expect(chef_run).to install_package(pkg)
         end
       end
@@ -238,7 +238,7 @@ describe 'postfixadmin::default' do
       end
 
       %w(php-pgsql).each do |pkg|
-        it "should install #{pkg} package" do
+        it "installs #{pkg} package" do
           expect(chef_run).to install_package(pkg)
         end
       end

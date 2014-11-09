@@ -27,7 +27,7 @@ describe 'postfixadmin::postgresql' do
     end.converge(described_recipe)
   end
 
-  it 'should include postgresql::server recipe' do
+  it 'includes postgresql::server recipe' do
     expect(chef_run).to include_recipe('postgresql::server')
   end
 
