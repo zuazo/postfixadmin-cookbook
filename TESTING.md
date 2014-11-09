@@ -99,6 +99,15 @@ To destroy the machine:
 
 ## ChefSpec Matchers
 
+### postfixadmin_admin(user)
+
+Helper method for locating a `postfixadmin_admin` resource in the collection.
+
+```ruby
+resource = chef_run.postfixadmin_admin(user)
+expect(resource).to notify('service[apache2]').to(:reload)
+```
+
 ### create_postfixadmin_admin(user)
 
 Assert that the *Chef Run* creates a PostfixAdmin admin user.
@@ -115,12 +124,30 @@ Assert that the *Chef Run* removes a PostfixAdmin admin user.
 expect(chef_run).to remove_postfixadmin_admin(user)
 ```
 
+### postfixadmin_alias(address)
+
+Helper method for locating a `postfixadmin_alias` resource in the collection.
+
+```ruby
+resource = chef_run.postfixadmin_alias(address)
+expect(resource).to notify('service[apache2]').to(:reload)
+```
+
 ### create_postfixadmin_alias(address)
 
 Assert that the *Chef Run* creates a PostfixAdmin alias.
 
 ```ruby
 expect(chef_run).to create_postfixadmin_alias(address)
+```
+
+### postfixadmin_alias_domain(alias_domain)
+
+Helper method for locating a `postfixadmin_alias_domain` resource in the collection.
+
+```ruby
+resource = chef_run.postfixadmin_alias_domain(alias_domain)
+expect(resource).to notify('service[apache2]').to(:reload)
 ```
 
 ### create_postfixadmin_alias_domain(alias_domain)
@@ -131,12 +158,30 @@ Assert that the *Chef Run* creates a PostfixAdmin alias domain.
 expect(chef_run).to create_postfixadmin_alias_domain(alias_domain)
 ```
 
+### postfixadmin_domain(domain)
+
+Helper method for locating a `postfixadmin_domain` resource in the collection.
+
+```ruby
+resource = chef_run.postfixadmin_domain(domain)
+expect(resource).to notify('service[apache2]').to(:reload)
+```
+
 ### create_postfixadmin_domain(domain)
 
 Assert that the *Chef Run* creates a PostfixAdmin domain.
 
 ```ruby
 expect(chef_run).to create_postfixadmin_domain(domain)
+```
+
+### postfixadmin_mailbox(mailbox)
+
+Helper method for locating a `postfixadmin_mailbox` resource in the collection.
+
+```ruby
+resource = chef_run.postfixadmin_domain(mailbox)
+expect(resource).to notify('service[apache2]').to(:reload)
 ```
 
 ### create_postfixadmin_mailbox(mailbox)
