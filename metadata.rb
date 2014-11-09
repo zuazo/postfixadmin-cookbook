@@ -25,7 +25,7 @@ license 'Apache 2.0'
 description 'Installs and configures PostfixAdmin, a web based interface used '\
             'to manage mailboxes, virtual domains and aliases.'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '1.2.0' # WiP
+version '1.2.0'
 
 supports 'amazon'
 supports 'debian'
