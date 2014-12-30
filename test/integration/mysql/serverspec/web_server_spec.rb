@@ -19,15 +19,14 @@
 
 require 'spec_helper'
 
-describe package('httpd'), if: property[:os][:family] == 'RedHat' do
-  it 'is installed' do
-    expect(subject).to be_installed
+family = os[:family].downcase
+package_name =
+  if %w(centos redhat fedora scientific amazon).include?(family)
+    'httpd'
+  else
+    'apache2'
   end
-end
 
-describe package('apache2'),
-         if: %w(Ubuntu Debian).include?(property[:os][:family]) do
-  it 'is installed' do
-    expect(subject).to be_installed
-  end
+describe package(package_name) do
+  it { should be_installed }
 end
