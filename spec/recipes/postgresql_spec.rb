@@ -22,7 +22,7 @@ require 'spec_helper'
 describe 'postfixadmin::postgresql' do
   let(:db_password) { 'postfixadmin_pass' }
   let(:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::ServerRunner.new do |node|
       node.set['postgresql']['password']['postgres'] = db_password
     end.converge(described_recipe)
   end

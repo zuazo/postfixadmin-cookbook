@@ -40,9 +40,9 @@ module PostfixAdmin
       @http.post('/create-domain.php', body)
     end
 
-    # rubocop:disable Style/ParameterLists
+    # rubocop:disable Metrics/ParameterLists
     def create_mailbox(username, domain, password, name, active, mail)
-      # rubocop:enable Style/ParameterLists
+      # rubocop:enable Metrics/ParameterLists
       body = {
         fUsername: username,
         fDomain: domain,

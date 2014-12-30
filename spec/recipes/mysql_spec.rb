@@ -22,7 +22,7 @@ require 'spec_helper'
 describe 'postfixadmin::mysql' do
   let(:mysql_service) { 'mysql_service_name' }
   let(:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::ServerRunner.new do |node|
       node.set['mysql']['service_name'] = mysql_service
     end.converge(described_recipe)
   end

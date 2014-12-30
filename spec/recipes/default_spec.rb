@@ -35,7 +35,7 @@ describe 'postfixadmin::default' do
   let(:setup_password) { 'postfixadmin_setup' }
   let(:setup_password_salt) { 'postfixadmin_setup_salt' }
   let(:chef_runner) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::ServerRunner.new do |node|
       node.set['postfixadmin']['database']['name'] = db_name
       node.set['postfixadmin']['database']['user'] = db_user
       node.set['postfixadmin']['database']['password'] = db_password
