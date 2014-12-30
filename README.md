@@ -13,13 +13,7 @@ Table of Contents
 =================
 
 - [Requirements](#requirements)
-  - [Supported Platforms](#supported-platforms)
-  - [Required Cookbooks](#required-cookbooks)
-  - [Required Applications](#required-applications)
 - [Generated Passwords](#generated-passwords)
-  - [From the PostfixAdmin Default Recipe](#from-the-postfixadmin-default-recipe)
-  - [When MySQL Is Used](#when-mysql-is-used)
-  - [When PostgreSQL Is Used](#when-postgresql-is-used)
 - [Attributes](#attributes)
   - [The HTTPS Certificate](#the-https-certificate)
   - [Encrypted Attributes](#encrypted-attributes)
