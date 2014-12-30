@@ -9,6 +9,72 @@ Installs and configures [PostfixAdmin](http://postfixadmin.sourceforge.net/), a 
 
 Also creates the required *MySQL* or *PostgreSQL* database and tables.
 
+Table of Contents
+=================
+
+- [Generated Passwords](#generated-passwords)
+  - [From the PostfixAdmin Default Recipe](#from-the-postfixadmin-default-recipe)
+  - [When MySQL Is Used](#when-mysql-is-used)
+  - [When PostgreSQL Is Used](#when-postgresql-is-used)
+- [Requirements](#requirements)
+  - [Supported Platforms](#supported-platforms)
+  - [Required Cookbooks](#required-cookbooks)
+  - [Required Applications](#required-applications)
+- [Attributes](#attributes)
+  - [The HTTPS Certificate](#the-https-certificate)
+  - [Encrypted Attributes](#encrypted-attributes)
+- [Recipes](#recipes)
+  - [postfixadmin::default](#postfixadmindefault)
+  - [postfixadmin::map_files](#postfixadminmap_files)
+  - [postfixadmin::mysql](#postfixadminmysql)
+  - [postfixadmin::postgresql](#postfixadminpostgresql)
+- [Resources](#resources)
+  - [postfixadmin_admin[user]](#postfixadmin_adminuser)
+    - [postfixadmin_admin Actions](#postfixadmin_admin-actions)
+    - [postfixadmin_admin Attributes](#postfixadmin_admin-attributes)
+    - [postfixadmin_admin Example](#postfixadmin_admin-example)
+  - [postfixadmin_domain[domain]](#postfixadmin_domaindomain)
+    - [postfixadmin_domain Actions](#postfixadmin_domain-actions)
+    - [postfixadmin_domain Attributes](#postfixadmin_domain-attributes)
+    - [postfixadmin_domain Example](#postfixadmin_domain-example)
+  - [postfixadmin_mailbox[mailbox]](#postfixadmin_mailboxmailbox)
+    - [postfixadmin_mailbox Actions](#postfixadmin_mailbox-actions)
+    - [postfixadmin_mailbox Attributes](#postfixadmin_mailbox-attributes)
+    - [postfixadmin_mailbox Example](#postfixadmin_mailbox-example)
+  - [postfixadmin_alias[address]](#postfixadmin_aliasaddress)
+    - [postfixadmin_alias Actions](#postfixadmin_alias-actions)
+    - [postfixadmin_alias Attributes](#postfixadmin_alias-attributes)
+    - [postfixadmin_alias Example](#postfixadmin_alias-example)
+  - [postfixadmin_alias_domain[address]](#postfixadmin_alias_domainaddress)
+    - [postfixadmin_alias_domain Actions](#postfixadmin_alias_domain-actions)
+    - [postfixadmin_alias_domain Attributes](#postfixadmin_alias_domain-attributes)
+    - [postfixadmin_alias_domain Example](#postfixadmin_alias_domain-example)
+- [Usage Example](#usage-example)
+  - [Including in a Cookbook Recipe](#including-in-a-cookbook-recipe)
+  - [Including in the Run List](#including-in-the-run-list)
+- [PostgreSQL Support](#postgresql-support)
+  - [PostgreSQL Support on Debian and Ubuntu](#postgresql-support-on-debian-and-ubuntu)
+  - [PostgreSQL Versions < 9.3](#postgresql-versions--93)
+- [Testing](#testing)
+  - [ChefSpec Matchers](#chefspec-matchers)
+    - [postfixadmin_admin(user)](#postfixadmin_adminuser)
+    - [create_postfixadmin_admin(user)](#create_postfixadmin_adminuser)
+    - [remove_postfixadmin_admin(path)](#remove_postfixadmin_adminpath)
+    - [postfixadmin_alias(address)](#postfixadmin_aliasaddress)
+    - [create_postfixadmin_alias(address)](#create_postfixadmin_aliasaddress)
+    - [postfixadmin_alias_domain(alias_domain)](#postfixadmin_alias_domainalias_domain)
+    - [create_postfixadmin_alias_domain(alias_domain)](#create_postfixadmin_alias_domainalias_domain)
+    - [postfixadmin_domain(domain)](#postfixadmin_domaindomain)
+    - [create_postfixadmin_domain(domain)](#create_postfixadmin_domaindomain)
+    - [postfixadmin_mailbox(mailbox)](#postfixadmin_mailboxmailbox)
+    - [create_postfixadmin_mailbox(mailbox)](#create_postfixadmin_mailboxmailbox)
+- [Contributing](#contributing)
+- [TODO](#todo)
+- [License and Author](#license-and-author)
+
+Generated Passwords
+===================
+
 The first time it runs, automatically generates some passwords if not specified. Generated passwords are:
 
 ## From the PostfixAdmin Default Recipe
