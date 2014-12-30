@@ -15,9 +15,6 @@ end
 metadata
 cookbook 'apt'
 
-# Until f6f9650 release
-cookbook 'ark', git: 'git://github.com/burtlo/ark.git'
-
 # Minitest Chef Handler
 # More info at https://github.com/calavera/minitest-chef-handler
 if ::File.directory?(::File.join('files', 'default', 'tests', 'minitest')) ||
