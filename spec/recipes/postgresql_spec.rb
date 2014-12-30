@@ -26,6 +26,10 @@ describe 'postfixadmin::postgresql' do
       node.set['postgresql']['password']['postgres'] = db_password
     end.converge(described_recipe)
   end
+  before do
+    stub_command('ls /var/lib/postgresql/9.1/main/recovery.conf')
+      .and_return(true)
+  end
 
   it 'includes postgresql::server recipe' do
     expect(chef_run).to include_recipe('postgresql::server')

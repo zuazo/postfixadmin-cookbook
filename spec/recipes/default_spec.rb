@@ -175,6 +175,10 @@ describe 'postfixadmin::default' do
 
   context 'with PostgreSQL' do
     before do
+      stub_command('ls /var/lib/postgresql/8.4/main/recovery.conf')
+        .and_return(true)
+      stub_command('ls /var/lib/postgresql/9.1/main/recovery.conf')
+        .and_return(true)
       chef_runner.node.set['postfixadmin']['database']['type'] = 'postgresql'
     end
 
