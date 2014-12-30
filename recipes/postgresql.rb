@@ -19,6 +19,8 @@
 # limitations under the License.
 #
 
+Chef::Recipe.send(:include, Opscode::OpenSSL::Password
+
 # Warning: saves the PostgreSQL password unencrypted
 if Chef::Config[:solo] && node['postgresql']['password']['postgres'].nil?
   fail 'You must set node["postgresql"]["password"]["postgres"] in '\
