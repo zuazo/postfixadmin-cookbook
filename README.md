@@ -12,14 +12,14 @@ Also creates the required *MySQL* or *PostgreSQL* database and tables.
 Table of Contents
 =================
 
-- [Generated Passwords](#generated-passwords)
-  - [From the PostfixAdmin Default Recipe](#from-the-postfixadmin-default-recipe)
-  - [When MySQL Is Used](#when-mysql-is-used)
-  - [When PostgreSQL Is Used](#when-postgresql-is-used)
 - [Requirements](#requirements)
   - [Supported Platforms](#supported-platforms)
   - [Required Cookbooks](#required-cookbooks)
   - [Required Applications](#required-applications)
+- [Generated Passwords](#generated-passwords)
+  - [From the PostfixAdmin Default Recipe](#from-the-postfixadmin-default-recipe)
+  - [When MySQL Is Used](#when-mysql-is-used)
+  - [When PostgreSQL Is Used](#when-postgresql-is-used)
 - [Attributes](#attributes)
   - [The HTTPS Certificate](#the-https-certificate)
   - [Encrypted Attributes](#encrypted-attributes)
@@ -45,28 +45,6 @@ Table of Contents
 - [Contributing](#contributing)
 - [TODO](#todo)
 - [License and Author](#license-and-author)
-
-Generated Passwords
-===================
-
-The first time it runs, automatically generates some passwords if not specified. Generated passwords are:
-
-## From the PostfixAdmin Default Recipe
-
-* `postfixadmin/setup_password`
-* `postfixadmin/setup_password_salt`
-* `postfixadmin/setup_password_encrypted`
-* `postfixadmin/database/password`
-
-## When MySQL Is Used
-
-* `postfixadmin/mysql/server_root_password`
-* `postfixadmin/mysql/server_debian_password`
-* `postfixadmin/mysql/server_repl_password`
-
-## When PostgreSQL Is Used
-
-* `postgresql/password/postgres`
 
 Requirements
 ============
@@ -98,6 +76,28 @@ Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?
 ## Required Applications
 
 * Ruby `1.9.3` or higher.
+
+Generated Passwords
+===================
+
+The first time it runs, automatically generates some passwords if not specified. Generated passwords are:
+
+## From the PostfixAdmin Default Recipe
+
+* `postfixadmin/setup_password`
+* `postfixadmin/setup_password_salt`
+* `postfixadmin/setup_password_encrypted`
+* `postfixadmin/database/password`
+
+## When MySQL Is Used
+
+* `postfixadmin/mysql/server_root_password`
+* `postfixadmin/mysql/server_debian_password`
+* `postfixadmin/mysql/server_repl_password`
+
+## When PostgreSQL Is Used
+
+* `postgresql/password/postgres`
 
 Attributes
 ==========
