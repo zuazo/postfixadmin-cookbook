@@ -34,5 +34,4 @@ describe 'postfixadmin::mysql' do
   it 'installs mysql' do
     expect(chef_run).to create_mysql_service(mysql_service)
   end
-
 end

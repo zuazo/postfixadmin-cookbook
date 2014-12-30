@@ -34,5 +34,4 @@ describe 'postfixadmin::postgresql' do
   it 'includes postgresql::server recipe' do
     expect(chef_run).to include_recipe('postgresql::server')
   end
-
 end

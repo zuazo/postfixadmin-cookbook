@@ -150,11 +150,7 @@ module PostfixAdmin
 
       def self.parse_response_body(body)
         parse_response_error(body)
-        if body.match(STDOUT_REGEXP)
-          strip_html(body.gsub(STDOUT_REGEXP, '\1'))
-        else
-          nil
-        end
+        strip_html(body.gsub(STDOUT_REGEXP, '\1')) if body.match(STDOUT_REGEXP)
       end
 
       def self.request(method, path, body, ssl, port)

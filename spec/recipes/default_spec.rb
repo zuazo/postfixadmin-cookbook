@@ -44,9 +44,7 @@ describe 'postfixadmin::default' do
       node.set['postgresql']['password']['postgres'] = db_password
     end
   end
-  let(:chef_run) do
-    chef_runner.converge(described_recipe)
-  end
+  let(:chef_run) { chef_runner.converge(described_recipe) }
   before do
     allow(Kernel).to receive(:require).with('sequel')
     allow(Kernel).to receive(:require).with('openssl')
@@ -112,7 +110,6 @@ describe 'postfixadmin::default' do
         expect(chef_run).to install_package(pkg)
       end
     end
-
   end # context on Ubuntu 12.04
 
   context 'on CentOS 5.10' do
@@ -130,7 +127,6 @@ describe 'postfixadmin::default' do
     it 'does not include yum-epel' do
       expect(chef_run).to_not include_recipe('yum-epel')
     end
-
   end # context on CentOS 5.10
 
   context 'on CentOS 6.5' do
@@ -148,7 +144,6 @@ describe 'postfixadmin::default' do
     it 'does not include yum-epel' do
       expect(chef_run).to_not include_recipe('yum-epel')
     end
-
   end # context on CentOS 6.5
 
   context 'on CentOS 7.0' do
@@ -160,13 +155,10 @@ describe 'postfixadmin::default' do
     it 'includes yum-epel' do
       expect(chef_run).to include_recipe('yum-epel')
     end
-
   end # context on CentOS 7.0
 
   context 'without Apache' do
-    before do
-      chef_runner.node.set['postfixadmin']['web_server'] = 'other'
-    end
+    before { chef_runner.node.set['postfixadmin']['web_server'] = 'other' }
 
     it 'does not include apache recipe' do
       expect(chef_run).not_to include_recipe('postfixadmin::apache')
@@ -218,7 +210,6 @@ describe 'postfixadmin::default' do
           expect(chef_run).to install_package(pkg)
         end
       end
-
     end # context on Ubuntu 12.04
 
     context 'on CentOS 5.10' do
@@ -232,7 +223,6 @@ describe 'postfixadmin::default' do
           expect(chef_run).to install_package(pkg)
         end
       end
-
     end # context on CentOS 5.10
 
     context 'on CentOS 6.5' do
@@ -246,9 +236,6 @@ describe 'postfixadmin::default' do
           expect(chef_run).to install_package(pkg)
         end
       end
-
     end # context on CentOS 6.5
-
   end
-
 end

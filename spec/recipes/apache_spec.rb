@@ -25,9 +25,7 @@ describe 'postfixadmin::apache' do
       node.set['postfixadmin']['ssl'] = true
     end.converge(described_recipe)
   end
-  before do
-    stub_command('/usr/sbin/apache2 -t').and_return(true)
-  end
+  before { stub_command('/usr/sbin/apache2 -t').and_return(true) }
 
   it 'includes apache2::default recipe' do
     expect(chef_run).to include_recipe('apache2::default')
@@ -70,7 +68,5 @@ describe 'postfixadmin::apache' do
       expect(resource).to subscribe_to('execute[a2ensite postfixadmin.conf]')
         .on(:create).immediately
     end
-
   end
-
 end

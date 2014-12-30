@@ -42,7 +42,6 @@ describe 'postfixadmin::map_files' do
     db_virtual_alias_domain_mailbox_maps.cf
     db_virtual_mailbox_limit_maps.cf
   ).each do |map_file|
-
     it "creates #{map_file} file" do
       file = "/etc/postfix/tables/#{map_file}"
       source = "sql/#{map_file}.erb"
@@ -52,7 +51,5 @@ describe 'postfixadmin::map_files' do
         .with_owner('root')
         .with_group('postfix')
     end
-
   end
-
 end
