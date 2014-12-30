@@ -28,5 +28,5 @@ package_name =
   end
 
 describe package(package_name) do
-  it { should be_installed }
+  it { should_not be_installed }
 end

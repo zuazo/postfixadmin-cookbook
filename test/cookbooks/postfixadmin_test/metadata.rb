@@ -29,3 +29,4 @@ version '0.1.0'
 
 depends 'locale'
 depends 'postfixadmin'
+depends 'postfix-full'
