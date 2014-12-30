@@ -348,11 +348,11 @@ Create or remove a PostfixAdmin admin user. This kind of user is used to create 
 * `create`: Create a PostfixAdmin admin user (default).
 * `remove`: Remove a PostfixAdmin admin user.
 
-### postfixadmin_admin Attributes
+### postfixadmin_admin Parameters
 
 <table>
   <tr>
-    <th>Attribute</th>
+    <th>Parameter</th>
     <th>Description</th>
     <th>Default</th>
   </tr>
@@ -415,11 +415,11 @@ Create domains.
 
 * `create`
 
-### postfixadmin_domain Attributes
+### postfixadmin_domain Parameters
 
 <table>
   <tr>
-    <th>Attribute</th>
+    <th>Parameter</th>
     <th>Description</th>
     <th>Default</th>
   </tr>
@@ -498,11 +498,11 @@ Create a mailbox.
 
 * `create`
 
-### postfixadmin_mailbox Attributes
+### postfixadmin_mailbox Parameters
 
 <table>
   <tr>
-    <th>Attribute</th>
+    <th>Parameter</th>
     <th>Description</th>
     <th>Default</th>
   </tr>
@@ -587,11 +587,11 @@ Create mailbox aliases.
 
 * `create`
 
-### postfixadmin_alias Attributes
+### postfixadmin_alias Parameters
 
 <table>
   <tr>
-    <th>Attribute</th>
+    <th>Parameter</th>
     <th>Description</th>
     <th>Default</th>
   </tr>
@@ -666,11 +666,11 @@ Create domain aliases. The `alias_domain` must already exist.
 
 * `create`
 
-### postfixadmin_alias_domain Attributes
+### postfixadmin_alias_domain Parameters
 
 <table>
   <tr>
-    <th>Attribute</th>
+    <th>Parameter</th>
     <th>Description</th>
     <th>Default</th>
   </tr>
