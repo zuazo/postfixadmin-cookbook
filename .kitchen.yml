@@ -64,6 +64,9 @@ suites:
   - recipe[postfixadmin_test::lwrp]
   attributes: { }
 - name: lwrp_ssl
+  excludes:
+  # apache2::mod_ssl not compatible
+  - centos-5.11
   run_list:
   - recipe[postfixadmin_test::lwrp]
   attributes:
@@ -95,6 +98,10 @@ suites:
     postfixadmin:
       port: 8080
 - name: lwrp_port_ssl
+  # apache2::mod_ssl not compatible
+  excludes:
+  - centos-5.10
+  - fedora-19
   run_list:
   - recipe[postfixadmin_test::lwrp]
   attributes:
