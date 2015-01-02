@@ -26,7 +26,7 @@ platforms:
 - name: debian-7.6
   run_list:
   - recipe[apt]
-- name: centos-5.10
+- name: centos-5.11
 - name: centos-6.5
 - name: fedora-19
 - name: fedora-20
@@ -100,8 +100,7 @@ suites:
 - name: lwrp_port_ssl
   # apache2::mod_ssl not compatible
   excludes:
-  - centos-5.10
-  - fedora-19
+  - centos-5.11
   run_list:
   - recipe[postfixadmin_test::lwrp]
   attributes:
