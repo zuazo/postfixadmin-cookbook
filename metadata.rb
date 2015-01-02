@@ -40,7 +40,7 @@ depends 'encrypted_attributes', '~> 0.2'
 depends 'mysql', '~> 5.0'
 depends 'php', '~> 1.5'
 depends 'postgresql', '~> 3.4'
-depends 'ssl_certificate', '~> 1.0'
+depends 'ssl_certificate', '~> 1.1'
 depends 'yum-epel', '~> 0.5'
 
 recipe 'postfixadmin::default', 'Installs and configures PostfixAdmin'

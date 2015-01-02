@@ -5,7 +5,12 @@
 source 'https://supermarket.getchef.com'
 my_cookbook = ::File.basename(Dir.pwd)
 
-# Helper to include a local cookbook from disk
+# Berkshelf helper to include a local cookbook from disk.
+#
+# @param name [String] cookbook name.
+# @param version [String] cookbook version requirement.
+# @param options [Hash] #cookbook method options.
+# return void
 def local_cookbook(name, version = '>= 0.0.0', options = {})
   cookbook(name, version, {
     path: "../../cookbooks/#{name}"
