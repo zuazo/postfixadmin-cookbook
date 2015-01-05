@@ -3,7 +3,7 @@
 # Cookbook Name:: postfixadmin
 # Recipe:: default
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2013 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2013-2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -143,10 +143,10 @@ ark 'postfixadmin' do
   checksum node['postfixadmin']['checksum']
 end
 
-case node['postfixadmin']['web_server']
-when 'apache'
-  include_recipe 'postfixadmin::apache'
-  web_group = node['apache']['group']
+web_server = node['postfixadmin']['web_server']
+if %w(apache nginx).include?(web_server)
+  include_recipe "postfixadmin::#{web_server}"
+  web_group = node[web_server]['group']
 else
   web_group = nil
 end

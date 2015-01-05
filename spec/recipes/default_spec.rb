@@ -1,7 +1,7 @@
 # encoding: UTF-8
 #
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2014 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2014-2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,18 +34,17 @@ describe 'postfixadmin::default' do
   let(:db_password) { 'postfixadmin_pass' }
   let(:setup_password) { 'postfixadmin_setup' }
   let(:setup_password_salt) { 'postfixadmin_setup_salt' }
-  let(:chef_runner) do
-    ChefSpec::ServerRunner.new do |node|
-      node.set['postfixadmin']['database']['name'] = db_name
-      node.set['postfixadmin']['database']['user'] = db_user
-      node.set['postfixadmin']['database']['password'] = db_password
-      node.set['postfixadmin']['setup_password'] = setup_password
-      node.set['postfixadmin']['setup_password_salt'] = setup_password_salt
-      node.set['postgresql']['password']['postgres'] = db_password
-    end
-  end
+  let(:chef_runner) { ChefSpec::ServerRunner.new }
   let(:chef_run) { chef_runner.converge(described_recipe) }
+  let(:node) { chef_runner.node }
   before do
+    node.set['postfixadmin']['database']['name'] = db_name
+    node.set['postfixadmin']['database']['user'] = db_user
+    node.set['postfixadmin']['database']['password'] = db_password
+    node.set['postfixadmin']['setup_password'] = setup_password
+    node.set['postfixadmin']['setup_password_salt'] = setup_password_salt
+    node.set['postgresql']['password']['postgres'] = db_password
+
     allow(Kernel).to receive(:require).with('sequel')
     allow(Kernel).to receive(:require).with('openssl')
     allow(Kernel).to receive(:require).with('digest/md5')
@@ -57,6 +56,10 @@ describe 'postfixadmin::default' do
       "psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{db_name} "\
       "| grep '^ plpgsql$'"
     ).and_return(false)
+    stub_command('which nginx').and_return(true)
+    stub_command(
+      'test -d /etc/php5/fpm/pool.d || mkdir -p /etc/php5/fpm/pool.d'
+    ).and_return(true)
   end
 
   it 'installs the sequel gem' do
@@ -89,6 +92,18 @@ describe 'postfixadmin::default' do
 
   it 'includes apache recipe' do
     expect(chef_run).to include_recipe('postfixadmin::apache')
+  end
+
+  context 'with nginx' do
+    before { node.set['postfixadmin']['web_server'] = 'nginx' }
+
+    it 'includes nginx recipe' do
+      expect(chef_run).to include_recipe('postfixadmin::nginx')
+    end
+
+    it 'does not include apache recipe' do
+      expect(chef_run).to_not include_recipe('postfixadmin::apache')
+    end
   end
 
   it 'creates configuration file' do

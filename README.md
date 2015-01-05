@@ -62,7 +62,9 @@ Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?
 * [database](https://supermarket.getchef.com/cookbooks/database)
 * [encrypted_attributes (~> 0.2)](https://supermarket.getchef.com/cookbooks/encrypted_attributes)
 * [mysql](https://supermarket.getchef.com/cookbooks/mysql)
+* [nginx](https://supermarket.getchef.com/cookbooks/nginx)
 * [php](https://supermarket.getchef.com/cookbooks/php)
+* [php-fpm](https://supermarket.getchef.com/cookbooks/php-fpm)
 * [postgresql (>= 1.0.0)](https://supermarket.getchef.com/cookbooks/postgresql)
 * [ssl_certificate](https://supermarket.getchef.com/cookbooks/ssl_certificate)
 * [yum-epel](https://supermarket.getchef.com/cookbooks/yum-epel)
@@ -159,7 +161,7 @@ Attributes
   </tr>
   <tr>
     <td><code>node['postfixadmin']['web_server']</code></td>
-    <td>Web server to use: <code>"apache"</code> or <code>false</code></td>
+    <td>Web server to use: <code>"apache"</code>, <code>"nginx"</code> or <code>false</code></td>
     <td><code>"apache"</code></td>
   </tr>
   <tr>
@@ -274,6 +276,11 @@ Attributes
       &nbsp;&nbsp;"db_virtual_alias_domain_mailbox_maps.cf",<br/>
       &nbsp;&nbsp;"db_virtual_mailbox_limit_maps.cf"<br/>
       ]</code></td>
+  </tr>
+  <tr>
+    <td><code>node['postfixadmin']['php-fpm']['pool']</code></td>
+    <td>PHP-FPM pool name to use with PostfixAdmin.</code></td>
+    <td><code>'postfixadmin'</code></td>
   </tr>
 </table>
 
@@ -943,7 +950,7 @@ License and Author
 | **Contributor:**     | [chrludwig](https://github.com/chrludwig)
 | **Contributor:**     | [MATSUI Shinsuke (poppen)](https://github.com/poppen)
 | **Contributor:**     | [Brian Racer](https://github.com/anveo)
-| **Copyright:**       | Copyright (c) 2013-2014 Onddo Labs, SL. (www.onddo.com)
+| **Copyright:**       | Copyright (c) 2013-2015 Onddo Labs, SL. (www.onddo.com)
 | **License:**         | Apache License, Version 2.0
 
     Licensed under the Apache License, Version 2.0 (the "License");

@@ -1,7 +1,7 @@
 # encoding: UTF-8
 #
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2014 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2014-2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ describe 'postfixadmin::apache' do
   end
 
   it 'ssl_certificate resource notifies apache' do
-    resource = chef_run.find_resource(:ssl_certificate, 'postfixadmin')
+    resource = chef_run.ssl_certificate('postfixadmin')
     expect(resource).to notify('service[apache2]').to(:restart).delayed
   end
 

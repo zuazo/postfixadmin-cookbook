@@ -1,7 +1,7 @@
 # encoding: UTF-8
 #
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2014 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2014-2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,13 +20,25 @@
 require 'spec_helper'
 
 family = os[:family].downcase
-package_name =
+apache =
   if %w(centos redhat fedora scientific amazon).include?(family)
     'httpd'
   else
     'apache2'
   end
 
-describe package(package_name) do
+describe package(apache) do
   it { should be_installed }
+end
+
+describe port(80) do
+  it { should be_listening }
+end
+
+describe process(apache) do
+  it { should be_running }
+end
+
+describe process('nginx') do
+  it { should_not be_running }
 end

@@ -2,7 +2,7 @@
 #
 # Cookbook Name:: postfixadmin
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2013 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2013-2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,9 @@ depends 'ark', '~> 0.9'
 depends 'database', '>= 2.3.1'
 depends 'encrypted_attributes', '~> 0.2'
 depends 'mysql', '~> 5.0'
+depends 'nginx', '~> 2.7'
 depends 'php', '~> 1.5'
+depends 'php-fpm', '>= 0.7'
 depends 'postgresql', '~> 3.4'
 depends 'ssl_certificate', '~> 1.1'
 depends 'yum-epel', '~> 0.5'
@@ -68,7 +70,7 @@ attribute 'postfixadmin/version',
           description: 'PostfixAdmin version',
           type: 'string',
           required: 'optional',
-          default: '"2.3.7"'
+          default: '2.3.7'
 
 attribute 'postfixadmin/url',
           display_name: 'postfixadmin URL',
@@ -83,7 +85,7 @@ attribute 'postfixadmin/checksum',
           type: 'string',
           required: 'optional',
           default:
-            '"761074e711ab618deda425dc013133b9d5968e0859bb883f10164061fd87006e"'
+            '761074e711ab618deda425dc013133b9d5968e0859bb883f10164061fd87006e'
 
 attribute 'postfixadmin/port',
           display_name: 'postfixadmin port',
@@ -102,15 +104,15 @@ attribute 'postfixadmin/server_name',
 attribute 'postfixadmin/server_aliases',
           display_name: 'server aliases',
           description: 'PostfixAdmin server aliases',
-          type: 'string',
+          type: 'array',
           required: 'optional',
-          default: '[]'
+          default: []
 
 attribute 'postfixadmin/headers',
           display_name: 'postfixadmin headers',
           description: 'PostfixAdmin HTTP headers to set as hash',
-          type: 'string',
-          default: '{}'
+          type: 'hash',
+          default: {}
 
 attribute 'postfixadmin/ssl',
           display_name: 'enable ssl',
@@ -152,10 +154,10 @@ attribute 'postfixadmin/setup_password_encrypted',
 attribute 'postfixadmin/web_server',
           display_name: 'Web Server',
           description: 'Web server to use: apache or false',
-          choice: ['"apache"', '"false"'],
+          choice: %w(apache nginx false),
           type: 'string',
           required: 'optional',
-          default: '"apache"'
+          default: 'apache'
 
 grouping 'postfixadmin/database',
          title: 'postfixadmin database',
@@ -327,3 +329,10 @@ attribute 'postfixadmin/map_files/list',
             'db_virtual_alias_domain_mailbox_maps.cf',
             'db_virtual_mailbox_limit_maps.cf'
           ]
+
+attribute 'postfixadmin/php-fpm/pool',
+          display_name: 'postfixadmin php-fpm pool',
+          description: 'PHP-FPM pool name to use with PostfixAdmin.',
+          type: 'string',
+          required: 'optional',
+          default: 'postfixadmin'

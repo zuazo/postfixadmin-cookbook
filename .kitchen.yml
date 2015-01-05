@@ -7,7 +7,7 @@ driver:
   - ["forwarded_port", {guest: 443, host: 8443, auto_correct: true}]
 
 provisioner:
-  require_chef_omnibus: latest
+  require_chef_omnibus: true
 
 platforms:
 # https://github.com/opscode-cookbooks/mysql/issues/228
@@ -35,7 +35,6 @@ suites:
 - name: mysql
   run_list:
   - recipe[postfixadmin_test::mysql]
-  attributes: {}
 - name: postgresql
   excludes:
   # https://github.com/hw-cookbooks/postgresql/issues/97
@@ -47,7 +46,17 @@ suites:
   - debian-7-0-x64
   run_list:
   - recipe[postfixadmin_test::postgresql]
-  attributes: {}
+- name: nginx
+  excludes:
+  # not supported by php-fpm cookbook
+  - centos-5.11
+  - fedora-19
+  - fedora-20
+  run_list:
+  - recipe[postfixadmin_test]
+  attributes:
+    postfixadmin:
+      web_server: nginx
 - name: without-webserver
   run_list:
   - recipe[postfixadmin_test]
@@ -58,11 +67,9 @@ suites:
   run_list:
   - recipe[postfix-full]
   - recipe[postfixadmin_test::map_files]
-  attributes: {}
 - name: lwrp
   run_list:
   - recipe[postfixadmin_test::lwrp]
-  attributes: { }
 - name: lwrp_ssl
   excludes:
   # apache2::mod_ssl not compatible
