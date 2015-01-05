@@ -59,7 +59,6 @@ web_app 'postfixadmin' do
     ssl_key cert.key_path
     ssl_cert cert.cert_path
     ssl_chain cert.chain_path
-    ssl_ca cert.ca_cert_path
     ssl true
   end
   enable true
