@@ -2,6 +2,26 @@
 
 This file is used to list changes made in each version of `postfixadmin`.
 
+## 1.3.0 (2015-01-05)
+
+* Add nginx support.
+* Update `ssl_certificate` cookbook to `1.1.0`, adds chained certificate support.
+* metadata: use pessimistic operator for cookbook versions, fixes database version bug.
+* Bugfix: include OpenSSL functions in the `::postgresql` recipe.
+* Berksfile: Use ark stable version for tests.
+* Unit Tests: Update to use `ChefSpec::ServerRunner`.
+* Fix Serverspec integration tests.
+* travis.yml: Use the new build env.
+* Gemfile:
+ * Use foodcritic and RuboCop fixed versions.
+ * Update to RuboCop `0.28.0`.
+ * Update vagrant-wrapper to `2`.
+* README:
+ * Move the test matchers documentation to the README.
+ * Add TOC.
+ * *s/Attribute/Parameter/* for resources.
+* TODO: add mysql cookbook update task.
+
 ## v1.2.0 (2014-11-09)
 
 * ChefSpec matchers: added helper methods to locate LWRP resources.
