@@ -31,6 +31,9 @@ describe 'postfixadmin::nginx' do
       'test -d /etc/php5/fpm/pool.d || mkdir -p /etc/php5/fpm/pool.d'
     ).and_return(true)
     allow(::File).to receive(:symlink?).and_call_original
+    allow(::File).to receive(:exist?).and_call_original
+    allow(::File).to receive(:exist?).with('/etc/init.d/apache2')
+      .and_return(true)
   end
 
   it 'includes nginx recipe' do
