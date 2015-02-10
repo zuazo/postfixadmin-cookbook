@@ -70,8 +70,12 @@ describe 'postfixadmin::default' do
     expect(chef_run).to include_recipe('postfixadmin::mysql')
   end
 
-  it 'includes database::mysql recipe' do
-    expect(chef_run).to include_recipe('database::mysql')
+  it 'does not include the database::mysql recipe' do
+    expect(chef_run).to_not include_recipe('database::mysql')
+  end
+
+  it 'installs the mysql2_chef gem' do
+    expect(chef_run).to install_mysql2_chef_gem('default')
   end
 
   it 'creates mysql database' do
@@ -193,8 +197,12 @@ describe 'postfixadmin::default' do
       expect(chef_run).to include_recipe('postfixadmin::postgresql')
     end
 
-    it 'includes database::postgresql recipe' do
-      expect(chef_run).to include_recipe('database::postgresql')
+    it 'does not include the database::postgresql recipe' do
+      expect(chef_run).to_not include_recipe('database::postgresql')
+    end
+
+    it 'includes postgresql::ruby recipe' do
+      expect(chef_run).to include_recipe('postgresql::ruby')
     end
 
     it 'creates postgresql database' do
