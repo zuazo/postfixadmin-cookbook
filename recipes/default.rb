@@ -66,10 +66,13 @@ chef_gem 'sequel'
 
 if %w(localhost 127.0.0.1).include?(node['postfixadmin']['database']['host'])
   include_recipe "postfixadmin::#{db_type}"
-  include_recipe "database::#{db_type}"
 
   case db_type
   when 'mysql'
+
+    mysql2_chef_gem 'default' do
+      action :install
+    end
 
     mysql_connection_info = {
       host: node['postfixadmin']['database']['host'],
@@ -94,6 +97,8 @@ if %w(localhost 127.0.0.1).include?(node['postfixadmin']['database']['host'])
     end
 
   when 'postgresql'
+
+    include_recipe 'postgresql::ruby'
 
     postgresql_connection_info = {
       host: 'localhost',

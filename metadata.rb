@@ -42,6 +42,7 @@ depends 'nginx', '~> 2.7'
 depends 'php', '~> 1.5'
 depends 'php-fpm', '>= 0.7'
 depends 'postgresql', '~> 3.4'
+depends 'mysql2_chef_gem', '~> 1.0'
 depends 'ssl_certificate', '~> 1.1'
 depends 'yum-epel', '~> 0.5'
 
