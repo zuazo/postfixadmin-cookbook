@@ -950,6 +950,7 @@ License and Author
 | **Contributor:**     | [chrludwig](https://github.com/chrludwig)
 | **Contributor:**     | [MATSUI Shinsuke (poppen)](https://github.com/poppen)
 | **Contributor:**     | [Brian Racer](https://github.com/anveo)
+| **Contributor:**     | [Bernhard Weisshuhn (a.k.a. bernhorst)](https://github.com/bkw)
 | **Copyright:**       | Copyright (c) 2013-2015 Onddo Labs, SL. (www.onddo.com)
 | **License:**         | Apache License, Version 2.0
 
