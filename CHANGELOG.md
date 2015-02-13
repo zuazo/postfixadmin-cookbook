@@ -2,6 +2,15 @@
 
 This file is used to list changes made in each version of `postfixadmin`.
 
+## 1.4.0 (2015-02-13)
+
+* Fix disabling nginx default site.
+* Remove `ssl_ca` param from `web_app` template.
+* Include specific helpers instead of `"database::#{type}"` (issue [#5](https://github.com/onddo/postfixadmin-cookbook/pull/5), thanks [Bernhard Weisshuhn (a.k.a. bernhorst)](https://github.com/bkw)).
+ * Fixes `database` cookbook version `4` support.
+* Run Unit tests against Chef `11` and `12`.
+* Gemfile: Update RuboCop to `0.29.0`.
+
 ## 1.3.0 (2015-01-05)
 
 * Add nginx support.
