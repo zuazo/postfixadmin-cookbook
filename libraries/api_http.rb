@@ -135,7 +135,7 @@ module PostfixAdmin
       # rubocop:enable Style/ClassVars
 
       def self.strip_html(html)
-        html.gsub(/<\/?[^>]+?>/, ' ')
+        html.gsub(%r{</?[^>]+?>}, ' ')
       end
 
       def self.parse_response_error(body)

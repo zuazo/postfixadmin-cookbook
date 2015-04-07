@@ -27,8 +27,8 @@ if ::File.directory?(::File.join('files', 'default', 'tests', 'minitest')) ||
      ::File.join(
        'test', 'cookbooks', "#{my_cookbook}_test", 'files', 'default', 'tests',
        'minitest'
-    )
-  )
+     )
+   )
   cookbook 'minitest-handler'
 end
 
