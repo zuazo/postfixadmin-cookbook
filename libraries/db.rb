@@ -3,7 +3,7 @@
 # Cookbook Name:: postfixadmin
 # Library:: db
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2013 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2013-2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,7 @@ module PostfixAdmin
   # A class to read PostfixAdmin data from its MySQL database
   class DB
     DEFAULT_OPTIONS = {
-      type: 'mysql',
+      type: 'mysql2',
       user: 'root',
       password: '',
       dbname: 'postfix',
@@ -41,11 +41,20 @@ module PostfixAdmin
 
     def initialize(options)
       opts = DEFAULT_OPTIONS.merge(options)
-      opts[:type] = opts[:type] == 'postgresql' ? 'postgres' : opts[:type]
+      opts[:type] = db_type_fix(opts[:type])
       @uri =
         "#{opts[:type]}://#{opts[:user]}:#{opts[:password]}@"\
         "#{opts[:host]}:#{opts[:port]}/#{opts[:dbname]}"
       load_depends
+    end
+
+    def db_type_fix(type)
+      case type
+      when 'postgresql' then 'postgres'
+      when 'mysql' then 'mysql2'
+      else
+        type
+      end
     end
 
     def load_depends

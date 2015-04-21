@@ -10,54 +10,55 @@ provisioner:
   require_chef_omnibus: true
 
 platforms:
-# https://github.com/opscode-cookbooks/mysql/issues/228
-# - name: ubuntu-10.04
-#   run_list:
-#     - recipe[apt]
+- name: ubuntu-10.04
+  run_list: ["recipe[apt]"]
 - name: ubuntu-12.04
-  run_list:
-  - recipe[apt]
+  run_list: ["recipe[apt]"]
 - name: ubuntu-14.04
-  run_list:
-  - recipe[apt]
+  run_list: ["recipe[apt]"]
 - name: debian-6.0.10
-  run_list:
-  - recipe[apt]
-- name: debian-7.6
-  run_list:
-  - recipe[apt]
+  run_list: ["recipe[apt]"]
+- name: debian-7.8
+  run_list: ["recipe[apt]"]
 - name: centos-5.11
-- name: centos-6.5
-- name: fedora-19
+  run_list: ["recipe[selinux::disabled]"]
+- name: centos-6.6
+  run_list: ["recipe[selinux::disabled]"]
 - name: fedora-20
+  run_list: ["recipe[selinux::disabled]"]
 
 suites:
 - name: mysql
   run_list:
-  - recipe[postfixadmin_test::mysql]
+  - recipe[postfixadmin_test::default]
 - name: postgresql
   excludes:
-  # https://github.com/hw-cookbooks/postgresql/issues/97
-  # https://github.com/hw-cookbooks/postgresql/issues/108
+  # https://github.com/hw-cookbooks/postgresql/issues/249
+  - ubuntu-10.04
   - ubuntu-12.04
-  - ubuntu-14.04
   - debian-6.0.10
-  - debian-7.6
-  - debian-7-0-x64
+  - debian-7.8
+  - fedora-20
   run_list:
-  - recipe[postfixadmin_test::postgresql]
+  - recipe[postfixadmin_test::default]
+  attributes:
+    postfixadmin:
+      database:
+        type: postgresql
 - name: nginx
   excludes:
-  # not supported by php-fpm cookbook
+  # a conflict between mysql and php-fpm packages
   - centos-5.11
-  - fedora-19
-  - fedora-20
   run_list:
   - recipe[postfixadmin_test]
   attributes:
     postfixadmin:
       web_server: nginx
 - name: without-webserver
+  excludes:
+  # some dependency installs apache2
+  - ubuntu-10.04
+  - debian-6.0.10
   run_list:
   - recipe[postfixadmin_test]
   attributes:
@@ -67,49 +68,27 @@ suites:
   run_list:
   - recipe[postfix-full]
   - recipe[postfixadmin_test::map_files]
-- name: lwrp
-  run_list:
-  - recipe[postfixadmin_test::lwrp]
-- name: lwrp_ssl
+- name: ssl
   excludes:
   # apache2::mod_ssl not compatible
   - centos-5.11
   run_list:
-  - recipe[postfixadmin_test::lwrp]
+  - recipe[postfixadmin_test::default]
   attributes:
     postfixadmin:
       ssl: true
-- name: lwrp_pgsql
+- name: port
   run_list:
-  - recipe[postfixadmin_test::lwrp]
-  excludes:
-  # https://github.com/hw-cookbooks/postgresql/issues/97
-  # https://github.com/hw-cookbooks/postgresql/issues/108
-  - ubuntu-12.04
-  - ubuntu-14.04
-  - debian-6.0.10
-  - debian-7.6
-  - debian-7-0-x64
-  attributes:
-    postfixadmin:
-      database:
-        type: postgresql
-    postgresql:
-      password:
-        postgres: vagrant_postgres
-      ssl: true
-- name: lwrp_port
-  run_list:
-  - recipe[postfixadmin_test::lwrp]
+  - recipe[postfixadmin_test::default]
   attributes:
     postfixadmin:
       port: 8080
-- name: lwrp_port_ssl
-  # apache2::mod_ssl not compatible
+- name: ssl-port
   excludes:
+  # apache2::mod_ssl not compatible
   - centos-5.11
   run_list:
-  - recipe[postfixadmin_test::lwrp]
+  - recipe[postfixadmin_test::default]
   attributes:
     postfixadmin:
       port: 8443

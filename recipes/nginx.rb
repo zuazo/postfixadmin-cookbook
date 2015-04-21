@@ -28,12 +28,6 @@ http_port = node['postfixadmin']['port'] || default_http_port
 include_recipe 'nginx'
 include_recipe 'postfixadmin::php_fpm'
 
-cert = ssl_certificate 'postfixadmin' do
-  namespace node['postfixadmin']
-  only_if { node['postfixadmin']['ssl'] }
-  notifies :restart, 'service[nginx]' # TODO: reload?
-end
-
 # Disable apache2, required for Debian 6
 service 'apache2' do
   action [:stop, :disable]
@@ -54,6 +48,12 @@ template_variables = {
 }
 
 if node['postfixadmin']['ssl']
+  cert = ssl_certificate 'postfixadmin' do
+    namespace node['postfixadmin']
+    only_if { node['postfixadmin']['ssl'] }
+    notifies :restart, 'service[nginx]' # TODO: reload?
+  end
+
   template_variables.merge!(
     ssl_key: cert.key_path,
     ssl_cert: cert.chain_combined_path,
@@ -71,6 +71,12 @@ template File.join(node['nginx']['dir'], 'sites-available', 'postfixadmin') do
   notifies :reload, 'service[nginx]'
 end
 
-nginx_site 'postfixadmin' do
+r = nginx_site 'postfixadmin' do
   enable true
+end
+
+# Requierd by the LWRP
+if r.is_a?(::Chef::Resource) # Only works with Chef 12
+  r.notifies(:restart, 'service[nginx]', :immediately)
+  r.notifies(:restart, 'service[php-fpm]', :immediately)
 end

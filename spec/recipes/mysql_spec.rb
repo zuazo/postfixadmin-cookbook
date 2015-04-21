@@ -1,7 +1,7 @@
 # encoding: UTF-8
 #
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2014 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2014-2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,9 +21,17 @@ require 'spec_helper'
 
 describe 'postfixadmin::mysql' do
   let(:mysql_service) { 'mysql_service_name' }
+  let(:mysql_data_dir) { '/var/lib/mysql' }
+  let(:mysql_run_group) { 'mysql_group' }
+  let(:mysql_run_user) { 'mysql_user' }
+  let(:mysql_version) { '5.7' }
   let(:chef_run) do
     ChefSpec::ServerRunner.new do |node|
-      node.set['mysql']['service_name'] = mysql_service
+      node.set['postfixadmin']['mysql']['instance'] = mysql_service
+      node.set['postfixadmin']['mysql']['data_dir'] = mysql_data_dir
+      node.set['postfixadmin']['mysql']['run_group'] = mysql_run_group
+      node.set['postfixadmin']['mysql']['run_user'] = mysql_run_user
+      node.set['postfixadmin']['mysql']['version'] = mysql_version
     end.converge(described_recipe)
   end
 
@@ -33,5 +41,11 @@ describe 'postfixadmin::mysql' do
 
   it 'installs mysql' do
     expect(chef_run).to create_mysql_service(mysql_service)
+      .with_data_dir(mysql_data_dir)
+      .with_run_group(mysql_run_group)
+      .with_run_user(mysql_run_user)
+      .with_version(mysql_version)
+      .with_bind_address('127.0.0.1')
+      .with_port('3306')
   end
 end

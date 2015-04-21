@@ -85,7 +85,7 @@ describe 'postfixadmin::default' do
   it 'creates mysql database user' do
     expect(chef_run).to grant_mysql_database_user(db_user)
       .with_database_name(db_name)
-      .with_host('localhost')
+      .with_host('127.0.0.1')
       .with_password(db_password)
       .with_privileges([:all])
   end
@@ -212,7 +212,7 @@ describe 'postfixadmin::default' do
     it 'creates postgresql database user' do
       expect(chef_run).to grant_postgresql_database_user(db_user)
         .with_database_name(db_name)
-        .with_host('localhost')
+        .with_host('127.0.0.1')
         .with_password(db_password)
         .with_privileges([:all])
     end

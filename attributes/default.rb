@@ -3,7 +3,7 @@
 # Cookbook Name:: postfixadmin
 # Attributes:: default
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2013 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2013-2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,6 +41,13 @@ default['postfixadmin']['web_server'] = 'apache'
 
 default['postfixadmin']['database']['type'] = 'mysql'
 default['postfixadmin']['database']['name'] = 'postfix'
-default['postfixadmin']['database']['host'] = 'localhost'
+default['postfixadmin']['database']['host'] = '127.0.0.1'
 default['postfixadmin']['database']['user'] = 'postfix'
 default['postfixadmin']['database']['password'] = nil # randomly generated
+
+default['postfixadmin']['mysql']['instance'] = 'default'
+default['postfixadmin']['mysql']['data_dir'] = nil
+default['postfixadmin']['mysql']['port'] = '3306'
+default['postfixadmin']['mysql']['run_group'] = nil
+default['postfixadmin']['mysql']['run_user'] = nil
+default['postfixadmin']['mysql']['version'] = nil

@@ -88,8 +88,6 @@ The first time it runs, automatically generates some passwords if not specified.
 ## When MySQL Is Used
 
 * `postfixadmin/mysql/server_root_password`
-* `postfixadmin/mysql/server_debian_password`
-* `postfixadmin/mysql/server_repl_password`
 
 ## When PostgreSQL Is Used
 
@@ -182,7 +180,7 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['database']['host']</code></td>
     <td>PostfixAdmin database hostname or IP address</td>
-    <td><code>"localhost"</code></td>
+    <td><code>"127.0.0.1"</code></td>
   </tr>
   <tr>
     <td><code>node['postfixadmin']['database']['user']</code></td>
@@ -192,6 +190,36 @@ Attributes
   <tr>
     <td><code>node['postfixadmin']['database']['password']</code></td>
     <td>PostfixAdmin database login password (requried for chef-solo)</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
+    <td><code>node['postfixadmin']['mysql']['instance']</code></td>
+    <td>PostfixAdmin MySQL instance name to run by the mysql_service LWRP from the mysql cookbook</td>
+    <td><code>'default'</code></td>
+  </tr>
+  <tr>
+    <td><code>node['postfixadmin']['mysql']['data_dir']</code></td>
+    <td>PostfixAdmin MySQL data files path</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
+    <td><code>node['postfixadmin']['mysql']['port']</code></td>
+    <td>PostfixAdmin MySQL port</td>
+    <td><code>'3306'</code></td>
+  </tr>
+  <tr>
+    <td><code>node['postfixadmin']['mysql']['run_group']</code></td>
+    <td>PostfixAdmin MySQL system group</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
+    <td><code>node['postfixadmin']['mysql']['run_user']</code></td>
+    <td>PostfixAdmin MySQL system user</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
+    <td><code>node['postfixadmin']['mysql']['version']</code></td>
+    <td>PostfixAdmin database MySQL version to install</td>
     <td><em>calculated</em></td>
   </tr>
   <tr>
@@ -232,16 +260,6 @@ Attributes
   <tr>
     <td><code>node["boxbilling"]["mysql"]["server_root_password"]</code></td>
     <td>PostfixAdmin MySQL <em>root</em> password.</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node["boxbilling"]["mysql"]["server_debian_password"]</code></td>
-    <td>PostfixAdmin MySQL <em>debian</em> user password.</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node["boxbilling"]["mysql"]["server_repl_password"]</code></td>
-    <td>PostfixAdmin MySQL <em>repl</em> user password.</td>
     <td><em>calculated</em></td>
   </tr>
   <tr>
@@ -310,8 +328,6 @@ This will create the following encrypted attributes:
 * `node['postfixadmin']['setup_password']`: PostfixAdmin *setup.php* setup password.
 * `node['postfixadmin']['setup_password_encrypted']`: PostfixAdmin *setup.php* setup password encrypted with a salt.
 * `node['postfixadmin']['mysql']['server_root_password']`: MySQL *root* user password.
-* `node['postfixadmin']['mysql']['server_debian_password']`: MySQL *debian* user password.
-* `node['postfixadmin']['mysql']['server_repl_password']`: MySQL *repl* user password.
 * `node['postfixadmin']['database']['password']`: MySQL PostfixAdmin user password.
 
 Read the [`chef-encrypted-attributes` gem documentation](http://onddo.github.io/chef-encrypted-attributes/) to learn how to read them.
@@ -807,9 +823,7 @@ Another alternative is to include the recipes in your Run List.
 PostgreSQL Support
 ==================
 
-PostgreSQL support should be considered **experimental** at the moment. Use at your own risk.
-
-[Any feedback you can provide regarding the PostgreSQL support](https://github.com/onddo/postfixadmin-cookbook/issues/new?title=PostgreSQL%20Support) will be greatly appreciated.
+PostfixAdmin with PostgreSQL may not work properly on some platforms: See for example [`postgresql` cookbook issue #249](https://github.com/hw-cookbooks/postgresql/issues/249). [Any feedback you can provide regarding the PostgreSQL support](https://github.com/onddo/postfixadmin-cookbook/issues/new?title=PostgreSQL%20Support) will be greatly appreciated.
 
 ## PostgreSQL Support on Debian and Ubuntu
 
@@ -826,7 +840,7 @@ include_recipe 'postfixadmin'
 
 ## PostgreSQL Versions < 9.3
 
-If you are using PostgreSQL version `< 9.3`, you may need to adjust the `shmmax` and `shmall` kernel parameters to configure the shared memory. You can see [the example used for the integration tests](test/cookbooks/postfixadmin_test/recipes/postgresql_memory.rb).
+If you are using PostgreSQL version `< 9.3`, you may need to adjust the `shmmax` and `shmall` kernel parameters to configure the shared memory. You can see [the example used for the integration tests](test/cookbooks/postfixadmin_test/recipes/_postgresql_memory.rb).
 
 Testing
 =======

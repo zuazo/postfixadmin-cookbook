@@ -3,7 +3,7 @@
 # Cookbook Name:: postfixadmin_test
 # Recipe:: default
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2013 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2013-2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,26 +19,17 @@
 # limitations under the License.
 #
 
-# Debian/Ubuntu requires locale cookbook:
-# https://github.com/hw-cookbooks/postgresql/issues/108
-ENV['LANGUAGE'] = ENV['LANG'] = node['locale']['lang']
-ENV['LC_ALL'] = node['locale']['lang']
-include_recipe 'locale'
-
-# Configure PostgreSQL shared memory
-if node['postfixadmin']['database']['type'] == 'postgresql'
-  include_recipe 'postfixadmin_test::postgresql_memory'
-end
-
-node.default['mysql']['server_root_password'] = 'vagrant_root'
-node.default['mysql']['server_debian_password'] = 'vagrant_debian'
-node.default['mysql']['server_repl_password'] = 'vagrant_repl'
-
 node.default['postfixadmin']['database']['password'] = 'postfix_pass'
 node.default['postfixadmin']['setup_password'] = 'admin'
 node.default['postfixadmin']['setup_password_salt'] = 'salt'
 
+include_recipe "postfixadmin_test::_#{node['postfixadmin']['database']['type']}"
 include_recipe 'postfixadmin'
+if node['postfixadmin']['web_server'].is_a?(String)
+  include_recipe 'postfixadmin_test::_lwrp'
+end
 
-package 'lsof' # requried for integration tests
-package 'curl' # requried for integration tests
+# Requried for integration tests:
+%w(lsof curl).each do |pkg|
+  package pkg
+end

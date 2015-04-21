@@ -1,7 +1,9 @@
 # encoding: UTF-8
 #
+# Cookbook Name:: postfixadmin_test
+# Recipe:: _postgresql
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2014 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2014-2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +19,11 @@
 # limitations under the License.
 #
 
-require 'serverspec'
+# Debian/Ubuntu requires locale cookbook:
+# https://github.com/hw-cookbooks/postgresql/issues/108
+ENV['LANGUAGE'] = ENV['LANG'] = node['locale']['lang']
+ENV['LC_ALL'] = node['locale']['lang']
+include_recipe 'locale'
 
-# Set backend type
-set :backend, :exec
+include_recipe 'postfixadmin_test::_postgresql_memory'
+node.default['postgresql']['password']['postgres'] = 'vagrant_postgres'

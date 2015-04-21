@@ -101,7 +101,7 @@ if %w(localhost 127.0.0.1).include?(node['postfixadmin']['database']['host'])
     include_recipe 'postgresql::ruby'
 
     postgresql_connection_info = {
-      host: 'localhost',
+      host: '127.0.0.1',
       username: 'postgres',
       password: node['postgresql']['password']['postgres']
     }

@@ -25,7 +25,7 @@ license 'Apache 2.0'
 description 'Installs and configures PostfixAdmin, a web based interface used '\
             'to manage mailboxes, virtual domains and aliases.'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '1.5.0' # WiP
+version '2.0.0' # WiP
 
 supports 'amazon'
 supports 'debian'
@@ -35,9 +35,9 @@ supports 'ubuntu'
 
 depends 'apache2', '~> 3.0'
 depends 'ark', '~> 0.9'
-depends 'database', '>= 2.3.1'
+depends 'database', '~> 4.0'
 depends 'encrypted_attributes', '~> 0.2'
-depends 'mysql', '~> 5.0'
+depends 'mysql', '~> 6.0'
 depends 'nginx', '~> 2.7'
 depends 'php', '~> 1.5'
 depends 'php-fpm', '>= 0.7'
@@ -184,7 +184,7 @@ attribute 'postfixadmin/database/host',
           description: 'PostfixAdmin database hostname or IP address',
           type: 'string',
           required: 'optional',
-          default: '"localhost"'
+          default: '"127.0.0.1"'
 
 attribute 'postfixadmin/database/user',
           display_name: 'database user',
@@ -200,6 +200,54 @@ attribute 'postfixadmin/database/password',
           calculated: true,
           type: 'string',
           required: 'optional'
+
+grouping 'postfixadmin/mysql',
+         title: 'postfixadmin mysql',
+         description: 'PostfixAdmin MySQL configuration options'
+
+attribute 'postfixadmin/mysql/instance',
+          display_name: 'mysql instance',
+          description:
+            'PostfixAdmin MySQL instance name to run by the mysql_service '\
+            'LWRP from the mysql cookbook',
+          type: 'string',
+          required: 'optional',
+          default: 'default'
+
+attribute 'postfixadmin/mysql/data_dir',
+          display_name: 'mysql data dir',
+          description: 'PostfixAdmin MySQL data files path',
+          type: 'string',
+          required: 'optional',
+          calcualted: true
+
+attribute 'postfixadmin/mysql/port',
+          display_name: 'mysql port',
+          description: 'PostfixAdmin MySQL port',
+          type: 'string',
+          required: 'optional',
+          default: '3306'
+
+attribute 'postfixadmin/mysql/run_group',
+          display_name: 'mysql run group',
+          description: 'PostfixAdmin MySQL system group',
+          type: 'string',
+          required: 'optional',
+          calculated: true
+
+attribute 'postfixadmin/mysql/run_user',
+          display_name: 'mysql run user',
+          description: 'PostfixAdmin MySQL system user',
+          type: 'string',
+          required: 'optional',
+          calculated: true
+
+attribute 'postfixadmin/mysql/version',
+          display_name: 'mysql version',
+          description: 'PostfixAdmin MySQL version to install',
+          type: 'string',
+          required: 'optional',
+          calculated: true
 
 grouping 'postfixadmin/conf',
          title: 'postfixadmin configuration',
@@ -269,18 +317,6 @@ grouping 'postfixadmin/mysql',
 attribute 'postfixadmin/mysql/server_root_password',
           display_name: 'postfixadmin mysql server root password',
           description: 'PostfixAdmin MySQL root password.',
-          type: 'string',
-          calculated: true
-
-attribute 'postfixadmin/mysql/server_debian_password',
-          display_name: 'postfixadmin mysql server debian password',
-          description: 'PostfixAdmin MySQL debian user password.',
-          type: 'string',
-          calculated: true
-
-attribute 'postfixadmin/mysql/server_repl_password',
-          display_name: 'postfixadmin mysql server repl password',
-          description: 'PostfixAdmin MySQL repl user password.',
           type: 'string',
           calculated: true
 

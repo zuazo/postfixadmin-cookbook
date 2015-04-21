@@ -29,4 +29,8 @@ php_fpm_pool node['postfixadmin']['php-fpm']['pool'] do
   listen_owner node[web_server]['user']
   listen_group node[web_server]['group']
   listen_mode '0660'
+  # Fix php-fpm cookbook ubuntu support
+  if node['platform'] == 'ubuntu' && node['platform_version'].to_i < 12
+    process_manager 'dynamic'
+  end
 end
