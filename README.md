@@ -73,6 +73,10 @@ Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?
 
 * Ruby `1.9.3` or higher.
 
+## Other Requirements
+
+On RedHat based platforms, you need to disable or configure SELinux correctly to work with `mysql` cookbook. You can use the `selinux::disabled` recipe for that.
+
 Generated Passwords
 ===================
 
@@ -799,7 +803,7 @@ Don't forget to include the `postfixadmin` cookbook as a dependency in the metad
 
 ```ruby
 # metadata.rb
-[...]
+# [...]
 
 depends 'postfixadmin'
 ```
