@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of `postfixadmin`.
 
+## 1.4.1 (2015-05-06)
+
+* Monkey patch the `MysqlClient#version` method missing error.
+
 ## 1.4.0 (2015-02-13)
 
 * Fix disabling nginx default site.
