@@ -27,6 +27,10 @@ describe 'postfixadmin::mysql' do
     end.converge(described_recipe)
   end
 
+  it 'include postfixadmin::mysql_cookbook_fix recipe' do
+    expect(chef_run).to include_recipe('postfixadmin::mysql_cookbook_fix')
+  end
+
   it 'does not include mysql::server recipe' do
     expect(chef_run).to_not include_recipe('mysql::server')
   end
