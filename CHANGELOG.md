@@ -2,15 +2,44 @@
 
 This file is used to list changes made in each version of `postfixadmin`.
 
-## 1.4.2 (2015-05-07)
+## v2.0.0 (2015-05-09)
+
+* Update the cookbook and the dependencies (**breaking change**):
+ * Update `mysql` cookbook to version `6`.
+ * Update `database` cookbook to version `4`.
+ * Update resources to use `mysql2` gem.
+ * Improve nginx support:
+  * Restart nginx and php-fpm on first run for LWRP to work properly.
+  * Fix php-fpm support on Ubuntu `10`.
+
+* Testing:
+ * Clean up the cookbook used for integration tests.
+ * Update kitchen.yml file.
+ * Gemfile:
+  * Add ohai `< 8` for ruby `< 2`.
+  * Update RuboCop to `0.30.1`.
+
+### Upgrading from a `1.x.y` Cookbook Release
+
+***Note:*** Please do this with caution. Make a full backup before upgrading.
+
+If you want to upgrade the cookbook version from a `1.x` release, you should change the MySQL data directory path to the old one (or migrate the database by hand):
+
+```ruby
+node.default['postfixadmin']['mysql']['data_dir'] = '/var/lib/mysql'
+# [...]
+include_recipe 'postfixadmin'
+```
+
+## v1.4.2 (2015-05-07)
 
 * Mailbox resource: Fix name attribute to be a string.
 
-## 1.4.1 (2015-05-06)
+## v1.4.1 (2015-05-06)
 
 * Monkey patch the `MysqlClient#version` method missing error.
 
-## 1.4.0 (2015-02-13)
+## v1.4.0 (2015-02-13)
 
 * Fix disabling nginx default site.
 * Remove `ssl_ca` param from `web_app` template.
@@ -19,7 +48,7 @@ This file is used to list changes made in each version of `postfixadmin`.
 * Run Unit tests against Chef `11` and `12`.
 * Gemfile: Update RuboCop to `0.29.0`.
 
-## 1.3.0 (2015-01-05)
+## v1.3.0 (2015-01-05)
 
 * Add nginx support.
 * Update `ssl_certificate` cookbook to `1.1.0`, adds chained certificate support.
