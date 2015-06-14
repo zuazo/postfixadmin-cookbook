@@ -1,7 +1,7 @@
 # encoding: UTF-8
 #
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2014 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,22 @@
 # limitations under the License.
 #
 
-require 'spec_helper'
+require_relative '../../../kitchen/data/spec_helper'
+
+def centos?
+  File.exist?('/etc/centos-release')
+end
 
 family = os[:family].downcase
+release = os[:release].to_i
+
 postgres =
   if %w(centos redhat scientific amazon).include?(family)
-    'postmaster'
+    if centos? && release >= 7
+      'postgres'
+    else
+      'postmaster'
+    end
   else
     'postgres'
   end
@@ -32,5 +42,5 @@ describe process(postgres) do
 end
 
 describe port(5432) do
-  it { should be_listening }
+  it { should be_listening.with('tcp') }
 end

@@ -47,7 +47,12 @@ postfixadmin_alias 'admin@foobar.com' do
   login_password 'p@ssw0rd1'
 end
 
-postfixadmin_alias_domain 'aliasdomain.com' do
+postfixadmin_domain 'example.com' do
+  login_username 'admin@admin.org'
+  login_password 'p@ssw0rd1'
+end
+
+postfixadmin_alias_domain 'example.com' do
   target_domain 'foobar.com'
   login_username 'admin@admin.org'
   login_password 'p@ssw0rd1'

@@ -1,9 +1,7 @@
 # encoding: UTF-8
 #
-# Cookbook Name:: postfixadmin_test
-# Recipe:: default
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2013-2015 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,17 +17,12 @@
 # limitations under the License.
 #
 
-node.default['postfixadmin']['database']['password'] = 'postfix_pass'
-node.default['postfixadmin']['setup_password'] = 'admin'
-node.default['postfixadmin']['setup_password_salt'] = 'salt'
+require_relative '../../../kitchen/data/spec_helper'
 
-include_recipe "postfixadmin_test::_#{node['postfixadmin']['database']['type']}"
-include_recipe 'postfixadmin'
-if node['postfixadmin']['web_server'].is_a?(String)
-  include_recipe 'postfixadmin_test::_lwrp'
+describe process('mysqld') do
+  it { should be_running }
 end
 
-# Required for the integration tests
-package 'patch'
-include_recipe 'phantomjs'
-include_recipe 'nokogiri'
+describe port(3306) do
+  it { should be_listening.with('tcp') }
+end

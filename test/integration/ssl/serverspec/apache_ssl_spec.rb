@@ -1,7 +1,7 @@
 # encoding: UTF-8
 #
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2014 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2014-2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,28 @@
 # limitations under the License.
 #
 
-require 'serverspec'
+require_relative '../../../kitchen/data/spec_helper'
 
-# Set backend type
-set :backend, :exec
+family = os[:family].downcase
+apache =
+  if %w(centos redhat fedora scientific amazon).include?(family)
+    'httpd'
+  else
+    'apache2'
+  end
+
+describe package(apache) do
+  it { should be_installed }
+end
+
+describe port(443) do
+  it { should be_listening }
+end
+
+describe process(apache) do
+  it { should be_running }
+end
+
+describe process('nginx') do
+  it { should_not be_running }
+end

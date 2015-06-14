@@ -1,7 +1,7 @@
 # encoding: UTF-8
 #
 # Author:: Xabier de Zuazo (<xabier@onddo.com>)
-# Copyright:: Copyright (c) 2014 Onddo Labs, SL. (www.onddo.com)
+# Copyright:: Copyright (c) 2014-2015 Onddo Labs, SL. (www.onddo.com)
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +18,25 @@
 #
 
 require 'serverspec'
+require 'infrataster/rspec'
 
 # Set backend type
 set :backend, :exec
+
+ENV['PATH'] = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+Infrataster::Server.define(:web, '127.0.0.1')
+
+# Infrataster hack to ignore phantomjs SSL errors
+Infrataster::Contexts::CapybaraContext.class_eval do
+  def self.prepare_session
+    driver = Infrataster::Contexts::CapybaraContext::CAPYBARA_DRIVER_NAME
+    Capybara.register_driver driver do |app|
+      Capybara::Poltergeist::Driver.new(
+        app,
+        phantomjs_options: %w(--ignore-ssl-errors=true)
+      )
+    end
+    Capybara::Session.new(driver)
+  end
+end

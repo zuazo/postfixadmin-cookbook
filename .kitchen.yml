@@ -8,6 +8,7 @@ driver:
 
 provisioner:
   require_chef_omnibus: true
+  data_path: test/shared
 
 platforms:
 - name: ubuntu-10.04
@@ -77,12 +78,6 @@ suites:
   attributes:
     postfixadmin:
       ssl: true
-- name: port
-  run_list:
-  - recipe[postfixadmin_test::default]
-  attributes:
-    postfixadmin:
-      port: 8080
 - name: ssl-port
   excludes:
   # apache2::mod_ssl not compatible

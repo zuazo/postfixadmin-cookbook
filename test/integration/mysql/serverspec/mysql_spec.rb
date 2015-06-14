@@ -17,7 +17,12 @@
 # limitations under the License.
 #
 
-require 'serverspec'
+require_relative '../../../kitchen/data/spec_helper'
 
-# Set backend type
-set :backend, :exec
+describe process('mysqld') do
+  it { should be_running }
+end
+
+describe port(3306) do
+  it { should be_listening.with('tcp') }
+end

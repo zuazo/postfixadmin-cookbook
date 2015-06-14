@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-require 'spec_helper'
+require_relative '../../../kitchen/data/spec_helper'
 
 describe package('nginx') do
   it { should be_installed }
@@ -38,3 +38,11 @@ end
 describe process('httpd') do
   it { should_not be_running }
 end
+
+describe server(:web) do
+  describe http('/login.php') do
+    it 'is powered by PHP' do
+      expect(response['Server']).to include 'nginx'
+    end
+  end # http /login.php
+end # server web

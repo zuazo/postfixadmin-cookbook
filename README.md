@@ -794,6 +794,11 @@ postfixadmin_alias 'billing@foobar.com' do
   login_password 'sup3r-s3cr3t-p4ss'
 end
 
+postfixadmin_domain 'aliasdomain.com' do
+  login_username 'admin@admindomain.com'
+  login_password 'sup3r-s3cr3t-p4ss'
+end
+
 postfixadmin_alias_domain 'aliasdomain.com' do
   target_domain 'foobar.com'
   login_username 'admin@admindomain.com'
