@@ -27,6 +27,8 @@ describe 'postfixadmin::php_fpm' do
     stub_command(
       'test -d /etc/php5/fpm/pool.d || mkdir -p /etc/php5/fpm/pool.d'
     ).and_return(true)
+    stub_command('test -d /etc/php-fpm.d || mkdir -p /etc/php-fpm.d')
+      .and_return(true)
   end
 
   it 'include php-fpm recipe' do
@@ -38,4 +40,37 @@ describe 'postfixadmin::php_fpm' do
       "#{node['php-fpm']['pool_conf_dir']}/postfixadmin.conf"
     )
   end
+
+  context 'on CentOS' do
+    let(:chef_runner) do
+      ChefSpec::ServerRunner.new(platform: 'centos', version: '6.6')
+    end
+
+    it 'fixes php session directory' do
+      expect(chef_run).to create_directory('/var/lib/php/session')
+        .with_owner('apache')
+        .with_group('apache')
+        .with_mode('00700')
+    end
+  end # on CentOS
+
+  context 'on Fedora' do
+    let(:chef_runner) do
+      ChefSpec::ServerRunner.new(platform: 'fedora', version: '20')
+    end
+
+    it 'does not fix php session directory' do
+      expect(chef_run).to_not create_directory('/var/lib/php/session')
+    end
+  end # on Fedora
+
+  context 'on Ubuntu' do
+    let(:chef_runner) do
+      ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '12.04')
+    end
+
+    it 'does not fix php session directory' do
+      expect(chef_run).to_not create_directory('/var/lib/php/session')
+    end
+  end # on Ubuntu
 end

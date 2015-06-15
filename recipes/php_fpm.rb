@@ -23,6 +23,16 @@ include_recipe 'php-fpm'
 
 web_server = node['postfixadmin']['web_server']
 
+# Fix PHP session error on CentOS:
+# session_start(): open(/var/lib/php/session/..., O_RDWR) failed: No such file
+# or directory (2)
+directory '/var/lib/php/session' do
+  owner node[web_server]['user']
+  group node[web_server]['group']
+  mode '00700'
+  only_if { %w(centos).include?(node['platform']) }
+end
+
 php_fpm_pool node['postfixadmin']['php-fpm']['pool'] do
   user node[web_server]['user']
   group node[web_server]['group']
