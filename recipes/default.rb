@@ -143,7 +143,7 @@ if %w(localhost 127.0.0.1).include?(node['postfixadmin']['database']['host'])
 end # if database in localhost
 
 ark 'postfixadmin' do
-  url node['postfixadmin']['url']
+  url node['postfixadmin']['url'] % { version: node['postfixadmin']['version'] }
   version node['postfixadmin']['version']
   checksum node['postfixadmin']['checksum']
 end
