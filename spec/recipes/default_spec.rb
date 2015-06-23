@@ -90,6 +90,46 @@ describe 'postfixadmin::default' do
       .with_privileges([:all])
   end
 
+  context 'with remote database' do
+    before { node.set['postfixadmin']['database']['host'] = '1.2.3.4' }
+
+    it 'does not include postfixadmin::mysql recipe' do
+      expect(chef_run).to_not include_recipe('postfixadmin::mysql')
+    end
+
+    it 'does not install the mysql2_chef gem' do
+      expect(chef_run).to_not install_mysql2_chef_gem('default')
+    end
+
+    it 'does not create mysql database' do
+      expect(chef_run).to_not create_mysql_database(db_name)
+    end
+
+    it 'does not create mysql database user' do
+      expect(chef_run).to_not grant_mysql_database_user(db_user)
+    end
+  end
+
+  context 'without database management' do
+    before { node.set['postfixadmin']['database']['manage'] = false }
+
+    it 'does not include postfixadmin::mysql recipe' do
+      expect(chef_run).to_not include_recipe('postfixadmin::mysql')
+    end
+
+    it 'does not install the mysql2_chef gem' do
+      expect(chef_run).to_not install_mysql2_chef_gem('default')
+    end
+
+    it 'does not create mysql database' do
+      expect(chef_run).to_not create_mysql_database(db_name)
+    end
+
+    it 'does not create mysql database user' do
+      expect(chef_run).to_not grant_mysql_database_user(db_user)
+    end
+  end
+
   it 'installs postfixadmin' do
     expect(chef_run).to install_ark('postfixadmin')
   end

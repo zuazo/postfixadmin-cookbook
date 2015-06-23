@@ -174,6 +174,11 @@ Attributes
     <td><em>calculated</em></td>
   </tr>
   <tr>
+    <td><code>node['postfixadmin']['database']['manage']</code></td>
+    <td>Whether to manage database creation.</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
     <td><code>node['postfixadmin']['database']['type']</code></td>
     <td>PostfixAdmin database type. Possible values are: <code>"mysql"</code>, <code>"postgresql" (Please, see <a href="#postgresql-support">below<a/>)</code></td>
     <td><code>"mysql"</code></td>

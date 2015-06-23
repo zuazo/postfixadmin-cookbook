@@ -164,6 +164,13 @@ grouping 'postfixadmin/database',
          title: 'postfixadmin database',
          description: 'PostfixAdmin database configuration options'
 
+attribute 'postfixadmin/database/manage',
+          display_name: 'database manage',
+          description: 'Whether to manage database creation.',
+          calculated: true,
+          type: 'string',
+          required: 'optional'
+
 attribute 'postfixadmin/database/type',
           display_name: 'database type',
           description: 'PostfixAdmin database type',

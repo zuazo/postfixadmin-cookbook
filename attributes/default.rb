@@ -38,6 +38,7 @@ default['postfixadmin']['setup_password_encrypted'] = nil # randomly generated
 
 default['postfixadmin']['web_server'] = 'apache'
 
+default['postfixadmin']['database']['manage'] = nil
 default['postfixadmin']['database']['type'] = 'mysql'
 default['postfixadmin']['database']['name'] = 'postfix'
 default['postfixadmin']['database']['host'] = '127.0.0.1'

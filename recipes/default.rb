@@ -64,7 +64,12 @@ setup_password_encrypted =
 
 chef_gem 'sequel'
 
-if %w(localhost 127.0.0.1).include?(node['postfixadmin']['database']['host'])
+if node['postfixadmin']['database']['manage'].nil?
+  node.default['postfixadmin']['database']['manage'] =
+    %w(localhost 127.0.0.1).include?(node['postfixadmin']['database']['host'])
+end
+
+if node['postfixadmin']['database']['manage']
   include_recipe "postfixadmin::#{db_type}"
 
   case db_type
@@ -140,7 +145,7 @@ if %w(localhost 127.0.0.1).include?(node['postfixadmin']['database']['host'])
   else
     fail "Unknown database type: #{db_type}"
   end
-end # if database in localhost
+end # if manage database
 
 ark 'postfixadmin' do
   url node['postfixadmin']['url'] % { version: node['postfixadmin']['version'] }
