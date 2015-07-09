@@ -27,11 +27,7 @@ def user
 end
 
 def password
-  if encrypted_attributes_enabled?
-    Chef::EncryptedAttribute.load(new_resource.password)
-  else
-    new_resource.password
-  end
+  new_resource.password
 end
 
 def setup_password

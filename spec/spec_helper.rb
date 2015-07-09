@@ -21,6 +21,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'libraries'))
 
 require 'chefspec'
 require 'chefspec/berkshelf'
+require 'webmock/rspec'
 require 'should_not/rspec'
 
 require 'support/matchers'
@@ -44,6 +45,9 @@ RSpec.configure do |config|
   config.tty = true
   config.platform = 'ubuntu'
   config.version = '12.04'
+
+  # Allow all web connections by default
+  WebMock.allow_net_connect!
 end
 
 at_exit { ChefSpec::Coverage.report! }
