@@ -41,7 +41,7 @@ end
 
 describe server(:web) do
   describe http('/login.php') do
-    it 'is powered by PHP' do
+    it 'runs nginx' do
       expect(response['Server']).to include 'nginx'
     end
   end # http /login.php

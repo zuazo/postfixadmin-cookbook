@@ -42,3 +42,11 @@ end
 describe process('nginx') do
   it { should_not be_running }
 end
+
+describe server(:web) do
+  describe http('/login.php') do
+    it 'runs Apache httpd' do
+      expect(response['Server']).to include 'Apache'
+    end
+  end # http /login.php
+end # server web
