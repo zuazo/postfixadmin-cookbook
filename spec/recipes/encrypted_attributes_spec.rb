@@ -36,7 +36,7 @@ describe 'postfixadmin encrypted attributes' do
   let(:db_password) { 'postfixadmin_pass' }
   let(:setup_password) { 'postfixadmin_setup' }
   let(:setup_password_salt) { 'postfixadmin_setup_salt' }
-  let(:chef_runner) { ChefSpec::ServerRunner.new(step_into: step_into) }
+  let(:chef_runner) { ChefSpec::SoloRunner.new(step_into: step_into) }
   let(:chef_run) { chef_runner.converge('postfixadmin_test::default') }
   let(:resources) { chef_runner.resources }
   let(:node) { chef_runner.node }
@@ -81,6 +81,7 @@ describe 'postfixadmin encrypted attributes' do
   end
 
   context 'with encrypted attributes enabled' do
+    let(:chef_runner) { ChefSpec::ServerRunner.new(step_into: step_into) }
     before do
       node.set['postfixadmin']['encrypt_attributes'] = true
       node.set['postfixadmin']['database']['password'] =

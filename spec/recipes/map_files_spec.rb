@@ -20,7 +20,7 @@
 require 'spec_helper'
 
 describe 'postfixadmin::map_files' do
-  let(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
 
   it 'creates tables directory' do
     allow(::File).to receive(:exist?).and_return(false)

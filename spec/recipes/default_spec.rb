@@ -34,7 +34,7 @@ describe 'postfixadmin::default' do
   let(:db_password) { 'postfixadmin_pass' }
   let(:setup_password) { 'postfixadmin_setup' }
   let(:setup_password_salt) { 'postfixadmin_setup_salt' }
-  let(:chef_runner) { ChefSpec::ServerRunner.new }
+  let(:chef_runner) { ChefSpec::SoloRunner.new }
   let(:chef_run) { chef_runner.converge(described_recipe) }
   let(:node) { chef_runner.node }
   before do

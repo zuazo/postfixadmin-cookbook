@@ -26,7 +26,7 @@ describe 'postfixadmin::mysql' do
   let(:mysql_run_user) { 'mysql_user' }
   let(:mysql_version) { '5.7' }
   let(:chef_run) do
-    ChefSpec::ServerRunner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       node.set['postfixadmin']['mysql']['instance'] = mysql_service
       node.set['postfixadmin']['mysql']['data_dir'] = mysql_data_dir
       node.set['postfixadmin']['mysql']['run_group'] = mysql_run_group

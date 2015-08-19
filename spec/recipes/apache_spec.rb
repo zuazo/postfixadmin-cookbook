@@ -21,7 +21,7 @@ require 'spec_helper'
 
 describe 'postfixadmin::apache' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       node.set['postfixadmin']['ssl'] = true
     end.converge(described_recipe)
   end

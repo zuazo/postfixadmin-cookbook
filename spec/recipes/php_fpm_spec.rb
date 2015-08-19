@@ -20,7 +20,7 @@
 require 'spec_helper'
 
 describe 'postfixadmin::php_fpm' do
-  let(:chef_runner) { ChefSpec::ServerRunner.new }
+  let(:chef_runner) { ChefSpec::SoloRunner.new }
   let(:chef_run) { chef_runner.converge(described_recipe) }
   let(:node) { chef_runner.node }
   before do
@@ -43,7 +43,7 @@ describe 'postfixadmin::php_fpm' do
 
   context 'on CentOS' do
     let(:chef_runner) do
-      ChefSpec::ServerRunner.new(platform: 'centos', version: '6.6')
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.6')
     end
 
     it 'fixes php session directory' do
@@ -56,7 +56,7 @@ describe 'postfixadmin::php_fpm' do
 
   context 'on Fedora' do
     let(:chef_runner) do
-      ChefSpec::ServerRunner.new(platform: 'fedora', version: '20')
+      ChefSpec::SoloRunner.new(platform: 'fedora', version: '20')
     end
 
     it 'does not fix php session directory' do
@@ -66,7 +66,7 @@ describe 'postfixadmin::php_fpm' do
 
   context 'on Ubuntu' do
     let(:chef_runner) do
-      ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '12.04')
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04')
     end
 
     it 'does not fix php session directory' do
