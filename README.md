@@ -1,5 +1,5 @@
-Description
-===========
+PostfixAdmin Cookbook
+=====================
 [![Cookbook Version](https://img.shields.io/cookbook/v/postfixadmin.svg?style=flat)](https://supermarket.chef.io/cookbooks/postfixadmin)
 [![Dependency Status](http://img.shields.io/gemnasium/zuazo/postfixadmin-cookbook.svg?style=flat)](https://gemnasium.com/zuazo/postfixadmin-cookbook)
 [![Code Climate](http://img.shields.io/codeclimate/github/zuazo/postfixadmin-cookbook.svg?style=flat)](https://codeclimate.com/github/zuazo/postfixadmin-cookbook)
