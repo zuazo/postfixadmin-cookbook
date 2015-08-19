@@ -43,7 +43,7 @@ include_recipe 'postfixadmin'
 
 * Fix disabling nginx default site.
 * Remove `ssl_ca` param from `web_app` template.
-* Include specific helpers instead of `"database::#{type}"` (issue [#5](https://github.com/onddo/postfixadmin-cookbook/pull/5), thanks [Bernhard Weisshuhn (a.k.a. bernhorst)](https://github.com/bkw)).
+* Include specific helpers instead of `"database::#{type}"` (issue [#5](https://github.com/zuazo/postfixadmin-cookbook/pull/5), thanks [Bernhard Weisshuhn (a.k.a. bernhorst)](https://github.com/bkw)).
  * Fixes `database` cookbook version `4` support.
 * Run Unit tests against Chef `11` and `12`.
 * Gemfile: Update RuboCop to `0.29.0`.
@@ -161,18 +161,18 @@ include_recipe 'postfixadmin'
 * README: Added Cookbook Badge.
 * README: some `alias_domain` titles fixed.
 * Added `postfixadmin_alias_domain` LWRP.
-* Added Serverspec tests (issue [#4](https://github.com/onddo/postfixadmin-cookbook/pull/4), thanks [MATSUI Shinsuke (poppen)](https://github.com/poppen)).
-* Separate recipe for apache (issue [#4](https://github.com/onddo/postfixadmin-cookbook/pull/4), thanks [MATSUI Shinsuke (poppen)](https://github.com/poppen)).
-* Gemfile: switch to using the new version of vagrant (issue [#4](https://github.com/onddo/postfixadmin-cookbook/pull/4), thanks [MATSUI Shinsuke (poppen)](https://github.com/poppen)).
+* Added Serverspec tests (issue [#4](https://github.com/zuazo/postfixadmin-cookbook/pull/4), thanks [MATSUI Shinsuke (poppen)](https://github.com/poppen)).
+* Separate recipe for apache (issue [#4](https://github.com/zuazo/postfixadmin-cookbook/pull/4), thanks [MATSUI Shinsuke (poppen)](https://github.com/poppen)).
+* Gemfile: switch to using the new version of vagrant (issue [#4](https://github.com/zuazo/postfixadmin-cookbook/pull/4), thanks [MATSUI Shinsuke (poppen)](https://github.com/poppen)).
 * kitchen.yml: updated to latest format.
 
 ## v0.1.3 (2014-03-16)
 
-* Avoid nil package resource name for pkg_php_mbstring (issues [#2](https://github.com/onddo/postfixadmin-cookbook/pull/2) and [#3](https://github.com/onddo/postfixadmin-cookbook/pull/3), thanks [chrludwig](https://github.com/chrludwig)).
+* Avoid nil package resource name for pkg_php_mbstring (issues [#2](https://github.com/zuazo/postfixadmin-cookbook/pull/2) and [#3](https://github.com/zuazo/postfixadmin-cookbook/pull/3), thanks [chrludwig](https://github.com/chrludwig)).
 
 ## v0.1.2 (2013-11-17)
 
-* Fixed compatibility issues with Chef 11.8 (issue [#1](https://github.com/onddo/postfixadmin-cookbook/pull/1), thanks [mikelococo](https://github.com/mikelococo) for reporting).
+* Fixed compatibility issues with Chef 11.8 (issue [#1](https://github.com/zuazo/postfixadmin-cookbook/pull/1), thanks [mikelococo](https://github.com/mikelococo) for reporting).
 * LWRPs fixed to notify only when an action is executed.
 
 ## v0.1.1 (2013-10-28)

@@ -1,9 +1,9 @@
 Description
 ===========
 [![Cookbook Version](https://img.shields.io/cookbook/v/postfixadmin.svg?style=flat)](https://supermarket.chef.io/cookbooks/postfixadmin)
-[![Dependency Status](http://img.shields.io/gemnasium/onddo/postfixadmin-cookbook.svg?style=flat)](https://gemnasium.com/onddo/postfixadmin-cookbook)
-[![Code Climate](http://img.shields.io/codeclimate/github/onddo/postfixadmin-cookbook.svg?style=flat)](https://codeclimate.com/github/onddo/postfixadmin-cookbook)
-[![Build Status](http://img.shields.io/travis/onddo/postfixadmin-cookbook.svg?style=flat)](https://travis-ci.org/onddo/postfixadmin-cookbook)
+[![Dependency Status](http://img.shields.io/gemnasium/zuazo/postfixadmin-cookbook.svg?style=flat)](https://gemnasium.com/zuazo/postfixadmin-cookbook)
+[![Code Climate](http://img.shields.io/codeclimate/github/zuazo/postfixadmin-cookbook.svg?style=flat)](https://codeclimate.com/github/zuazo/postfixadmin-cookbook)
+[![Build Status](http://img.shields.io/travis/zuazo/postfixadmin-cookbook.svg?style=flat)](https://travis-ci.org/zuazo/postfixadmin-cookbook)
 
 Installs and configures [PostfixAdmin](http://postfixadmin.sourceforge.net/), a web based interface used to manage mailboxes, virtual domains and aliases.
 
@@ -44,7 +44,7 @@ Table of Contents
 Requirements
 ============
 
-Please, if you want to upgrade the `postfixadmin` cookbook version from the `1.x` branch, see the [CHANGELOG](https://github.com/onddo/postfixadmin-cookbook/blob/master/CHANGELOG.md#v200-2015-05-09).
+Please, if you want to upgrade the `postfixadmin` cookbook version from the `1.x` branch, see the [CHANGELOG](https://github.com/zuazo/postfixadmin-cookbook/blob/master/CHANGELOG.md#v200-2015-05-09).
 
 ## Supported Platforms
 
@@ -56,7 +56,7 @@ This cookbook has been tested on the following platforms:
 * Fedora
 * Ubuntu
 
-Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?title=I%20have%20used%20it%20successfully%20on%20...) if you use it successfully on any other platform.
+Please, [let us know](https://github.com/zuazo/postfixadmin-cookbook/issues/new?title=I%20have%20used%20it%20successfully%20on%20...) if you use it successfully on any other platform.
 
 ## Required Cookbooks
 
@@ -827,7 +827,7 @@ Another alternative is to include the recipes in your Run List.
 
 ```json
 {
-  "name": "mail.onddo.com",
+  "name": "mail.example.com",
   [...]
   "run_list": [
     [...]
@@ -840,7 +840,7 @@ Another alternative is to include the recipes in your Run List.
 PostgreSQL Support
 ==================
 
-PostfixAdmin with PostgreSQL may not work properly on some platforms: See for example [`postgresql` cookbook issue #249](https://github.com/hw-cookbooks/postgresql/issues/249). [Any feedback you can provide regarding the PostgreSQL support](https://github.com/onddo/postfixadmin-cookbook/issues/new?title=PostgreSQL%20Support) will be greatly appreciated.
+PostfixAdmin with PostgreSQL may not work properly on some platforms: See for example [`postgresql` cookbook issue #249](https://github.com/hw-cookbooks/postgresql/issues/249). [Any feedback you can provide regarding the PostgreSQL support](https://github.com/zuazo/postfixadmin-cookbook/issues/new?title=PostgreSQL%20Support) will be greatly appreciated.
 
 ## PostgreSQL Support on Debian and Ubuntu
 
@@ -862,7 +862,7 @@ If you are using PostgreSQL version `< 9.3`, you may need to adjust the `shmmax`
 Deploy with Docker
 ==================
 
-You can use the *Dockerfile* included in the [cookbook source code](https://github.com/onddo/postfixadmin-cookbook) to run the cookbook inside a container:
+You can use the *Dockerfile* included in the [cookbook source code](https://github.com/zuazo/postfixadmin-cookbook) to run the cookbook inside a container:
 
     $ docker build -t chef-postfixadmin .
     $ docker run -d -p 8080:80 chef-postfixadmin
@@ -884,7 +884,7 @@ See the [chef-local container documentation](https://registry.hub.docker.com/u/z
 Testing
 =======
 
-See [TESTING.md](https://github.com/onddo/postfixadmin-cookbook/blob/master/TESTING.md).
+See [TESTING.md](https://github.com/zuazo/postfixadmin-cookbook/blob/master/TESTING.md).
 
 ## ChefSpec Matchers
 
@@ -984,14 +984,14 @@ expect(chef_run).to create_postfixadmin_mailbox(mailbox)
 Contributing
 ============
 
-Please do not hesitate to [open an issue](https://github.com/onddo/postfixadmin-cookbook/issues/new) with any questions or problems.
+Please do not hesitate to [open an issue](https://github.com/zuazo/postfixadmin-cookbook/issues/new) with any questions or problems.
 
-See [CONTRIBUTING.md](https://github.com/onddo/postfixadmin-cookbook/blob/master/CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/zuazo/postfixadmin-cookbook/blob/master/CONTRIBUTING.md).
 
 TODO
 ====
 
-See [TODO.md](https://github.com/onddo/postfixadmin-cookbook/blob/master/TODO.md).
+See [TODO.md](https://github.com/zuazo/postfixadmin-cookbook/blob/master/TODO.md).
 
 
 License and Author
@@ -999,12 +999,13 @@ License and Author
 
 |                      |                                          |
 |:---------------------|:-----------------------------------------|
-| **Author:**          | [Xabier de Zuazo](https://github.com/zuazo) (<xabier@onddo.com>)
+| **Author:**          | [Xabier de Zuazo](https://github.com/zuazo) (<xabier@zuazo.org>)
 | **Contributor:**     | [chrludwig](https://github.com/chrludwig)
 | **Contributor:**     | [MATSUI Shinsuke (poppen)](https://github.com/poppen)
 | **Contributor:**     | [Brian Racer](https://github.com/anveo)
 | **Contributor:**     | [Bernhard Weisshuhn (a.k.a. bernhorst)](https://github.com/bkw)
-| **Copyright:**       | Copyright (c) 2013-2015 Onddo Labs, SL. (www.onddo.com)
+| **Copyright:**       | Copyright (c) 2015, Xabier de Zuazo
+| **Copyright:**       | Copyright (c) 2014-2015, Onddo Labs, SL.
 | **License:**         | Apache License, Version 2.0
 
     Licensed under the Apache License, Version 2.0 (the "License");
