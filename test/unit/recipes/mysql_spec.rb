@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-require 'spec_helper'
+require_relative '../spec_helper'
 
 describe 'postfixadmin::mysql' do
   let(:mysql_service) { 'mysql_service_name' }

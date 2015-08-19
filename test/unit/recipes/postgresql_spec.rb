@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-require 'spec_helper'
+require_relative '../spec_helper'
 
 describe 'postfixadmin::postgresql' do
   let(:db_password) { 'postfixadmin_pass' }
