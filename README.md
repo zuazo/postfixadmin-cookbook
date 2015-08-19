@@ -103,216 +103,47 @@ The first time it runs, automatically generates some passwords if not specified.
 Attributes
 ==========
 
-<table>
-  <tr>
-    <th>Attribute</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['version']</code></td>
-    <td>PostfixAdmin version</td>
-    <td><code>"2.3.7"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['url']</code></td>
-    <td>PostfixAdmin download URL</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['checksum']</code></td>
-    <td>PostfixAdmin download file checksum</td>
-    <td><code>"761074e711ab618deda425dc013133b9d5968e0859bb883f10164061fd87006e"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['port']</code></td>
-    <td>PostfixAdmin listen port</td>
-    <td><em>calculated: </em><code>"80"</code><em> or </em><code>"443"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['server_name']</code></td>
-    <td>PostfixAdmin server name</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['server_aliases']</code></td>
-    <td>PostfixAdmin server aliases</td>
-    <td><code>[]</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['headers']</code></td>
-    <td>PostfixAdmin HTTP headers to set as hash</td>
-    <td><code>{}</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['ssl']</code></td>
-    <td>enables HTTPS (with SSL)</td>
-    <td><code>false</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['encrypt_attributes']</code></td>
-    <td>Whether to encrypt PostfixAdmin attributes containing credential secrets.</td>
-    <td><code>false</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['setup_password']</code></td>
-    <td>PostfixAdmin Setup Password (required for chef-solo)</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['setup_password_salt']</code></td>
-    <td>PostfixAdmin password salt (required for chef-solo)</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['web_server']</code></td>
-    <td>Web server to use: <code>"apache"</code>, <code>"nginx"</code> or <code>false</code></td>
-    <td><code>"apache"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['setup_password_encrypted']</code></td>
-    <td>PostfixAdmin encrypted Password</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['database']['manage']</code></td>
-    <td>Whether to manage database creation.</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['database']['type']</code></td>
-    <td>PostfixAdmin database type. Possible values are: <code>"mysql"</code>, <code>"postgresql" (Please, see <a href="#postgresql-support">below<a/>)</code></td>
-    <td><code>"mysql"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['database']['name']</code></td>
-    <td>PostfixAdmin database name</td>
-    <td><code>"postfix"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['database']['host']</code></td>
-    <td>PostfixAdmin database hostname or IP address</td>
-    <td><code>"127.0.0.1"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['database']['user']</code></td>
-    <td>PostfixAdmin database login username</td>
-    <td><code>"postfix"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['database']['password']</code></td>
-    <td>PostfixAdmin database login password (requried for chef-solo)</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['mysql']['instance']</code></td>
-    <td>PostfixAdmin MySQL instance name to run by the mysql_service LWRP from the mysql cookbook</td>
-    <td><code>'default'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['mysql']['data_dir']</code></td>
-    <td>PostfixAdmin MySQL data files path</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['mysql']['port']</code></td>
-    <td>PostfixAdmin MySQL port</td>
-    <td><code>'3306'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['mysql']['run_group']</code></td>
-    <td>PostfixAdmin MySQL system group</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['mysql']['run_user']</code></td>
-    <td>PostfixAdmin MySQL system user</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['mysql']['version']</code></td>
-    <td>PostfixAdmin database MySQL version to install</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['conf']['encrypt']</code></td>
-    <td>The way do you want the passwords to be crypted</td>
-    <td><code>"md5crypt"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['conf']['domain_path']</code></td>
-    <td>Whether you want to store the mailboxes per domain</td>
-    <td><code>"YES"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['conf']['domain_in_mailbox']</code></td>
-    <td>Whether you want to have the domain in your mailbox</td>
-    <td><code>"NO"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['conf']['fetchmail']</code></td>
-    <td>Whether you want fetchmail tab</td>
-    <td><code>"NO"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['packages']['requirements']</code></td>
-    <td>PostfixAdmin required packages array</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['packages']['mysql']</code></td>
-    <td>PostfixAdmin required packages array for MySQL support</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['packages']['postgresql']</code></td>
-    <td>PostfixAdmin required packages array for PostgreSQL support</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node["boxbilling"]["mysql"]["server_root_password"]</code></td>
-    <td>PostfixAdmin MySQL <em>root</em> password.</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['map_files']['path']</code></td>
-    <td>Path to generate map-files into</td>
-    <td><code>"/etc/postfix/tables"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['map_files']['mode']</code></td>
-    <td>Map-files file-mode bits</td>
-    <td><code>00640</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['map_files']['owner']</code></td>
-    <td>Map-files files owner</td>
-    <td><code>"root"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['map_files']['group']</code></td>
-    <td>Map-files files group</td>
-    <td><code>"postfix"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['map_files']['list']</code></td>
-    <td>An array with map file names to generate</td>
-    <td><code>[<br/>
-      &nbsp;&nbsp;"db_virtual_alias_maps.cf",<br/>
-      &nbsp;&nbsp;"db_virtual_alias_domain_maps.cf",<br/>
-      &nbsp;&nbsp;"db_virtual_alias_domain_catchall_maps.cf",<br/>
-      &nbsp;&nbsp;"db_virtual_domains_maps.cf",<br/>
-      &nbsp;&nbsp;"db_virtual_mailbox_maps.cf",<br/>
-      &nbsp;&nbsp;"db_virtual_alias_domain_mailbox_maps.cf",<br/>
-      &nbsp;&nbsp;"db_virtual_mailbox_limit_maps.cf"<br/>
-      ]</code></td>
-  </tr>
-  <tr>
-    <td><code>node['postfixadmin']['php-fpm']['pool']</code></td>
-    <td>PHP-FPM pool name to use with PostfixAdmin.</code></td>
-    <td><code>'postfixadmin'</code></td>
-  </tr>
-</table>
+| Attribute                                             | Default                 | Description                    |
+|:------------------------------------------------------|:------------------------|:-------------------------------|
+| `node['postfixadmin']['version']`                     | `'2.3.7'`               | PostfixAdmin version
+| `node['postfixadmin']['url']`                         | *calculated*            | PostfixAdmin download URL
+| `node['postfixadmin']['checksum']`                    | *calculated*            | PostfixAdmin download file checksum
+| `node['postfixadmin']['port']`                        | *calculated*            | PostfixAdmin listen port
+| `node['postfixadmin']['server_name']`                 | *calculated*            | PostfixAdmin server name
+| `node['postfixadmin']['server_aliases']`              | `[]`                    | PostfixAdmin server aliases
+| `node['postfixadmin']['headers']`                     | `{}`                    | PostfixAdmin HTTP headers to set as hash
+| `node['postfixadmin']['ssl']`                         | `false`                 | enables HTTPS (with SSL)
+| `node['postfixadmin']['encrypt_attributes']`          | `false`                 | Whether to encrypt PostfixAdmin attributes containing credential secrets.
+| `node['postfixadmin']['setup_password']`              | *calculated*            | PostfixAdmin Setup Password (required for chef-solo)
+| `node['postfixadmin']['setup_password_salt']`         | *calculated*            | PostfixAdmin password salt (required for chef-solo)
+| `node['postfixadmin']['web_server']`                  | `'apache'`              | Web server to use: `'apache'`, `'nginx'` or `false`
+| `node['postfixadmin']['setup_password_encrypted']`    | *calculated*            | PostfixAdmin encrypted Password
+| `node['postfixadmin']['database']['manage']`          | *calculated*            | Whether to manage database creation.
+| `node['postfixadmin']['database']['type']`            | `'mysql'`               | PostfixAdmin database type. Possible values are: `'mysql'`, `'postgresql' (Please, see [below](#postgresql-support)<a></a>)`
+| `node['postfixadmin']['database']['name']`            | `'postfix'`             | PostfixAdmin database name
+| `node['postfixadmin']['database']['host']`            | `'127.0.0.1'`           | PostfixAdmin database hostname or IP address
+| `node['postfixadmin']['database']['user']`            | `'postfix'`             | PostfixAdmin database login username
+| `node['postfixadmin']['database']['password']`        | *calculated*            | PostfixAdmin database login password (requried for chef-solo)
+| `node['postfixadmin']['mysql']['instance']`           | `'default'`             | PostfixAdmin MySQL instance name to run by the mysql_service LWRP from the mysql cookbook
+| `node['postfixadmin']['mysql']['data_dir']`           | *calculated*            | PostfixAdmin MySQL data files path
+| `node['postfixadmin']['mysql']['port']`               | `'3306'`                | PostfixAdmin MySQL port
+| `node['postfixadmin']['mysql']['run_group']`          | *calculated*            | PostfixAdmin MySQL system group
+| `node['postfixadmin']['mysql']['run_user']`           | *calculated*            | PostfixAdmin MySQL system user
+| `node['postfixadmin']['mysql']['version']`            | *calculated*            | PostfixAdmin database MySQL version to install
+| `node['postfixadmin']['conf']['encrypt']`             | `'md5crypt'`            | The way do you want the passwords to be crypted
+| `node['postfixadmin']['conf']['domain_path']`         | `'YES'`                 | Whether you want to store the mailboxes per domain
+| `node['postfixadmin']['conf']['domain_in_mailbox']`   | `'NO'`                  | Whether you want to have the domain in your mailbox
+| `node['postfixadmin']['conf']['fetchmail']`           | `'NO'`                  | Whether you want fetchmail tab
+| `node['postfixadmin']['packages']['requirements']`    | *calculated*            | PostfixAdmin required packages array
+| `node['postfixadmin']['packages']['mysql']`           | *calculated*            | PostfixAdmin required packages array for MySQL support
+| `node['postfixadmin']['packages']['postgresql']`      | *calculated*            | PostfixAdmin required packages array for PostgreSQL support
+| `node['boxbilling']['mysql']['server_root_password']` | *calculated*            | PostfixAdmin MySQL *root* password.
+| `node['postfixadmin']['map_files']['path']`           | `'/etc/postfix/tables'` | Path to generate map-files into
+| `node['postfixadmin']['map_files']['mode']`           | `00640`                 | Map-files file-mode bits
+| `node['postfixadmin']['map_files']['owner']`          | `'root'`                | Map-files files owner
+| `node['postfixadmin']['map_files']['group']`          | `'postfix'`             | Map-files files group
+| `node['postfixadmin']['map_files']['list']`           | *calculated*            | An array with map file names to generate
+| `node['postfixadmin']['php-fpm']['pool']`             | `'postfixadmin'`        | PHP-FPM pool name to use with PostfixAdmin.
 
 ## The HTTPS Certificate
 
@@ -327,7 +158,7 @@ See the [`ssl_certificate` namespace documentation](https://supermarket.chef.io/
 
 ## Encrypted Attributes
 
-This cookbook can use the [encrypted_attributes](https://supermarket.chef.io/cookbooks/encrypted_attributes) cookbook to encrypt the secrets generated during the *Chef Run*. This feature is disabled by default, but can be enabled setting the `node["postfixadmin"]["encrypt_attributes"]` attribute to `true`. For example:
+This cookbook can use the [encrypted_attributes](https://supermarket.chef.io/cookbooks/encrypted_attributes) cookbook to encrypt the secrets generated during the *Chef Run*. This feature is disabled by default, but can be enabled setting the `node['postfixadmin']['encrypt_attributes']` attribute to `true`. For example:
 
 ```ruby
 include_recipe 'encrypted_attributes::users_data_bag'
@@ -379,53 +210,16 @@ Create or remove a PostfixAdmin admin user. This kind of user is used to create 
 
 ### postfixadmin_admin Parameters
 
-<table>
-  <tr>
-    <th>Parameter</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td>user</td>
-    <td>Username</td>
-    <td><em>name attribute</em></td>
-  </tr>
-  <tr>
-    <td>password</td>
-    <td>Password</td>
-    <td><code>"p@ssw0rd1"</code></td>
-  </tr>
-  <tr>
-    <td>setup_password</td>
-    <td>PostfixAdmin Setup Password</td>
-    <td><code>node['postfixadmin']['setup_password']</code></td>
-  </tr>
-  <tr>
-    <td>db_user</td>
-    <td>Database username</td>
-    <td><code>node['postfixadmin']['database']['user']</code></td>
-  </tr>
-  <tr>
-    <td>db_password</td>
-    <td>Database password</td>
-    <td><code>node['postfixadmin']['database']['password']</code></td>
-  </tr>
-  <tr>
-    <td>db_name</td>
-    <td>Database name</td>
-    <td><code>node['postfixadmin']['database']['name']</code></td>
-  </tr>
-  <tr>
-    <td>db_host</td>
-    <td>Database hostname</td>
-    <td><code>node['postfixadmin']['database']['host']</code></td>
-  </tr>
-  <tr>
-    <td>ssl</td>
-    <td>Whether to use SSL on HTTP requests</td>
-    <td><code>node['postfixadmin']['ssl']</code></td>
-  </tr>
-</table>
+| Parameter      | Default                       | Description                    |
+|:---------------|:------------------------------|:-------------------------------|
+| user           | *name attribute*              | Username
+| password       | `'p@ssw0rd1'`                 | Password
+| setup_password | *calculated*                  | PostfixAdmin Setup Password
+| db_user        | *calculated*                  | Database username
+| db_password    | *calculated*                  | Database password
+| db_name        | *calculated*                  | Database name
+| db_host        | *calculated*                  | Database hostname
+| ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_admin Example
 
@@ -446,68 +240,19 @@ Create domains.
 
 ### postfixadmin_domain Parameters
 
-<table>
-  <tr>
-    <th>Parameter</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td>domain</td>
-    <td>Domain name</td>
-    <td><em>name attribute</em></td>
-  </tr>
-  <tr>
-    <td>description</td>
-    <td>Domain description</td>
-    <td><code>""</code></td>
-  </tr>
-  <tr>
-    <td>aliases</td>
-    <td>Maximum number of aliases</td>
-    <td><code>10</code></td>
-  </tr>
-  <tr>
-    <td>mailboxes</td>
-    <td>Maximum number of mailboxes</td>
-    <td><code>10</code></td>
-  </tr>
-  <tr>
-    <td>login_username</td>
-    <td>Admin user to use</td>
-    <td><em>required</em></td>
-  </tr>
-  <tr>
-    <td>login_password</td>
-    <td>Admin password </td>
-    <td><em>required</em></td>
-  </tr>
-  <tr>
-    <td>db_user</td>
-    <td>Database username</td>
-    <td><code>node['postfixadmin']['database']['user']</code></td>
-  </tr>
-  <tr>
-    <td>db_password</td>
-    <td>Database password</td>
-    <td><code>node['postfixadmin']['database']['password']</code></td>
-  </tr>
-  <tr>
-    <td>db_name</td>
-    <td>Database name</td>
-    <td><code>node['postfixadmin']['database']['name']</code></td>
-  </tr>
-  <tr>
-    <td>db_host</td>
-    <td>Database hostname</td>
-    <td><code>node['postfixadmin']['database']['host']</code></td>
-  </tr>
-  <tr>
-    <td>ssl</td>
-    <td>Whether to use SSL on HTTP requests</td>
-    <td><code>node['postfixadmin']['ssl']</code></td>
-  </tr>
-</table>
+| Parameter      | Default                       | Description                    |
+|:---------------|:------------------------------|:-------------------------------|
+| domain         | *name attribute*              | Domain name
+| description    | `''`                          | Domain description
+| aliases        | `10`                          | Maximum number of aliases
+| mailboxes      | `10`                          | Maximum number of mailboxes
+| login_username | *required*                    | Admin user to use
+| login_password | *required*                    | Admin password 
+| db_user        | *calculated*                  | Database username
+| db_password    | *calculated*                  | Database password
+| db_name        | *calculated*                  | Database name
+| db_host        | *calculated*                  | Database hostname
+| ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_domain Example
 
@@ -529,73 +274,20 @@ Create a mailbox.
 
 ### postfixadmin_mailbox Parameters
 
-<table>
-  <tr>
-    <th>Parameter</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td>mailbox</td>
-    <td>Mailbox address to create</td>
-    <td><em>name attribute</em></td>
-  </tr>
-  <tr>
-    <td>password</td>
-    <td>Mailbox password</td>
-    <td><em>required</em></td>
-  </tr>
-  <tr>
-    <td>name</td>
-    <td>The name of the mailbox owner</td>
-    <td><code>""</code></td>
-  </tr>
-  <tr>
-    <td>active</td>
-    <td>Active status</td>
-    <td><code>true</code></td>
-  </tr>
-  <tr>
-    <td>mail</td>
-    <td>Whether to send a welcome email</td>
-    <td><code>false</code></td>
-  </tr>
-  <tr>
-    <td>login_username</td>
-    <td>Admin user to use</td>
-    <td><em>required</em></td>
-  </tr>
-  <tr>
-    <td>login_password</td>
-    <td>Admin password </td>
-    <td><em>required</em></td>
-  </tr>
-  <tr>
-    <td>db_user</td>
-    <td>Database username</td>
-    <td><code>node['postfixadmin']['database']['user']</code></td>
-  </tr>
-  <tr>
-    <td>db_password</td>
-    <td>Database password</td>
-    <td><code>node['postfixadmin']['database']['password']</code></td>
-  </tr>
-  <tr>
-    <td>db_name</td>
-    <td>Database name</td>
-    <td><code>node['postfixadmin']['database']['name']</code></td>
-  </tr>
-  <tr>
-    <td>db_host</td>
-    <td>Database hostname</td>
-    <td><code>node['postfixadmin']['database']['host']</code></td>
-  </tr>
-  <tr>
-    <td>ssl</td>
-    <td>Whether to use SSL on HTTP requests</td>
-    <td><code>node['postfixadmin']['ssl']</code></td>
-  </tr>
-</table>
+| Parameter      | Default                       | Description                    |
+|:---------------|:------------------------------|:-------------------------------|
+| mailbox        | *name attribute*              | Mailbox address to create
+| password       | *required*                    | Mailbox password
+| name           | `''`                          | The name of the mailbox owner
+| active         | `true`                        | Active status
+| mail           | `false`                       | Whether to send a welcome email
+| login_username | *required*                    | Admin user to use
+| login_password | *required*                    | Admin password 
+| db_user        | *calculated*                  | Database username
+| db_password    | *calculated*                  | Database password
+| db_name        | *calculated*                  | Database name
+| db_host        | *calculated*                  | Database hostname
+| ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_mailbox Example
 
@@ -618,63 +310,18 @@ Create mailbox aliases.
 
 ### postfixadmin_alias Parameters
 
-<table>
-  <tr>
-    <th>Parameter</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td>address</td>
-    <td>Alias address</td>
-    <td><em>name attribute</em></td>
-  </tr>
-  <tr>
-    <td>goto</td>
-    <td>Destination mailbox address</td>
-    <td><em>required</em></td>
-  </tr>
-  <tr>
-    <td>active</td>
-    <td>Active status</td>
-    <td><code>true</code></td>
-  </tr>
-  <tr>
-    <td>login_username</td>
-    <td>Admin user to use</td>
-    <td><em>required</em></td>
-  </tr>
-  <tr>
-    <td>login_password</td>
-    <td>Admin password </td>
-    <td><em>required</em></td>
-  </tr>
-  <tr>
-    <td>db_user</td>
-    <td>Database username</td>
-    <td><code>node['postfixadmin']['database']['user']</code></td>
-  </tr>
-  <tr>
-    <td>db_password</td>
-    <td>Database password</td>
-    <td><code>node['postfixadmin']['database']['password']</code></td>
-  </tr>
-  <tr>
-    <td>db_name</td>
-    <td>Database name</td>
-    <td><code>node['postfixadmin']['database']['name']</code></td>
-  </tr>
-  <tr>
-    <td>db_host</td>
-    <td>Database hostname</td>
-    <td><code>node['postfixadmin']['database']['host']</code></td>
-  </tr>
-  <tr>
-    <td>ssl</td>
-    <td>Whether to use SSL on HTTP requests</td>
-    <td><code>node['postfixadmin']['ssl']</code></td>
-  </tr>
-</table>
+| Parameter      | Default                       | Description                    |
+|:---------------|:------------------------------|:-------------------------------|
+| address        | *name attribute*              | Alias address
+| goto           | *required*                    | Destination mailbox address
+| active         | `true`                        | Active status
+| login_username | *required*                    | Admin user to use
+| login_password | *required*                    | Admin password 
+| db_user        | *calculated*                  | Database username
+| db_password    | *calculated*                  | Database password
+| db_name        | *calculated*                  | Database name
+| db_host        | *calculated*                  | Database hostname
+| ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_alias Example
 
@@ -697,63 +344,18 @@ Create domain aliases. The `alias_domain` must already exist.
 
 ### postfixadmin_alias_domain Parameters
 
-<table>
-  <tr>
-    <th>Parameter</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td>alias_domain</td>
-    <td>Alias domain</td>
-    <td><em>name attribute</em></td>
-  </tr>
-  <tr>
-    <td>target_domain</td>
-    <td>Target domain</td>
-    <td><em>required</em></td>
-  </tr>
-  <tr>
-    <td>active</td>
-    <td>Active status</td>
-    <td><code>true</code></td>
-  </tr>
-  <tr>
-    <td>login_username</td>
-    <td>Admin user to use</td>
-    <td><em>required</em></td>
-  </tr>
-  <tr>
-    <td>login_password</td>
-    <td>Admin password </td>
-    <td><em>required</em></td>
-  </tr>
-  <tr>
-    <td>db_user</td>
-    <td>Database username</td>
-    <td><code>node['postfixadmin']['database']['user']</code></td>
-  </tr>
-  <tr>
-    <td>db_password</td>
-    <td>Database password</td>
-    <td><code>node['postfixadmin']['database']['password']</code></td>
-  </tr>
-  <tr>
-    <td>db_name</td>
-    <td>Database name</td>
-    <td><code>node['postfixadmin']['database']['name']</code></td>
-  </tr>
-  <tr>
-    <td>db_host</td>
-    <td>Database hostname</td>
-    <td><code>node['postfixadmin']['database']['host']</code></td>
-  </tr>
-  <tr>
-    <td>ssl</td>
-    <td>Whether to use SSL on HTTP requests</td>
-    <td><code>node['postfixadmin']['ssl']</code></td>
-  </tr>
-</table>
+| Parameter      | Default                       | Description                    |
+|:---------------|:------------------------------|:-------------------------------|
+| alias_domain   | *name attribute*              | Alias domain
+| target_domain  | *required*                    | Target domain
+| active         | `true`                        | Active status
+| login_username | *required*                    | Admin user to use
+| login_password | *required*                    | Admin password 
+| db_user        | *calculated*                  | Database username
+| db_password    | *calculated*                  | Database password
+| db_name        | *calculated*                  | Database name
+| db_host        | *calculated*                  | Database hostname
+| ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_alias_domain Example
 
@@ -828,9 +430,9 @@ Another alternative is to include the recipes in your Run List.
 ```json
 {
   "name": "mail.example.com",
-  [...]
+  "[...]": "[...]"
   "run_list": [
-    [...]
+    "[...]": "[...]",
     "recipe[postfixadmin]",
     "recipe[postfixadmin::map_files]"
   ]
