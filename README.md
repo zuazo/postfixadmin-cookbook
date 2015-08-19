@@ -1,6 +1,6 @@
 Description
 ===========
-[![Cookbook Version](https://img.shields.io/cookbook/v/postfixadmin.svg?style=flat)](https://supermarket.getchef.com/cookbooks/postfixadmin)
+[![Cookbook Version](https://img.shields.io/cookbook/v/postfixadmin.svg?style=flat)](https://supermarket.chef.io/cookbooks/postfixadmin)
 [![Dependency Status](http://img.shields.io/gemnasium/onddo/postfixadmin-cookbook.svg?style=flat)](https://gemnasium.com/onddo/postfixadmin-cookbook)
 [![Code Climate](http://img.shields.io/codeclimate/github/onddo/postfixadmin-cookbook.svg?style=flat)](https://codeclimate.com/github/onddo/postfixadmin-cookbook)
 [![Build Status](http://img.shields.io/travis/onddo/postfixadmin-cookbook.svg?style=flat)](https://travis-ci.org/onddo/postfixadmin-cookbook)
@@ -34,6 +34,7 @@ Table of Contents
 - [PostgreSQL Support](#postgresql-support)
   - [PostgreSQL Support on Debian and Ubuntu](#postgresql-support-on-debian-and-ubuntu)
   - [PostgreSQL Versions < 9.3](#postgresql-versions--93)
+- [Deploy with Docker](#deploy-with-docker)
 - [Testing](#testing)
   - [ChefSpec Matchers](#chefspec-matchers)
 - [Contributing](#contributing)
@@ -59,17 +60,17 @@ Please, [let us know](https://github.com/onddo/postfixadmin-cookbook/issues/new?
 
 ## Required Cookbooks
 
-* [apache2](https://supermarket.getchef.com/cookbooks/apache2)
-* [ark](https://supermarket.getchef.com/cookbooks/ark)
-* [database](https://supermarket.getchef.com/cookbooks/database)
-* [encrypted_attributes (~> 0.2)](https://supermarket.getchef.com/cookbooks/encrypted_attributes)
-* [mysql](https://supermarket.getchef.com/cookbooks/mysql)
-* [nginx](https://supermarket.getchef.com/cookbooks/nginx)
-* [php](https://supermarket.getchef.com/cookbooks/php)
-* [php-fpm](https://supermarket.getchef.com/cookbooks/php-fpm)
-* [postgresql (>= 1.0.0)](https://supermarket.getchef.com/cookbooks/postgresql)
-* [ssl_certificate](https://supermarket.getchef.com/cookbooks/ssl_certificate)
-* [yum-epel](https://supermarket.getchef.com/cookbooks/yum-epel)
+* [apache2](https://supermarket.chef.io/cookbooks/apache2)
+* [ark](https://supermarket.chef.io/cookbooks/ark)
+* [database](https://supermarket.chef.io/cookbooks/database)
+* [encrypted_attributes (~> 0.2)](https://supermarket.chef.io/cookbooks/encrypted_attributes)
+* [mysql](https://supermarket.chef.io/cookbooks/mysql)
+* [nginx](https://supermarket.chef.io/cookbooks/nginx)
+* [php](https://supermarket.chef.io/cookbooks/php)
+* [php-fpm](https://supermarket.chef.io/cookbooks/php-fpm)
+* [postgresql (>= 1.0.0)](https://supermarket.chef.io/cookbooks/postgresql)
+* [ssl_certificate](https://supermarket.chef.io/cookbooks/ssl_certificate)
+* [yum-epel](https://supermarket.chef.io/cookbooks/yum-epel)
 
 ## Required Applications
 
@@ -315,18 +316,18 @@ Attributes
 
 ## The HTTPS Certificate
 
-This cookbook uses the [`ssl_certificate`](https://supermarket.getchef.com/cookbooks/ssl_certificate) cookbook to create the HTTPS certificate. The namespace used is `node['postfixadmin']`. For example:
+This cookbook uses the [`ssl_certificate`](https://supermarket.chef.io/cookbooks/ssl_certificate) cookbook to create the HTTPS certificate. The namespace used is `node['postfixadmin']`. For example:
 
 ```ruby
 node.default['postfixadmin']['common_name'] = 'postfixadmin.example.com'
 include_recipe 'postfixadmin'
 ```
 
-See the [`ssl_certificate` namespace documentation](https://supermarket.getchef.com/cookbooks/ssl_certificate#namespaces) for more information.
+See the [`ssl_certificate` namespace documentation](https://supermarket.chef.io/cookbooks/ssl_certificate#namespaces) for more information.
 
 ## Encrypted Attributes
 
-This cookbook can use the [encrypted_attributes](https://supermarket.getchef.com/cookbooks/encrypted_attributes) cookbook to encrypt the secrets generated during the *Chef Run*. This feature is disabled by default, but can be enabled setting the `node["postfixadmin"]["encrypt_attributes"]` attribute to `true`. For example:
+This cookbook can use the [encrypted_attributes](https://supermarket.chef.io/cookbooks/encrypted_attributes) cookbook to encrypt the secrets generated during the *Chef Run*. This feature is disabled by default, but can be enabled setting the `node["postfixadmin"]["encrypt_attributes"]` attribute to `true`. For example:
 
 ```ruby
 include_recipe 'encrypted_attributes::users_data_bag'
@@ -343,7 +344,7 @@ This will create the following encrypted attributes:
 
 Read the [`chef-encrypted-attributes` gem documentation](http://onddo.github.io/chef-encrypted-attributes/) to learn how to read them.
 
-**Warning:** When PostgreSQL is used, the database root password will still remain unencrypted in the `node['postgresql']['password']['postgres']` attribute due to limitations of the [postgresql cookbook](https://supermarket.getchef.com/cookbooks/postgresql).
+**Warning:** When PostgreSQL is used, the database root password will still remain unencrypted in the `node['postgresql']['password']['postgres']` attribute due to limitations of the [postgresql cookbook](https://supermarket.chef.io/cookbooks/postgresql).
 
 Recipes
 =======
@@ -857,6 +858,28 @@ include_recipe 'postfixadmin'
 ## PostgreSQL Versions < 9.3
 
 If you are using PostgreSQL version `< 9.3`, you may need to adjust the `shmmax` and `shmall` kernel parameters to configure the shared memory. You can see [the example used for the integration tests](test/cookbooks/postfixadmin_test/recipes/_postgresql_memory.rb).
+
+Deploy with Docker
+==================
+
+You can use the *Dockerfile* included in the [cookbook source code](https://github.com/onddo/postfixadmin-cookbook) to run the cookbook inside a container:
+
+    $ docker build -t chef-postfixadmin .
+    $ docker run -d -p 8080:80 chef-postfixadmin
+
+The sample *Dockerfile*:
+
+```Dockerfile
+FROM zuazo/chef-local:debian-7
+
+COPY . /tmp/postfixadmin
+RUN berks vendor -b /tmp/postfixadmin/Berksfile $COOKBOOK_PATH
+RUN chef-client -r "recipe[apt],recipe[postfixadmin]"
+
+CMD ["apache2", "-D", "FOREGROUND"]
+```
+
+See the [chef-local container documentation](https://registry.hub.docker.com/u/zuazo/chef-local/) for more examples.
 
 Testing
 =======

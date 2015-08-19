@@ -50,7 +50,6 @@ template_variables = {
 if node['postfixadmin']['ssl']
   cert = ssl_certificate 'postfixadmin' do
     namespace node['postfixadmin']
-    only_if { node['postfixadmin']['ssl'] }
     notifies :restart, 'service[nginx]' # TODO: reload?
   end
 

@@ -177,7 +177,7 @@ include_recipe 'postfixadmin'
 
 ## v0.1.1 (2013-10-28)
 
-* metadata: provides without square brackets to avoid [CHEF-3976](https://tickets.opscode.com/browse/CHEF-3976)
+* metadata: provides without square brackets to avoid [CHEF-3976](https://tickets.chef.io/browse/CHEF-3976)
 
 ## v0.1.0 (2013-06-11)
 
