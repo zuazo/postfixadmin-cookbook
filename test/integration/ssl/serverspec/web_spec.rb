@@ -21,8 +21,8 @@ require_relative '../../../kitchen/data/spec_helper'
 
 describe server(:web) do
   describe http('https://127.0.0.1/login.php', ssl: { verify: false }) do
-    it 'is powered by PHP' do
-      expect(response['X-Powered-By']).to include 'PHP'
+    it 'includes PHP cookie' do
+      expect(response['Set-Cookie']).to include 'PHPSESSID'
     end
 
     it 'returns "Postfix Admin" string' do

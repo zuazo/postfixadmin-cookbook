@@ -23,8 +23,8 @@ describe server(:web) do
   site = 'https://127.0.0.1:8443'
 
   describe http("#{site}/login.php", ssl: { verify: false }) do
-    it 'is powered by PHP' do
-      expect(response['X-Powered-By']).to include 'PHP'
+    it 'includes PHP cookie' do
+      expect(response['Set-Cookie']).to include 'PHPSESSID'
     end
 
     it 'returns "Postfix Admin" string' do
