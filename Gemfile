@@ -22,7 +22,7 @@ group :unit do
   gem 'chefspec', '~> 4.0'
   gem 'webmock', '~> 1.21'
   gem 'sequel', '~> 4.23'
-  gem 'chef-encrypted-attributes'
+  gem 'chef-encrypted-attributes', '~> 0.4'
   gem 'ohai', '~> 7.4' if RUBY_VERSION < '2'
 end
 
