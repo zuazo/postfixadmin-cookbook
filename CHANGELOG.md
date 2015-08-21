@@ -2,6 +2,34 @@
 
 This file is used to list changes made in each version of `postfixadmin`.
 
+## v2.1.0 (2015-08-21)
+
+* New features:
+ * Add `node['postfixadmin']['database']['manage']` attribute.
+ * metadata: Add `source_url` and `issues_url`.
+ * Generate URL dynamically using the version value.
+
+* Bug Fixes:
+ * Fix *session_start* error on CentOS.
+ * Fix `postfixadmin_admin#password`: it is not an encrypted attribute ([issue #6](https://github.com/zuazo/postfixadmin-cookbook/issues/6), thanks [Eric Blevins](https://github.com/e100) for reporting).
+
+* Documentation:
+ * Update chef links to use *chef.io* domain.
+ * Update contact information and links after migration.
+ * README:
+  * Use markdown tables.
+  * Put the cookbook name in the title.
+
+* Testing:
+ * Replace all bats integration tests by Serverspec & Infrataster tests.
+ * Use `SoloRunner` in some ChefSpec tests to make them faster.
+ * Move unit tests to test/unit.
+ * Rakefile: Add clean task.
+ * Add Debian `8` and Ubuntu `15.04` support.
+ * Gemfile:
+  * Update RuboCop to `0.33.0`.
+  * Specify `chef-encrypted-attributes` version constraints.
+
 ## v2.0.0 (2015-05-09)
 
 * Update the cookbook and the dependencies (**breaking change**):
