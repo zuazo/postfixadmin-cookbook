@@ -459,7 +459,7 @@ include_recipe 'postfixadmin'
 
 ## PostgreSQL Versions < 9.3
 
-If you are using PostgreSQL version `< 9.3`, you may need to adjust the `shmmax` and `shmall` kernel parameters to configure the shared memory. You can see [the example used for the integration tests](test/cookbooks/postfixadmin_test/recipes/_postgresql_memory.rb).
+If you are using PostgreSQL version `< 9.3`, you may need to adjust the `shmmax` and `shmall` kernel parameters to configure the shared memory. You can see [the example used for the integration tests](https://github.com/zuazo/postfixadmin-cookbook/tree/master/test/cookbooks/postfixadmin_test/recipes/_postgresql_memory.rb).
 
 Deploy with Docker
 ==================
