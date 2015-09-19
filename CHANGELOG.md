@@ -9,7 +9,7 @@ This file is used to list changes made in each version of `postfixadmin`.
  * metadata: Add `source_url` and `issues_url`.
  * Generate URL dynamically using the version value.
 
-* Bug Fixes:
+* Bug fixes:
  * Fix *session_start* error on CentOS.
  * Fix `postfixadmin_admin#password`: it is not an encrypted attribute ([issue #6](https://github.com/zuazo/postfixadmin-cookbook/issues/6), thanks [Eric Blevins](https://github.com/e100) for reporting).
 
