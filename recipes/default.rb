@@ -118,18 +118,11 @@ if node['postfixadmin']['database']['manage']
 
     postgresql_database_user node['postfixadmin']['database']['user'] do
       connection postgresql_connection_info
-      host node['postfixadmin']['database']['host']
-      password db_password
-      action :create
-    end
-
-    postgresql_database_user node['postfixadmin']['database']['user'] do
-      connection postgresql_connection_info
       database_name node['postfixadmin']['database']['name']
       host node['postfixadmin']['database']['host']
       password db_password
       privileges [:all]
-      action :grant
+      action [:create, :grant]
     end
 
     # Based on @phlipper work from:
