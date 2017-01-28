@@ -47,7 +47,7 @@ module PostfixAdmin
     def self.ruby_value_to_php(value)
       case value
       when nil then 'NULL'
-      when Fixnum, Float then v
+      when Integer, Float then v
       when Array then PostfixAdmin::PHP.array(v)
       when Hash then PostfixAdmin::PHP.hash(v)
       end
