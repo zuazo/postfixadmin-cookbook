@@ -24,9 +24,12 @@ def default_http_port
 end
 
 def update_listen_ports(port)
-  return if node['apache']['listen_ports'].include?(port)
-  node.set['apache']['listen_ports'] =
-    node['apache']['listen_ports'] + [port]
+  if node['apache']['listen_ports'].nil?
+    node.set['apache']['listen_ports'] = [port]
+  else
+    return if node['apache']['listen_ports'].include?(port)
+    node.set['apache']['listen_ports'] = node['apache']['listen_ports'] + [port]
+  end
 end
 
 http_port = node['postfixadmin']['port'] || default_http_port
