@@ -2,6 +2,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# More info at http://berkshelf.com/#the-berksfile
+
 source 'https://supermarket.chef.io'
 my_cookbook = 'postfixadmin'
 
@@ -17,9 +19,16 @@ def local_cookbook(name, version = '>= 0.0.0', options = {})
   }.merge(options))
 end
 
-metadata
+# "This resource is written with Chef 12.5 custom resources" error:
+if ENV.key?('CHEF_VERSION') &&
+   Gem::Requirement.new(ENV['CHEF_VERSION'])
+                   .satisfied_by?(Gem::Version.new('11.0.0'))
+  cookbook 'rsyslog', '~> 2.0'
+end
+
 cookbook 'apt'
 cookbook 'selinux'
+metadata
 
 # Minitest Chef Handler
 # More info at https://github.com/calavera/minitest-chef-handler
