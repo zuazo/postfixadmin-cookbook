@@ -47,7 +47,7 @@ RSpec.configure do |config|
   config.version = '12.04'
 
   # Allow all web connections by default
-  WebMock.allow_net_connect!
+  WebMock.allow_net_connect!(net_http_connect_on_start: true)
 end
 
 at_exit { ChefSpec::Coverage.report! }
