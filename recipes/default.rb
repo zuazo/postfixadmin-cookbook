@@ -33,7 +33,7 @@ pkgs_php_db =
   if db_type != 'requirements' && node['postfixadmin']['packages'].key?(db_type)
     node['postfixadmin']['packages'][db_type]
   else
-    fail "Unknown database type: #{db_type}"
+    raise "Unknown database type: #{db_type}"
   end
 pkgs_php_db.each do |pkg|
   package pkg do
@@ -136,7 +136,7 @@ if node['postfixadmin']['database']['manage']
     end
 
   else
-    fail "Unknown database type: #{db_type}"
+    raise "Unknown database type: #{db_type}"
   end
 end # if manage database
 

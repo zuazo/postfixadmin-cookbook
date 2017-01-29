@@ -60,7 +60,7 @@ module PostfixAdmin
 
     def self.array(ary)
       template =
-'array(<%=
+        'array(<%=
   list = @obj.kind_of?(Array) ? @obj : [ @obj ]
   list.map do |item|
     @PostfixAdmin_Conf.value(item)
@@ -71,7 +71,7 @@ module PostfixAdmin
 
     def self.hash(hs)
       template =
-'array(<%=
+        'array(<%=
   @obj.to_hash.sort.map do |k, v|
     "#{@PostfixAdmin_Conf.value(v)} => #{@PostfixAdmin_Conf.value(k)}"
   end.join(", ")

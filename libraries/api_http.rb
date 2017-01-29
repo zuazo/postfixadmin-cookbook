@@ -142,9 +142,9 @@ module PostfixAdmin
         if body.match(ERROR_REGEXP)
           error_msg = "#{name}##{__method__}: #{body.gsub(ERROR_REGEXP, '\1')}"
           Chef::Log.fatal(error_msg)
-          fail error_msg
+          raise error_msg
         elsif body.match(SETUP_ERROR_REGEXP)
-          fail strip_html(body.gsub(STDOUT_REGEXP, '\1'))
+          raise strip_html(body.gsub(STDOUT_REGEXP, '\1'))
         end
       end
 
@@ -154,13 +154,13 @@ module PostfixAdmin
       end
 
       def self.request(method, path, body, ssl, port)
-        response = API::HTTP::Request.new(method, path, body, ssl, port)
-                   .response
+        response =
+          API::HTTP::Request.new(method, path, body, ssl, port).response
         if response.code.to_i >= 400
           error_msg =
             "#{name}##{__method__}: #{response.code} #{response.message}"
           Chef::Log.fatal(error_msg)
-          fail error_msg
+          raise error_msg
         else
           parse_response_body(response.body)
         end

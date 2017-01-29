@@ -24,11 +24,11 @@ def default_http_port
 end
 
 def update_listen_ports(port)
-  if node['apache']['listen_ports'].nil?
+  listen_ports = node['apache']['listen_ports']
+  if listen_ports.nil?
     node.set['apache']['listen_ports'] = [port]
-  else
-    return if node['apache']['listen_ports'].include?(port)
-    node.set['apache']['listen_ports'] = node['apache']['listen_ports'] + [port]
+  elsif !listen_ports.include?(port)
+    node.set['apache']['listen_ports'] = listen_ports + [port]
   end
 end
 

@@ -79,7 +79,7 @@ def default_db_port
   when 'postgresql'
     node['postgresql']['config']['port']
   else
-    fail "Port for \"#{db_type}\" type not known."
+    raise "Port for \"#{db_type}\" type not known."
   end
 end
 
@@ -138,9 +138,9 @@ action :create do
   @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
   username, domain = address.split('@', 2)
   if domain.nil?
-    fail Chef::Exceptions::ArgumentError,
-         'Could not get the domain name from the address argument, it should '\
-         'have the following format: user@domain.tld'
+    raise Chef::Exceptions::ArgumentError,
+          'Could not get the domain name from the address argument, it should '\
+          'have the following format: user@domain.tld'
   end
   db = PostfixAdmin::DB.new(
     type: db_type, user: db_user, password: db_password, dbname: db_name,

@@ -83,7 +83,7 @@ def default_db_port
   when 'postgresql'
     node['postgresql']['config']['port']
   else
-    fail "Port for \"#{db_type}\" type not known."
+    raise "Port for \"#{db_type}\" type not known."
   end
 end
 
