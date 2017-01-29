@@ -74,7 +74,8 @@ Please, [let us know](https://github.com/zuazo/postfixadmin-cookbook/issues/new?
 
 ## Required Applications
 
-* Ruby `1.9.3` or higher.
+* Chef `12` or higher.
+* Ruby `2.2` or higher.
 
 ## Other Requirements
 
