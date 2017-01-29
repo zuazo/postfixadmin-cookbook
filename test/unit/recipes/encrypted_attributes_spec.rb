@@ -76,7 +76,7 @@ describe 'postfixadmin encrypted attributes' do
           }
         ).to_return(status: 200, body: 'ok', headers: {})
       resource.old_run_action(:create)
-      WebMock.allow_net_connect!
+      WebMock.allow_net_connect!(net_http_connect_on_start: true)
     end
   end
 
