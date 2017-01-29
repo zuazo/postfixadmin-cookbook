@@ -32,6 +32,19 @@ def update_listen_ports(port)
   end
 end
 
+# Fix apache cookbook version 3.2.2 issue:
+# https://github.com/sous-chefs/apache2/pull/422
+def fix_apache_cookbook_pr422
+  if node['apache']['listen_addresses'].nil?
+    node.default['apache']['listen_addresses'] = %w(*)
+  end
+  if node['apache']['listen_ports'].nil?
+    node.default['apache']['listen_ports'] = %w(80 443)
+  end
+end
+
+fix_apache_cookbook_pr422
+
 http_port = node['postfixadmin']['port'] || default_http_port
 update_listen_ports(http_port)
 
