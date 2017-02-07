@@ -31,5 +31,6 @@ end
 
 # Required for the integration tests
 package 'patch'
+package 'bzip2'
 include_recipe 'phantomjs'
 include_recipe 'nokogiri'
