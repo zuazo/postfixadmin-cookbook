@@ -4,13 +4,43 @@ rvm:
 
 sudo: required
 
+services: docker
+
 env:
-- CHEF_VERSION="~> 12.0"
+  matrix:
+  - TESTS="style unit" CHEF_VERSION="~> 12.0"
+  - TESTS="integration[mysql-centos-6,verify]"
+  - TESTS="integration[mysql-scientific-66,verify]"
+  - TESTS="integration[postgresql-centos-6,verify]"
+  - TESTS="integration[nginx-centos-6,verify]"
+  - TESTS="integration[without-webserver-centos-6,verify]"
+  - TESTS="integration[map-files-centos-6,verify]"
+  - TESTS="integration[ssl-centos-6,verify]"
+  - TESTS="integration[ssl-port-centos-6,verify]"
 
-before_install:
-- gem install bundler # Update bundler
-- gem update --system # https://github.com/sickill/rainbow/issues/48
+matrix:
+  exclude:
+  - rvm: 2.2
+    env: TESTS="integration[mysql-centos-6,verify]"
+  - rvm: 2.2
+    env: TESTS="integration[mysql-scientific-66,verify]"
+  - rvm: 2.2
+    env: TESTS="integration[postgresql-centos-6,verify]"
+  - rvm: 2.2
+    env: TESTS="integration[nginx-centos-6,verify]"
+  - rvm: 2.2
+    env: TESTS="integration[without-webserver-centos-6,verify]"
+  - rvm: 2.2
+    env: TESTS="integration[map-files-centos-6,verify]"
+  - rvm: 2.2
+    env: TESTS="integration[ssl-centos-6,verify]"
+  - rvm: 2.2
+    env: TESTS="integration[ssl-port-centos-6,verify]"
 
-bundler_args: --jobs=3 --retry=3 --without='doc integration integration_docker integration_vagrant integration_cloud guard'
+before_install: curl -L https://www.getchef.com/chef/install.sh | sudo bash -s -- -P chefdk -v 1.2.22
 
-script: travis_retry bundle exec rake style unit
+install: chef exec bundle install --jobs=3 --retry=3 --without='doc integration_vagrant integration_cloud guard'
+
+before_script: sudo iptables -L DOCKER || sudo iptables -N DOCKER
+
+script: travis_retry chef exec bundle exec rake $TESTS

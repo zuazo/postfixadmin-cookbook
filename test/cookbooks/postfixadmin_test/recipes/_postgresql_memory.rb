@@ -34,6 +34,7 @@ if node['postgresql']['version'].to_f <= 9.3
 
   execute 'sysctl -p /etc/sysctl.d/postgresql.conf' do
     action :nothing
+    ignore_failure true # for Docker
   end
 
   template '/etc/sysctl.d/postgresql.conf' do
