@@ -27,6 +27,7 @@ if ENV.key?('CHEF_VERSION') &&
 end
 
 cookbook 'apt'
+cookbook 'netstat'
 cookbook 'selinux'
 metadata
 

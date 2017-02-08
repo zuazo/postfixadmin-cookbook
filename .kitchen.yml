@@ -12,84 +12,68 @@ provisioner:
 
 platforms:
 - name: ubuntu-10.04
-  run_list: ["recipe[apt]"]
+  run_list: recipe[apt]
 - name: ubuntu-12.04
-  run_list: ["recipe[apt]"]
+  run_list: recipe[apt]
 - name: ubuntu-14.04
-  run_list: ["recipe[apt]"]
+  run_list: recipe[apt]
 - name: ubuntu-15.04
-  run_list: ["recipe[apt]"]
+  run_list: recipe[apt]
 - name: debian-6.0.10
-  run_list: ["recipe[apt]"]
+  run_list: recipe[apt]
 - name: debian-7.8
-  run_list: ["recipe[apt]"]
+  run_list: recipe[apt]
 - name: debian-8.1
-  run_list: ["recipe[apt]"]
+  run_list: recipe[apt]
 - name: centos-5.11
-  run_list: ["recipe[selinux::disabled]"]
+  run_list: recipe[selinux::disabled]
 - name: centos-6.6
-  run_list: ["recipe[selinux::disabled]"]
+  run_list: recipe[selinux::disabled]
 - name: fedora-20
-  run_list: ["recipe[selinux::disabled]"]
+  run_list: recipe[selinux::disabled]
 
 suites:
 - name: mysql
   run_list:
+  - recipe[netstat]
   - recipe[postfixadmin_test::default]
 - name: postgresql
-  excludes:
-  # https://github.com/hw-cookbooks/postgresql/issues/249
-  - ubuntu-10.04
-  - ubuntu-12.04
-  - ubuntu-15.04
-  - debian-6.0.10
-  - debian-7.8
-  - fedora-20
   run_list:
+  - recipe[netstat]
   - recipe[postfixadmin_test::default]
   attributes:
     postfixadmin:
       database:
         type: postgresql
 - name: nginx
-  excludes:
-  # a conflict between mysql and php-fpm packages
-  - centos-5.11
-  # php-fpm cookbook error: No such file or directory - /sbin/status
-  - ubuntu-15.04
   run_list:
+  - recipe[netstat]
   - recipe[postfixadmin_test]
   attributes:
     postfixadmin:
       web_server: nginx
 - name: without-webserver
-  excludes:
-  # some dependency installs apache2
-  - ubuntu-10.04
-  - debian-6.0.10
   run_list:
+  - recipe[netstat]
   - recipe[postfixadmin_test]
   attributes:
     postfixadmin:
       web_server: false
 - name: map_files
   run_list:
+  - recipe[netstat]
   - recipe[postfix-full]
   - recipe[postfixadmin_test::map_files]
 - name: ssl
-  excludes:
-  # apache2::mod_ssl not compatible
-  - centos-5.11
   run_list:
+  - recipe[netstat]
   - recipe[postfixadmin_test::default]
   attributes:
     postfixadmin:
       ssl: true
 - name: ssl-port
-  excludes:
-  # apache2::mod_ssl not compatible
-  - centos-5.11
   run_list:
+  - recipe[netstat]
   - recipe[postfixadmin_test::default]
   attributes:
     postfixadmin:
