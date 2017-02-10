@@ -171,6 +171,19 @@ describe 'postfixadmin::default' do
     end
   end # context on Ubuntu 12.04
 
+  context 'on Ubuntu 16.04' do
+    before do
+      chef_runner.node.automatic['platform'] = 'ubuntu'
+      chef_runner.node.automatic['platform_version'] = '16.04'
+    end
+
+    %w(php-imap php-mysql).each do |pkg|
+      it "installs #{pkg} package" do
+        expect(chef_run).to install_package(pkg)
+      end
+    end
+  end # context on Ubuntu 16.04
+
   context 'on CentOS 5.10' do
     before do
       chef_runner.node.automatic['platform'] = 'centos'
@@ -230,6 +243,8 @@ describe 'postfixadmin::default' do
         .and_return(true)
       stub_command('ls /var/lib/postgresql/9.1/main/recovery.conf')
         .and_return(true)
+      stub_command('ls /var/lib/postgresql/9.5/main/recovery.conf')
+        .and_return(true)
       chef_runner.node.set['postfixadmin']['database']['type'] = 'postgresql'
     end
 
@@ -274,6 +289,19 @@ describe 'postfixadmin::default' do
         end
       end
     end # context on Ubuntu 12.04
+
+    context 'on Ubuntu 16.04' do
+      before do
+        chef_runner.node.automatic['platform'] = 'ubuntu'
+        chef_runner.node.automatic['platform_version'] = '16.04'
+      end
+
+      %w(php-pgsql).each do |pkg|
+        it "installs #{pkg} package" do
+          expect(chef_run).to install_package(pkg)
+        end
+      end
+    end # context on Ubuntu 16.04
 
     context 'on CentOS 5.10' do
       before do

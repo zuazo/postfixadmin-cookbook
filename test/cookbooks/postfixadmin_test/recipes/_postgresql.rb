@@ -23,7 +23,14 @@
 # https://github.com/hw-cookbooks/postgresql/issues/108
 ENV['LANGUAGE'] = ENV['LANG'] = node['locale']['lang']
 ENV['LC_ALL'] = node['locale']['lang']
-include_recipe 'locale'
+
+def locale_cookbook_support?
+  File.exist?('/usr/sbin/update-locale') ||
+    File.exist?('/usr/bin/localectl') ||
+    File.exist?('/etc/sysconfig/i18n')
+end
+
+include_recipe 'locale' if locale_cookbook_support?
 
 include_recipe 'postfixadmin_test::_postgresql_memory'
 node.default['postgresql']['password']['postgres'] = 'vagrant_postgres'

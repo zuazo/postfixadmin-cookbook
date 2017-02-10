@@ -19,29 +19,31 @@
 # limitations under the License.
 #
 
-default['postfixadmin']['packages']['requirements'] =
-  case node['platform']
-  when 'centos', 'redhat', 'scientific', 'fedora', 'amazon'
-    if node['platform_version'].to_f < 6.0
+case node['platform']
+when 'centos', 'redhat', 'scientific', 'fedora', 'amazon'
+  if node['platform_version'].to_f < 6.0
+    default['postfixadmin']['packages']['requirements'] =
       %w(php53-imap php53-mbstring)
-    else
+    default['postfixadmin']['packages']['mysql'] = %w(php53-mysql)
+    default['postfixadmin']['packages']['postgresql'] = %w(php53-pgsql)
+  else
+    default['postfixadmin']['packages']['requirements'] =
       %w(php-imap php-mbstring)
-    end
-  else
-    %w(php5-imap)
+    default['postfixadmin']['packages']['mysql'] = %w(php-mysql)
+    default['postfixadmin']['packages']['postgresql'] = %w(php-pgsql)
   end
-
-default['postfixadmin']['packages']['mysql'] =
-  case node['platform']
-  when 'centos', 'redhat', 'scientific', 'fedora', 'amazon'
-    node['platform_version'].to_f < 6.0 ? %w(php53-mysql) : %w(php-mysql)
+when 'ubuntu'
+  if node['platform_version'].to_f < 16.0
+    default['postfixadmin']['packages']['requirements'] = %w(php5-imap)
+    default['postfixadmin']['packages']['mysql'] = %w(php5-mysql)
+    default['postfixadmin']['packages']['postgresql'] = %w(php5-pgsql)
   else
-    %w(php5-mysql)
+    default['postfixadmin']['packages']['requirements'] = %w(php-imap)
+    default['postfixadmin']['packages']['mysql'] = %w(php-mysql)
+    default['postfixadmin']['packages']['postgresql'] = %w(php-pgsql)
   end
-default['postfixadmin']['packages']['postgresql'] =
-  case node['platform']
-  when 'centos', 'redhat', 'scientific', 'fedora', 'amazon'
-    node['platform_version'].to_f < 6.0 ? %w(php53-pgsql) : %w(php-pgsql)
-  else
-    %w(php5-pgsql)
-  end
+else
+  default['postfixadmin']['packages']['requirements'] = %w(php5-imap)
+  default['postfixadmin']['packages']['mysql'] = %w(php5-mysql)
+  default['postfixadmin']['packages']['postgresql'] = %w(php5-pgsql)
+end
