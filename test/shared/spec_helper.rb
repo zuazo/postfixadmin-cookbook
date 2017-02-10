@@ -19,6 +19,7 @@
 
 require 'serverspec'
 require 'infrataster/rspec'
+require_relative 'system_info_helpers'
 
 # Set backend type
 set :backend, :exec

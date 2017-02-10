@@ -1,6 +1,7 @@
 # encoding: UTF-8
 #
 # Author:: Xabier de Zuazo (<xabier@zuazo.org>)
+# Copyright:: Copyright (c) 2017 Xabier de Zuazo
 # Copyright:: Copyright (c) 2015 Onddo Labs, SL.
 # License:: Apache License, Version 2.0
 #
@@ -42,7 +43,7 @@ describe server(:web) do
     end
   end # http /setup.php
 
-  describe capybara(site) do
+  describe capybara(site), if: phantomjs? do
     let(:user_email) { 'admin@admin.org' }
     let(:user_password) { 'p@ssw0rd1' }
     # Hack to avoid forcing to use "http://" in

@@ -1,6 +1,7 @@
 # encoding: UTF-8
 #
 # Author:: Xabier de Zuazo (<xabier@zuazo.org>)
+# Copyright:: Copyright (c) 2017 Xabier de Zuazo
 # Copyright:: Copyright (c) 2015 Onddo Labs, SL.
 # License:: Apache License, Version 2.0
 #
@@ -20,7 +21,9 @@
 require_relative '../../../kitchen/data/spec_helper'
 
 describe server(:web) do
-  describe http('https://127.0.0.1/login.php', ssl: { verify: false }) do
+  site = 'https://127.0.0.1'
+
+  describe http("#{site}/login.php", ssl: { verify: false }) do
     it 'includes PHP cookie' do
       expect(response['Set-Cookie']).to include 'PHPSESSID'
     end
@@ -30,7 +33,7 @@ describe server(:web) do
     end
   end # http /login.php
 
-  describe http('https://127.0.0.1/setup.php', ssl: { verify: false }) do
+  describe http("#{site}/setup.php", ssl: { verify: false }) do
     it 'setup.php returns that everything is fine' do
       expect(response.body).to include('Everything seems fine')
     end
@@ -40,12 +43,12 @@ describe server(:web) do
     end
   end # http /setup.php
 
-  describe capybara('https://127.0.0.1') do
+  describe capybara(site), if: phantomjs? do
     let(:user_email) { 'admin@admin.org' }
     let(:user_password) { 'p@ssw0rd1' }
     # Hack to avoid forcing to use "http://" in
     # Infrataster::Contexts::CapybaraContext#before_each
-    before { Capybara.app_host = 'https://127.0.0.1' }
+    before { Capybara.app_host = site }
 
     it 'signs in' do
       visit '/login.php'
