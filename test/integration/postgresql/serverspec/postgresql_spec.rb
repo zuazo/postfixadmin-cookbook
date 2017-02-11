@@ -19,10 +19,6 @@
 
 require_relative '../../../kitchen/data/spec_helper'
 
-def centos?
-  File.exist?('/etc/centos-release')
-end
-
 family = os[:family].downcase
 release = os[:release].to_i
 
