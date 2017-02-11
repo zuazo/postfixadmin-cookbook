@@ -27,7 +27,6 @@ description 'This cookbook is used with test-kitchen to test the parent, '\
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '0.1.0'
 
-depends 'locale', '~> 2.0'
 depends 'postfixadmin'
 depends 'postfix-full'
 depends 'phantomjs', '~> 1.0'
