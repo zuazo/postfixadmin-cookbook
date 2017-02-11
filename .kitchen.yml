@@ -19,8 +19,6 @@ platforms:
   run_list: recipe[apt]
 - name: ubuntu-15.04
   run_list: recipe[apt]
-- name: debian-6.0.10
-  run_list: recipe[apt]
 - name: debian-7.8
   run_list: recipe[apt]
 - name: debian-8.1
@@ -37,6 +35,15 @@ suites:
   run_list:
   - recipe[netstat]
   - recipe[postfixadmin_test::default]
+  excludes:
+  # mysql cookbook: No candidate version available for mysql-community-server
+  - centos-7
+  # Can't connect to MySQL server on '127.0.0.1' (111)
+  - ubuntu-12.04
+  - ubuntu-14.04
+  - ubuntu-16.04
+  # mysql cookbook: undefined method `split' for nil:NilClass
+  - ubuntu-16.10
 - name: postgresql
   run_list:
   - recipe[netstat]
@@ -45,6 +52,15 @@ suites:
     postfixadmin:
       database:
         type: postgresql
+  excludes:
+  # cpio: cap_set_file failed - Operation not supported
+  - centos-7
+  # /etc/init.d/postgresql: line 24: /etc/sysconfig/network: No such file or directory
+  - scientific-6.6
+  # apache2 cookbook: No candidate version available for libapache2-mod-php5
+  - ubuntu-16.04
+  # php cookbook: No candidate version available for php5-cgi
+  - ubuntu-16.10
 - name: nginx
   run_list:
   - recipe[netstat]
@@ -52,6 +68,20 @@ suites:
   attributes:
     postfixadmin:
       web_server: nginx
+  excludes:
+  # mysql cookbook: mysql-*.remi.x86_64 conflicts with file from package mysql-*.i386
+  - centos-5
+  # mysql cookbook: No candidate version available for mysql-community-server
+  - centos-7
+  # /etc/init.d/nginx: line 17: /etc/sysconfig/network: No such file or directory
+  - scientific-6.6
+  # Can't connect to MySQL server on '127.0.0.1' (111)
+  - ubuntu-12.04
+  - ubuntu-14.04
+  # php-fpm cookbook: No candidate version available for php5-fpm
+  - ubuntu-16.04
+  # mysql cookbook: undefined method `split' for nil:NilClass
+  - ubuntu-16.10
 - name: without-webserver
   run_list:
   - recipe[netstat]
@@ -64,6 +94,12 @@ suites:
   - recipe[netstat]
   - recipe[postfix-full]
   - recipe[postfixadmin_test::map_files]
+  excludes:
+  - centos-7
+  - ubuntu-12.04
+  - ubuntu-14.04
+  - ubuntu-16.04
+  - ubuntu-16.10
 - name: ssl
   run_list:
   - recipe[netstat]
@@ -71,6 +107,12 @@ suites:
   attributes:
     postfixadmin:
       ssl: true
+  excludes:
+  - centos-7
+  - ubuntu-12.04
+  - ubuntu-14.04
+  - ubuntu-16.04
+  - ubuntu-16.10
 - name: ssl-port
   run_list:
   - recipe[netstat]
@@ -79,3 +121,9 @@ suites:
     postfixadmin:
       port: 8443
       ssl: true
+  excludes:
+  - centos-7
+  - ubuntu-12.04
+  - ubuntu-14.04
+  - ubuntu-16.04
+  - ubuntu-16.10
