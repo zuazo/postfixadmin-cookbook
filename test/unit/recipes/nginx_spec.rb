@@ -36,8 +36,8 @@ describe 'postfixadmin::nginx' do
       .and_return(true)
   end
 
-  it 'includes nginx recipe' do
-    expect(chef_run).to include_recipe('nginx')
+  it 'includes chef_nginx recipe' do
+    expect(chef_run).to include_recipe('chef_nginx')
   end
 
   it 'includes postfixadmin::php_fpm recipe' do
@@ -65,9 +65,7 @@ describe 'postfixadmin::nginx' do
   end
 
   it 'disables nginx default site' do
-    allow(::File).to receive(:symlink?)
-      .with('/etc/nginx/sites-enabled/default').and_return(true)
-    expect(chef_run).to run_execute('nxdissite default')
+    expect(chef_run).to disable_nginx_site('default')
   end
 
   it 'creates postfixadmin virtualhost' do
@@ -90,8 +88,20 @@ describe 'postfixadmin::nginx' do
   end
 
   it 'enables nginx postfixadmin site' do
-    allow(::File).to receive(:symlink?)
-      .with('/etc/nginx/sites-enabled/postfixadmin').and_return(false)
-    expect(chef_run).to run_execute('nxensite postfixadmin')
+    expect(chef_run).to enable_nginx_site('postfixadmin')
+  end
+
+  context 'postfixadmin nginx_site resource' do
+    let(:resource) do
+      chef_run.nginx_site('postfixadmin')
+    end
+
+    it 'notifies nginx to restart' do
+      expect(resource).to notify('service[nginx]').to(:restart).immediately
+    end
+
+    it 'php-fpm nginx to restart' do
+      expect(resource).to notify('service[php-fpm]').to(:restart).immediately
+    end
   end
 end
