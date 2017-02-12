@@ -32,7 +32,6 @@ Table of Contents
   - [Including in a Cookbook Recipe](#including-in-a-cookbook-recipe)
   - [Including in the Run List](#including-in-the-run-list)
 - [PostgreSQL Support](#postgresql-support)
-  - [PostgreSQL Support on Debian and Ubuntu](#postgresql-support-on-debian-and-ubuntu)
   - [PostgreSQL Versions < 9.3](#postgresql-versions--93)
 - [Deploy with Docker](#deploy-with-docker)
 - [Testing](#testing)
@@ -444,19 +443,6 @@ PostgreSQL Support
 ==================
 
 PostfixAdmin with PostgreSQL may not work properly on some platforms: See for example [`postgresql` cookbook issue #249](https://github.com/hw-cookbooks/postgresql/issues/249). [Any feedback you can provide regarding the PostgreSQL support](https://github.com/zuazo/postfixadmin-cookbook/issues/new?title=PostgreSQL%20Support) will be greatly appreciated.
-
-## PostgreSQL Support on Debian and Ubuntu
-
-Due to [`postgresql` cookbook issue #108](https://github.com/hw-cookbooks/postgresql/issues/108), you should configure your system locale correctly for PostgreSQL to work. You can use the `locale` cookbook to fix this. For example:
-
-```ruby
-ENV['LANGUAGE'] = ENV['LANG'] = node['locale']['lang']
-ENV['LC_ALL'] = node['locale']['lang']
-include_recipe 'locale'
-# ...
-node.default['postfixadmin']['database']['type'] = 'postgresql'
-include_recipe 'postfixadmin'
-```
 
 ## PostgreSQL Versions < 9.3
 
