@@ -20,12 +20,11 @@
 #
 
 Chef::Recipe.send(:include, Chef::EncryptedAttributesHelpers)
-# include the #secure_password method:
-Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
 
 def mysql_password(user)
   key = "server_#{user}_password"
-  encrypted_attribute_write(['postfixadmin', 'mysql', key]) { secure_password }
+  encrypted_attribute_write(['postfixadmin', 'mysql', key]) { random_password }
 end
 
 self.encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']

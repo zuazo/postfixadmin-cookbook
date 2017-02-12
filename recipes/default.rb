@@ -19,9 +19,10 @@
 # limitations under the License.
 #
 
-::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
-::Chef::Recipe.send(:include, PostfixAdmin::PHP)
-::Chef::Recipe.send(:include, Chef::EncryptedAttributesHelpers)
+# include the #random_password method:
+Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
+Chef::Recipe.send(:include, PostfixAdmin::PHP)
+Chef::Recipe.send(:include, Chef::EncryptedAttributesHelpers)
 
 if %w(centos).include?(node['platform']) && node['platform_version'].to_i >= 7
   include_recipe 'yum-epel' # required for php-imap
@@ -51,11 +52,11 @@ self.encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
 
 db_password =
   encrypted_attribute_write(%w(postfixadmin database password)) do
-    secure_password
+    random_password
   end
 setup_password =
   encrypted_attribute_write(%w(postfixadmin setup_password)) do
-    secure_password
+    random_password
   end
 setup_password_encrypted =
   encrypted_attribute_write(%w(postfixadmin setup_password_encrypted)) do

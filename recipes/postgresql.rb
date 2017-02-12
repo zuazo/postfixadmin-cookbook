@@ -19,14 +19,14 @@
 # limitations under the License.
 #
 
-Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
 
 # Warning: saves the PostgreSQL password unencrypted
 if Chef::Config[:solo] && node['postgresql']['password']['postgres'].nil?
   raise 'You must set node["postgresql"]["password"]["postgres"] in '\
     'chef-solo mode.'
 elsif !Chef::Config[:solo]
-  node.set_unless['postgresql']['password']['postgres'] = secure_password
+  node.set_unless['postgresql']['password']['postgres'] = random_password
   node.save
 end
 
