@@ -25,7 +25,7 @@ end
 
 http_port = node['postfixadmin']['port'] || default_http_port
 
-include_recipe 'nginx'
+include_recipe 'chef_nginx'
 include_recipe 'postfixadmin::php_fpm'
 
 # Disable apache2, required for Debian 6
@@ -70,12 +70,8 @@ template File.join(node['nginx']['dir'], 'sites-available', 'postfixadmin') do
   notifies :reload, 'service[nginx]'
 end
 
-r = nginx_site 'postfixadmin' do
+nginx_site 'postfixadmin' do
   enable true
-end
-
-# Requierd by the LWRP
-if r.is_a?(::Chef::Resource) # Only works with Chef 12
-  r.notifies(:restart, 'service[nginx]', :immediately)
-  r.notifies(:restart, 'service[php-fpm]', :immediately)
+  notifies :restart, 'service[nginx]', :immediately
+  notifies :restart, 'service[php-fpm]', :immediately
 end
