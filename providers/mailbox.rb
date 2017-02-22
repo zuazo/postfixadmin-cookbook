@@ -156,7 +156,8 @@ action :create do
       block do
         api = PostfixAdmin::API.new(ssl, port, login_username, login_password)
         result = api.create_mailbox(
-          username, domain, password, mailbox, active, mail
+          local_part: username, domain: domain, password: password,
+          name: mailbox, active: active, welcome_mail: mail
         )
         Chef::Log.info("Created #{new_resource}: #{result}")
       end

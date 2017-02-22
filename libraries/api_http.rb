@@ -101,7 +101,18 @@ module PostfixAdmin
           Chef::Log.debug("#{self.class}: #{method} #{uri}")
           @http = self.class.create_http(uri, ssl)
           @request = self.class.create_request(method, uri)
-          @request.set_form_data(body) unless body.nil?
+          @request.set_form_data(serialize_body(body)) unless body.nil?
+        end
+
+        def serialize_body(body)
+          return body unless body.is_a?(Hash)
+          body.each_with_object({}) do |(k1, v1), hs|
+            if v1.is_a?(Hash)
+              v1.each { |k2, v2| hs["#{k1}[#{k2}]"] = v2 }
+            else
+              hs[k1] = v1
+            end
+          end
         end
 
         def response
@@ -113,23 +124,40 @@ module PostfixAdmin
       unless defined?(::PostfixAdmin::API::HTTP::STDOUT_REGEXP)
         STDOUT_REGEXP = /^.*class=['"]standout['"][^>]*>([^\n]*?)\n.*$/m
       end
-      unless defined?(::PostfixAdmin::API::HTTP::ERROR_REGEXP)
-        ERROR_REGEXP = /^.*class=['"]error_msg['"][^>]*>([^<]*)<.*$/m
+      unless defined?(::PostfixAdmin::API::HTTP::ERROR_REGEXP1)
+        ERROR_REGEXP1 = /^.*class=['"]error_msg['"][^>]*>([^<]+)<.*$/m
+      end
+      unless defined?(::PostfixAdmin::API::HTTP::ERROR_REGEXP2)
+        ERROR_REGEXP2 = /^.*(Invalid\s+token!).*$/m
+      end
+      unless defined?(::PostfixAdmin::API::HTTP::SETUP_OK_REGEXP)
+        SETUP_OK_REGEXP = /You +are +done +with +your +basic +setup/
       end
       unless defined?(::PostfixAdmin::API::HTTP::SETUP_ERROR_REGEXP)
-        SETUP_ERROR_REGEXP = /Setup +password +not +specified +correctly/
+        SETUP_ERROR_REGEXP = /Please +fix +the +errors +listed +above/
+      end
+      unless defined?(::PostfixAdmin::API::HTTP::SETUP_STDERR_REGEXP1)
+        SETUP_STDERR_REGEXP1 = %r{^.*<b>(Error: .+)</b>.*$}m
+      end
+      unless defined?(::PostfixAdmin::API::HTTP::SETUP_STDERR_REGEXP2)
+        SETUP_STDERR_REGEXP2 =
+          %r{^.*<tr>\s*(?:<td>.+?</td>\s*){2}<td>([^<]+?)</td>\s*</tr>.*$}m
+      end
+      unless defined?(::PostfixAdmin::API::HTTP::TOKEN_REGEXP)
+        TOKEN_REGEXP =
+          /^.*<input\s+(?:[^>]*\s+)?name="token"\s+value="([^"]+)".*$/m
       end
 
       # rubocop:disable Style/ClassVars
 
-      @@authenticated = false
+      @@token = nil
 
-      def self.authenticated=(arg)
-        @@authenticated = arg
+      def self.token=(arg)
+        @@token = arg
       end
 
-      def self.authenticated?
-        @@authenticated == true
+      def self.token
+        @@token
       end
 
       # rubocop:enable Style/ClassVars
@@ -138,13 +166,29 @@ module PostfixAdmin
         html.gsub(%r{</?[^>]+?>}, ' ')
       end
 
+      def self.error(error_msg)
+        Chef::Log.fatal(error_msg)
+        raise error_msg
+      end
+
       def self.parse_response_error(body)
-        if body.match(ERROR_REGEXP)
-          error_msg = "#{name}##{__method__}: #{body.gsub(ERROR_REGEXP, '\1')}"
-          Chef::Log.fatal(error_msg)
-          raise error_msg
-        elsif body.match(SETUP_ERROR_REGEXP)
-          raise strip_html(body.gsub(STDOUT_REGEXP, '\1'))
+        if body.match(ERROR_REGEXP1)
+          error("#{name}##{__method__}: #{body.gsub(ERROR_REGEXP1, '\1')}")
+        elsif body.match(ERROR_REGEXP2)
+          error("#{name}##{__method__}: #{body.gsub(ERROR_REGEXP2, '\1')}")
+        end
+      end
+
+      def self.parse_setup_body(body)
+        return if body.match(SETUP_OK_REGEXP)
+        if body.match(SETUP_ERROR_REGEXP)
+          error(strip_html(body.gsub(STDOUT_REGEXP, '\1')))
+        elsif body.match(SETUP_STDERR_REGEXP1)
+          error(strip_html(body.gsub(SETUP_STDERR_REGEXP1, '\1')))
+        elsif body.match(SETUP_STDERR_REGEXP2)
+          error(strip_html(body.gsub(SETUP_STDERR_REGEXP2, '\1')))
+        else
+          error('Unknown error during the setup of PostfixAdmin.')
         end
       end
 
@@ -153,14 +197,21 @@ module PostfixAdmin
         strip_html(body.gsub(STDOUT_REGEXP, '\1')) if body.match(STDOUT_REGEXP)
       end
 
+      def self.parse_token_body(body)
+        if body.match(TOKEN_REGEXP)
+          body.gsub(TOKEN_REGEXP, '\1').tap do |token|
+            Chef::Log.debug("#{name}##{__method__} token: #{token}")
+          end
+        else
+          error("#{name}##{__method__}: Token not found.")
+        end
+      end
+
       def self.request(method, path, body, ssl, port)
         response =
           API::HTTP::Request.new(method, path, body, ssl, port).response
         if response.code.to_i >= 400
-          error_msg =
-            "#{name}##{__method__}: #{response.code} #{response.message}"
-          Chef::Log.fatal(error_msg)
-          raise error_msg
+          error("#{name}##{__method__}: #{response.code} #{response.message}")
         else
           parse_response_body(response.body)
         end
@@ -179,7 +230,23 @@ module PostfixAdmin
       end
 
       def self.setup(body, ssl = false, port = nil)
-        post('/setup.php', body, ssl, port)
+        response =
+          API::HTTP::Request.new('post', '/setup.php', body, ssl, port).response
+        if response.code.to_i >= 400
+          error("#{name}##{__method__}: #{response.code} #{response.message}")
+        else
+          parse_setup_body(response.body)
+          parse_response_body(response.body)
+        end
+      end
+
+      def self.get_token(url)
+        response = API::HTTP::Request.new('get', url, nil, @ssl, @port).response
+        if response.code.to_i >= 400
+          error("#{name}##{__method__}: #{response.code} #{response.message}")
+        else
+          parse_token_body(response.body)
+        end
       end
 
       attr_writer :username, :password, :ssl
@@ -193,26 +260,22 @@ module PostfixAdmin
 
       def setup(username, password, setup_password)
         body = {
-          form: 'createadmin',
-          setup_password: setup_password,
-          fUsername: username,
-          fPassword: password, fPassword2: password,
+          form: 'createadmin', setup_password: setup_password,
+          username: username, password: password, password2: password,
           submit: 'Add+Admin'
         }
         self.class.setup(body, @ssl, @port)
       end
 
       def login
-        return if self.class.authenticated?
+        return unless self.class.token.nil?
         self.class.index(@ssl, @port)
         body = {
-          fUsername: @username,
-          fPassword: @password,
-          lang: 'en',
+          fUsername: @username, fPassword: @password, lang: 'en',
           submit: 'Login'
         }
         self.class.post('/login.php', body, @ssl, @port)
-        self.class.authenticated = true
+        self.class.token = self.class.get_token('/edit.php?table=domain')
       end
 
       def get(path)
@@ -222,6 +285,7 @@ module PostfixAdmin
 
       def post(path, body)
         login
+        body[:token] = self.class.token unless self.class.token.nil?
         self.class.post(path, body, @ssl, @port)
       end
     end

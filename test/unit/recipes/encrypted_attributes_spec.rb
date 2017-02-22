@@ -21,7 +21,7 @@ require_relative '../spec_helper'
 require 'chef/encrypted_attributes'
 require 'sequel'
 
-describe 'postfixadmin encrypted attributes' do
+describe 'postfixadmin encrypted attributes', order: :random do
   let(:step_into) do
     %w(
       postfixadmin_admin
@@ -64,17 +64,18 @@ describe 'postfixadmin encrypted attributes' do
     it 'creates the admin user (issue #6)' do
       chef_run
       WebMock.disable_net_connect!
+      success = 'You are done with your basic setup'
       stub_request(:post, 'http://127.0.0.1/setup.php')
         .with(
           body: {
-            'fPassword' => 'p@ssw0rd1',
-            'fPassword2' => 'p@ssw0rd1',
-            'fUsername' => 'admin@admin.org',
             'form' => 'createadmin',
+            'password' => 'p@ssw0rd1',
+            'password2' => 'p@ssw0rd1',
             'setup_password' => setup_password,
-            'submit' => 'Add+Admin'
+            'submit' => 'Add+Admin',
+            'username' => 'admin@admin.org'
           }
-        ).to_return(status: 200, body: 'ok', headers: {})
+        ).to_return(status: 200, body: success, headers: {})
       resource.old_run_action(:create)
       WebMock.allow_net_connect!(net_http_connect_on_start: true)
     end

@@ -22,8 +22,8 @@ require_relative '../../../kitchen/data/spec_helper'
 
 describe server(:web) do
   describe http('/login.php') do
-    it 'includes PHP cookie' do
-      expect(response['Set-Cookie']).to include 'PHPSESSID'
+    it 'includes PotfixAdmin cookie' do
+      expect(response['Set-Cookie']).to include 'postfixadmin_session'
     end
 
     it 'returns "Postfix Admin" string' do
@@ -54,12 +54,12 @@ describe server(:web) do
     end
 
     it 'lists admins' do
-      visit '/list-admin.php'
+      visit '/list.php?table=admin'
       expect(find('#admin_table')).to have_content 'admin@admin.org'
     end
 
     it 'lists domains' do
-      visit '/list-domain.php'
+      visit '/list.php?table=domain'
       expect(find('#admin_table')).to have_content 'foobar.com'
     end
 
@@ -67,14 +67,24 @@ describe server(:web) do
       before { visit '/list-virtual.php?domain=foobar.com' }
 
       it 'lists domain aliases' do
-        expect(find('#alias_domain_table')).to have_content 'example.com'
+        expect(first('#admin_table tr:nth-child(2) > td:nth-child(1)'))
+          .to have_content 'example.com'
       end
 
       it 'lists aliases' do
-        expect(find('#alias_table tr:nth-child(3) > td:nth-child(1)'))
-          .to have_content 'admin@foobar.com'
-        expect(find('#alias_table tr:nth-child(3) > td:nth-child(2)'))
-          .to have_content 'postmaster@foobar.com'
+        text = 'admin@foobar.com'
+        expect(page).to have_selector(
+          '#admin_table tr:nth-child(3) > td:nth-child(2)',
+          text: Regexp.new(Regexp.escape(text))
+        )
+      end
+
+      it 'lists alias tos' do
+        text = 'postmaster@foobar.com'
+        expect(page).to have_selector(
+          '#admin_table tr:nth-child(3) > td:nth-child(3)',
+          text: Regexp.new(Regexp.escape(text))
+        )
       end
 
       it 'lists mailboxes' do

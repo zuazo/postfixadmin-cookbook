@@ -28,7 +28,7 @@ class Chef
   end
 end
 
-describe 'postfixadmin::default' do
+describe 'postfixadmin::default', order: :random do
   let(:db_name) { 'postfixadmin_db' }
   let(:db_user) { 'postfixadmin_user' }
   let(:db_password) { 'postfixadmin_pass' }
@@ -150,8 +150,21 @@ describe 'postfixadmin::default' do
     end
   end
 
+  it 'creates templates_c directory' do
+    expect(chef_run)
+      .to create_directory(
+        "#{node['ark']['prefix_root']}/postfixadmin/templates_c"
+      )
+      .with_owner('www-data')
+      .with_group('www-data')
+      .with_mode('00750')
+  end
+
   it 'creates configuration file' do
-    expect(chef_run).to create_template('config.local.php')
+    expect(chef_run)
+      .to create_template(
+        "#{node['ark']['prefix_root']}/postfixadmin/config.local.php"
+      )
       .with_source('config.local.php.erb')
       .with_owner('root')
       .with_group('www-data')

@@ -19,7 +19,7 @@
 
 require_relative '../spec_helper'
 
-describe 'postfixadmin::map_files' do
+describe 'postfixadmin::map_files', order: :random do
   let(:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
 
   it 'creates tables directory' do

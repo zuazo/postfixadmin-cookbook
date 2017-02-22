@@ -19,7 +19,7 @@
 
 require_relative '../spec_helper'
 
-describe 'postfixadmin::mysql' do
+describe 'postfixadmin::mysql', order: :random do
   let(:mysql_service) { 'mysql_service_name' }
   let(:mysql_data_dir) { '/var/lib/mysql' }
   let(:mysql_run_group) { 'mysql_group' }

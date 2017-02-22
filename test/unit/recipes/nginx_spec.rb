@@ -19,7 +19,7 @@
 
 require_relative '../spec_helper'
 
-describe 'postfixadmin::nginx' do
+describe 'postfixadmin::nginx', order: :random do
   let(:chef_run) do
     ChefSpec::SoloRunner.new do |node|
       node.set['postfixadmin']['ssl'] = true

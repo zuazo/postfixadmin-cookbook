@@ -19,7 +19,7 @@
 
 require_relative '../spec_helper'
 
-describe 'postfixadmin::php_fpm' do
+describe 'postfixadmin::php_fpm', order: :random do
   let(:chef_runner) { ChefSpec::SoloRunner.new }
   let(:chef_run) { chef_runner.converge(described_recipe) }
   let(:node) { chef_runner.node }

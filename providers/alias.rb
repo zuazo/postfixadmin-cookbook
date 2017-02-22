@@ -151,7 +151,9 @@ action :create do
     ruby_block "create alias #{address}" do
       block do
         api = PostfixAdmin::API.new(ssl, port, login_username, login_password)
-        result = api.create_alias(username, domain, goto, active)
+        result = api.create_alias(
+          localpart: username, domain: domain, goto: goto, active: active
+        )
         Chef::Log.info("Created #{new_resource}: #{result}")
       end
       action :create

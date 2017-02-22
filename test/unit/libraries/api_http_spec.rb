@@ -1,7 +1,7 @@
 # encoding: UTF-8
 #
 # Author:: Xabier de Zuazo (<xabier@zuazo.org>)
-# Copyright:: Copyright (c) 2014 Onddo Labs, SL.
+# Copyright:: Copyright (c) 2017 Xabier de Zuazo
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,20 +18,29 @@
 #
 
 require_relative '../spec_helper'
+require 'api_http'
 
-describe 'postfixadmin::postgresql', order: :random do
-  let(:db_password) { 'postfixadmin_pass' }
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new do |node|
-      node.set['postgresql']['password']['postgres'] = db_password
-    end.converge(described_recipe)
-  end
-  before do
-    stub_command('ls /var/lib/postgresql/9.1/main/recovery.conf')
-      .and_return(true)
-  end
+def sample_file(file)
+  File.join(::File.dirname(__FILE__), '..', 'samples', file)
+end
 
-  it 'includes postgresql::server recipe' do
-    expect(chef_run).to include_recipe('postgresql::server')
+def sample(file)
+  File.read(sample_file(file))
+end
+
+describe PostfixAdmin::API::HTTP, order: :random do
+  let(:path) { '/' }
+  let(:url) { "127.0.0.1:80#{path}" }
+
+  describe '.get_token' do
+    let(:path) { '/edit.php?table=domain' }
+    let(:token) { '6c2ef0d4187972393f047120f3fbc5f1' }
+    before do
+      stub_request(:get, url).to_return(body: sample('edit_domain.html'))
+    end
+
+    it 'returns the token' do
+      expect(described_class.get_token(path)).to eq(token)
+    end
   end
 end

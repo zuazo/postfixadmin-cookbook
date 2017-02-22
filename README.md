@@ -77,6 +77,8 @@ Please, [let us know](https://github.com/zuazo/postfixadmin-cookbook/issues/new?
 * Chef `12` or higher.
 * Ruby `2.2` or higher.
 
+Only Postfix Admin version `3` or higher is supported by this cookbook. For older versions, use cookbook versions `< 3`.
+
 ## Other Requirements
 
 On RedHat based platforms, you need to disable or configure SELinux correctly to work with `mysql` cookbook. You can use the `selinux::disabled` recipe for that.
@@ -106,7 +108,7 @@ Attributes
 
 | Attribute                                             | Default                 | Description                    |
 |:------------------------------------------------------|:------------------------|:-------------------------------|
-| `node['postfixadmin']['version']`                     | `'2.3.7'`               | PostfixAdmin version
+| `node['postfixadmin']['version']`                     | `'3.0.2'`               | PostfixAdmin version
 | `node['postfixadmin']['url']`                         | *calculated*            | PostfixAdmin download URL
 | `node['postfixadmin']['checksum']`                    | *calculated*            | PostfixAdmin download file checksum
 | `node['postfixadmin']['port']`                        | *calculated*            | PostfixAdmin listen port

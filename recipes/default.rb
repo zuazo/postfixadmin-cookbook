@@ -150,13 +150,21 @@ end
 web_server = node['postfixadmin']['web_server']
 if %w(apache nginx).include?(web_server)
   include_recipe "postfixadmin::#{web_server}"
+  web_user = node[web_server]['user']
   web_group = node[web_server]['group']
 else
+  web_user = nil
   web_group = nil
 end
 
-template 'config.local.php' do
-  path "#{node['ark']['prefix_root']}/postfixadmin/config.local.php"
+directory "#{node['ark']['prefix_root']}/postfixadmin/templates_c" do
+  owner web_user
+  group web_group
+  mode '00750'
+  not_if { web_user.nil? || web_group.nil? }
+end
+
+template "#{node['ark']['prefix_root']}/postfixadmin/config.local.php" do
   source 'config.local.php.erb'
   owner 'root'
   group web_group

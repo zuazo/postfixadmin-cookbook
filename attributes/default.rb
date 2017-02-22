@@ -19,12 +19,12 @@
 # limitations under the License.
 #
 
-default['postfixadmin']['version'] = '2.3.7'
+default['postfixadmin']['version'] = '3.0.2'
 default['postfixadmin']['url'] =
   'http://downloads.sourceforge.net/project/postfixadmin/postfixadmin/'\
   'postfixadmin-%{version}/postfixadmin-%{version}.tar.gz'
 default['postfixadmin']['checksum'] =
-  '761074e711ab618deda425dc013133b9d5968e0859bb883f10164061fd87006e'
+  '9a4edb111258c90912aea66ad1dd684445b4f03f08f8549b9d708336ae019c8c'
 
 default['postfixadmin']['port'] = nil # calculated
 default['postfixadmin']['server_name'] = node['fqdn'] || 'postfixadmin.local'

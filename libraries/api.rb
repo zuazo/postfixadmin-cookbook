@@ -29,51 +29,35 @@ module PostfixAdmin
       @http.setup(username, password, setup_password)
     end
 
-    def create_domain(domain, description, aliases, mailboxes)
+    def create_to_table(table, value)
+      url = "/edit.php?table=#{table}"
       body = {
-        fDomain: domain,
-        fDescription: description,
-        fAliases: aliases,
-        fMailboxes: mailboxes,
-        submit: 'Add+Domain'
+        submit: "Add+#{table.capitalize}",
+        table: table,
+        value: value
       }
-      @http.post('/create-domain.php', body)
+      @http.post(url, body)
     end
 
-    # rubocop:disable Metrics/ParameterLists
-    def create_mailbox(username, domain, password, name, active, mail)
-      # rubocop:enable Metrics/ParameterLists
-      body = {
-        fUsername: username,
-        fDomain: domain,
-        fPassword: password, fPassword2: password,
-        fName: name,
-        submit: 'Add+Mailbox'
-      }
-      body['fActive'] = 'on' if active
-      body['fMail'] = 'on' if mail
-      @http.post('/create-mailbox.php', body)
+    def create_domain(value)
+      create_to_table('domain', value)
     end
 
-    def create_alias(address, domain, goto, active)
-      body = {
-        fAddress: address,
-        fDomain: domain,
-        fGoto: goto,
-        submit: 'Add+Alias'
-      }
-      body['fActive'] = 'on' if active
-      @http.post('/create-alias.php', body)
+    def create_mailbox(value)
+      value[:active] = value[:active] ? 1 : 0
+      value[:welcome_mail] = value[:welcome_mail] ? 1 : 0
+      value[:password2] = value[:password]
+      create_to_table('mailbox', value)
     end
 
-    def create_alias_domain(alias_domain, target_domain, active)
-      body = {
-        alias_domain: alias_domain,
-        target_domain: target_domain,
-        submit: 'Add+Alias+Domain'
-      }
-      body['active'] = '1' if active
-      @http.post('/create-alias-domain.php', body)
+    def create_alias(value)
+      value[:active] = value[:active] ? 1 : 0
+      create_to_table('alias', value)
+    end
+
+    def create_alias_domain(value)
+      value[:active] = value[:active] ? 1 : 0
+      create_to_table('aliasdomain', value)
     end
   end
 end

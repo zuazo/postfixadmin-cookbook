@@ -149,7 +149,10 @@ action :create do
     ruby_block "create domain #{domain}" do
       block do
         api = PostfixAdmin::API.new(ssl, port, login_username, login_password)
-        result = api.create_domain(domain, description, aliases, mailboxes)
+        result = api.create_domain(
+          domain: domain, description: description, aliases: aliases,
+          mailboxes: mailboxes
+        )
         Chef::Log.info("Created #{new_resource}: #{result}")
       end
       action :create
