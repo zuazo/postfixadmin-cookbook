@@ -1,0 +1,4 @@
+﻿
+Domain;Description;Aliases;Mailboxes;"Mail server is backup MX";Active;"Last modified"
+foo.com;Testing1;"4 / 10";"0 / 10";0;1;2017-02-21
+bar.com;Testing2;"4 / 10";"0 / 10";0;1;2017-02-21

@@ -116,21 +116,5 @@ module PostfixadminCookbook
       return result_da unless table_exist?(:admin)
       query_delete_row(:admin, :username, user)
     end
-
-    def domain_exist?(domain)
-      query_row_exist?(:domain, :domain, domain)
-    end
-
-    def mailbox_exist?(username)
-      query_row_exist?(:mailbox, :username, username)
-    end
-
-    def alias_exist?(address)
-      query_row_exist?(:alias, :address, address)
-    end
-
-    def alias_domain_exist?(alias_domain)
-      query_row_exist?(:alias_domain, :alias_domain, alias_domain)
-    end
   end
 end

@@ -39,17 +39,74 @@ describe PostfixadminCookbook::API, order: :random do
     allow(Chef::Log).to receive(:fatal) # silence Chef errors
     reset_cookies
 
-    # stub login:
-    stub_request(:get, url('/login.php'))
-      .to_return(body: sample('login.html'))
+    stub_postfixadmin_login
     stub_request(:post, url('/login.php'))
       .with(body: hash_including(login_body))
       .to_return(body: sample('login_ok.html'))
-    # stub get token:
-    stub_request(:get, url(token_url)).to_return(body: sample(token_sample))
   end
   after do
     WebMock.allow_net_connect!(net_http_connect_on_start: true)
+  end
+
+  shared_examples 'a table value checker that' do |meth, fields|
+    table = meth.delete('_')
+    let(:path) { "/list.php?table=#{table}&output=csv" }
+    let(:file) { "#{table}.csv" }
+    before do
+      stub_request(:get, url(path)).to_return(body: sample(file))
+    end
+
+    it 'returns no error for an existing value' do
+      first = [fields[:true]].flatten.first
+      pending if first.nil?
+      subject.send("#{meth}_exist?", first)
+    end
+
+    it 'returns no error for a non-existing value' do
+      first = [fields[:false]].flatten.first
+      pending if first.nil?
+      subject.send("#{meth}_exist?", first)
+    end
+
+    [fields[:true]].flatten.each do |value|
+      it "returns true for the #{value.inspect} value" do
+        expect(subject.send("#{meth}_exist?", value)).to eq(true)
+      end
+    end
+
+    [fields[:false]].flatten.each do |value|
+      it "returns false for the #{value.inspect} value" do
+        expect(subject.send("#{meth}_exist?", value)).to eq(false)
+      end
+    end
+  end
+
+  describe '#domain_exist?' do
+    it_behaves_like(
+      'a table value checker that', 'domain',
+      true: %w(foo.com bar.com), false: 'foobar.com'
+    )
+  end
+
+  describe '#mailbox_exist?' do
+    it_behaves_like(
+      'a table value checker that', 'mailbox',
+      true: 'postmaster@foobar.com', false: 'non.existing@foobar.com'
+    )
+  end
+
+  describe '#alias_exist?' do
+    it_behaves_like(
+      'a table value checker that', 'alias',
+      true: 'admin@foobar.com', false: 'non.existing@foobar.com'
+    )
+  end
+
+  describe '#alias_domain_exist?' do
+    it_behaves_like(
+      'a table value checker that', 'alias_domain',
+      true: 'example.com', false: 'non-existing.com'
+    )
   end
 
   describe '#create_admin' do

@@ -45,6 +45,7 @@ describe 'postfixadmin encrypted attributes', order: :random do
     node.set['postfixadmin']['database']['user'] = db_user
 
     stub_command('/usr/sbin/apache2 -t').and_return(true)
+    stub_postfixadmin_http
     allow(Sequel).to receive(:connect).and_return(
       Sequel.connect('mock://user:pass@host')
     )
@@ -63,21 +64,7 @@ describe 'postfixadmin encrypted attributes', order: :random do
 
     it 'creates the admin user (issue #6)' do
       chef_run
-      WebMock.disable_net_connect!
-      success = 'You are done with your basic setup'
-      stub_request(:post, 'http://127.0.0.1/setup.php')
-        .with(
-          body: {
-            'form' => 'createadmin',
-            'password' => 'p@ssw0rd1',
-            'password2' => 'p@ssw0rd1',
-            'setup_password' => setup_password,
-            'submit' => 'Add+Admin',
-            'username' => 'admin@admin.org'
-          }
-        ).to_return(status: 200, body: success, headers: {})
       resource.old_run_action(:create)
-      WebMock.allow_net_connect!(net_http_connect_on_start: true)
     end
   end
 

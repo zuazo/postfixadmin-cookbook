@@ -255,10 +255,6 @@ Create domains.
 | mailboxes      | `10`                          | Maximum number of mailboxes
 | login_username | *required*                    | Admin user to use
 | login_password | *required*                    | Admin password 
-| db_user        | *calculated*                  | Database username
-| db_password    | *calculated*                  | Database password
-| db_name        | *calculated*                  | Database name
-| db_host        | *calculated*                  | Database hostname
 | ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_domain Example
@@ -290,10 +286,6 @@ Create a mailbox.
 | mail           | `false`                       | Whether to send a welcome email
 | login_username | *required*                    | Admin user to use
 | login_password | *required*                    | Admin password 
-| db_user        | *calculated*                  | Database username
-| db_password    | *calculated*                  | Database password
-| db_name        | *calculated*                  | Database name
-| db_host        | *calculated*                  | Database hostname
 | ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_mailbox Example
@@ -324,10 +316,6 @@ Create mailbox aliases.
 | active         | `true`                        | Active status
 | login_username | *required*                    | Admin user to use
 | login_password | *required*                    | Admin password 
-| db_user        | *calculated*                  | Database username
-| db_password    | *calculated*                  | Database password
-| db_name        | *calculated*                  | Database name
-| db_host        | *calculated*                  | Database hostname
 | ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_alias Example
@@ -358,10 +346,6 @@ Create domain aliases. The `alias_domain` must already exist.
 | active         | `true`                        | Active status
 | login_username | *required*                    | Admin user to use
 | login_password | *required*                    | Admin password 
-| db_user        | *calculated*                  | Database username
-| db_password    | *calculated*                  | Database password
-| db_name        | *calculated*                  | Database name
-| db_host        | *calculated*                  | Database hostname
 | ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_alias_domain Example

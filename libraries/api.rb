@@ -18,13 +18,57 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'csv'
 require_relative 'api_http'
 
 module PostfixadminCookbook
   # Static class to make PostfixAdmin API calls
   class API
+    unless defined?(::PostfixadminCookbook::API::IGNORE_CSV_FIELD_REGEXP)
+      IGNORE_CSV_FIELD_REGEXP = /^(&nbsp;|\s)*$/
+    end
+
     def initialize(ssl = false, port = nil, username = nil, password = nil)
       @http = API::HTTP.new(username, password, ssl, port)
+    end
+
+    def parse_csv_line(line)
+      first = line.shift
+      # HACK: Avoid "&snbp;" values in the first column:
+      first = line.shift if first.match(IGNORE_CSV_FIELD_REGEXP)
+      [first, line]
+    end
+
+    def parse_csv(csv)
+      csv.shift if [["\xEF\xBB\xBF"], ['']].include?(csv.first)
+      csv.shift # CSV header
+      csv.each_with_object({}) do |line, memo|
+        k, v = parse_csv_line(line)
+        memo[k] = v
+      end
+    end
+
+    def list_table(table)
+      @http.get("/list.php?table=#{table}&output=csv") do |body|
+        csv = CSV.parse(body, col_sep: ';')
+        parse_csv(csv)
+      end
+    end
+
+    def domain_exist?(name)
+      list_table('domain').key?(name.to_s)
+    end
+
+    def mailbox_exist?(name)
+      list_table('mailbox').key?(name.to_s)
+    end
+
+    def alias_exist?(name)
+      list_table('alias').key?(name.to_s)
+    end
+
+    def alias_domain_exist?(name)
+      list_table('aliasdomain').key?(name.to_s)
     end
 
     def create_admin(username, password, setup_password)

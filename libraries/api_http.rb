@@ -225,15 +225,15 @@ module PostfixadminCookbook
         self.class.get_token('/edit.php?table=domain', @ssl, @port)
       end
 
-      def get(path)
+      def get(path, &block)
         login
-        self.class.request('get', path, nil, @ssl, @port)
+        self.class.request('get', path, nil, @ssl, @port, &block)
       end
 
-      def post(path, body)
+      def post(path, body, &block)
         login
         body[:token] = self.class.token unless self.class.token.nil?
-        self.class.request('post', path, body, @ssl, @port)
+        self.class.request('post', path, body, @ssl, @port, &block)
       end
     end
   end
