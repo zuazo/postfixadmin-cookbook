@@ -81,7 +81,7 @@ attribute 'postfixadmin/version',
           description: 'PostfixAdmin version',
           type: 'string',
           required: 'optional',
-          default: '2.3.7'
+          default: '3.0.2'
 
 attribute 'postfixadmin/url',
           display_name: 'postfixadmin URL',
