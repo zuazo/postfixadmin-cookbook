@@ -19,22 +19,14 @@
 # limitations under the License.
 
 if defined?(ChefSpec)
-
-  [
-    :postfixadmin_admin,
-    :postfixadmin_alias,
-    :postfixadmin_alias_domain,
-    :postfixadmin_domain,
-    :postfixadmin_mailbox
-  ].each do |matcher|
-    if ChefSpec.respond_to?(:define_matcher)
-      # ChefSpec >= 4.1
-      ChefSpec.define_matcher matcher
-    elsif defined?(ChefSpec::Runner) &&
-          ChefSpec::Runner.respond_to?(:define_runner_method)
-      # ChefSpec < 4.1
-      ChefSpec::Runner.define_runner_method matcher
-    end
+  %i(
+    postfixadmin_admin
+    postfixadmin_alias
+    postfixadmin_alias_domain
+    postfixadmin_domain
+    postfixadmin_mailbox
+  ).each do |matcher|
+    ChefSpec.define_matcher matcher
   end
 
   def create_postfixadmin_admin(user)
@@ -72,5 +64,4 @@ if defined?(ChefSpec)
       :postfixadmin_mailbox, :create, mailbox
     )
   end
-
 end

@@ -53,11 +53,7 @@ module PostfixAdmin
         end
 
         def self.user_agent
-          if defined?(Chef::HTTP::HTTPRequest)
-            Chef::HTTP::HTTPRequest.user_agent
-          else
-            Chef::REST::RESTRequest.user_agent
-          end
+          Chef::HTTP::HTTPRequest.user_agent
         end
 
         def self.create_http(uri, ssl)
@@ -120,9 +116,6 @@ module PostfixAdmin
         end
       end # Request
 
-      unless defined?(::PostfixAdmin::API::HTTP::STDOUT_REGEX)
-        STDOUT_REGEX = /^.*class=['"]standout['"][^>]*>([^\n]*?)\n.*$/m
-      end
       unless defined?(::PostfixAdmin::API::HTTP::ERROR_REGEXS)
         ERROR_REGEXS = [
           /^.*class=['"]error_msg['"][^>]*>([^<]+)<.*$/m,
@@ -135,6 +128,7 @@ module PostfixAdmin
       unless defined?(::PostfixAdmin::API::HTTP::SETUP_ERROR_REGEXS)
         SETUP_ERROR_REGEXS = [
           %r{^.*<b>(Error: .+)</b>.*Please fix the errors listed above.*$}m,
+          /^.*class=['"]standout['"][^>]*>([^<]+?)<.*$/m,
           %r{^.*<tr>\s*(?:<td>.+?</td>\s*){2}<td>([^<]+?)</td>\s*</tr>.*$}m
         ].freeze
       end
@@ -148,6 +142,10 @@ module PostfixAdmin
 
       def self.token
         @@token
+      end
+
+      def self.token=(arg)
+        @@token = arg
       end
 
       # rubocop:enable Style/ClassVars
@@ -167,11 +165,11 @@ module PostfixAdmin
           next unless body.match(regexp)
           error(strip_html(body.gsub(regexp, '\1')))
         end
-        error('Unknown error during the setup of Postfix Admin.')
+        error("Unknown error during the setup of Postfix Admin:\n\n#{body}")
       end
 
       def self.parse_response_body(body)
-        ERROR_REGEXS + [STDOUT_REGEX].each do |regexp|
+        ERROR_REGEXS.each do |regexp|
           next unless body.match(regexp)
           error(strip_html(body.gsub(regexp, '\1')))
         end
@@ -179,7 +177,7 @@ module PostfixAdmin
 
       def self.parse_token_body(body)
         error('Token not found.') unless body.match(TOKEN_REGEX)
-        @@token = body.gsub(TOKEN_REGEX, '\1') # rubocop:disable Style/ClassVars
+        self.token = body.gsub(TOKEN_REGEX, '\1')
       end
 
       def self.request(method, path, body, ssl, port)

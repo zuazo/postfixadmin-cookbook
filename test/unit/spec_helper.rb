@@ -24,7 +24,9 @@ require 'chefspec/berkshelf'
 require 'webmock/rspec'
 require 'should_not/rspec'
 
+require_relative 'support/coverage'
 require_relative 'support/matchers'
+require_relative 'support/unit_test_helpers'
 
 RSpec.configure do |config|
   # Prohibit using the should syntax
@@ -49,6 +51,8 @@ RSpec.configure do |config|
   config.tty = true
   config.platform = 'ubuntu'
   config.version = '12.04'
+
+  config.include UnitTestHelpers
 
   # Allow all web connections by default
   WebMock.allow_net_connect!(net_http_connect_on_start: true)

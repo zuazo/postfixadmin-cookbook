@@ -18,6 +18,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require_relative 'conf'
+
 module PostfixAdmin
   # Some helpers to emulate some PHP functions
   module PHP
@@ -47,9 +49,9 @@ module PostfixAdmin
     def self.ruby_value_to_php(value)
       case value
       when nil then 'NULL'
-      when Integer, Float then v
-      when Array then PostfixAdmin::PHP.array(v)
-      when Hash then PostfixAdmin::PHP.hash(v)
+      when Integer, Float then value
+      when Array then PostfixAdmin::PHP.array(value)
+      when Hash then PostfixAdmin::PHP.hash(value)
       end
     end
 
@@ -73,7 +75,7 @@ module PostfixAdmin
       template =
         'array(<%=
   @obj.to_hash.sort.map do |k, v|
-    "#{@PostfixAdmin_Conf.value(v)} => #{@PostfixAdmin_Conf.value(k)}"
+    "#{@PostfixAdmin_Conf.value(k)} => #{@PostfixAdmin_Conf.value(v)}"
   end.join(", ")
 %>)'
       php_from_template(template, hs)

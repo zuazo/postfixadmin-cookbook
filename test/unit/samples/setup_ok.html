@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="setup_ok_files/default.css">
+<title>Postfix Admin - 172.17.0.2</title>
+</head>
+<body>
+<div id="login_header">
+<img id="login_header_logo" src="setup_ok_files/logo-default.png">
+</div>
+
+
+<div class="setup">
+<h2>Postfix Admin Setup Checker</h2>
+
+<p>Running software:
+</p><ul>
+<li>PHP version 5.6.30-0+deb8u1</li>
+<li>Apache</li>
+</ul><p>Checking for dependencies:
+</p><ul>
+<li>Magic Quotes: Disabled - OK</li>
+<li>Depends on: presence config.inc.php - OK</li>
+<li>Checking $CONF['configured'] - OK
+</li><li>Smarty template compile directory is writable - OK<br>
+</li><li>Depends on: MySQL 3.23, 4.0 - OK</li>
+<li>Depends on: MySQL 4.1 - OK
+</li><li>Testing database connection - OK - mysqli://postfix:xxxxx@127.0.0.1/postfix</li><li>Depends on: session - OK</li>
+<li>Depends on: pcre - OK</li>
+<li>Depends on: multibyte string - OK</li>
+<li>Depends on: IMAP functions - OK</li>
+</ul><p>Everything seems fine... attempting to create/update database structure</p>
+<p>Database is up to date</p>
+<div class="standout">The admin admin@admin.org has been added!<p>You are done with your basic setup. </p><p><b>You can now <a href="http://172.17.0.2/login.php">login to PostfixAdmin</a> using the account you just created.</b></p></div>
+<div id="edit_form">
+<form name="create_admin" method="post">
+<input name="form" value="createadmin" type="hidden">
+<table>
+      <tbody><tr><td colspan="3"><h3>Create superadmin account</h3></td>
+   </tr>
+   <tr>
+      <td>Setup password</td>
+      <td><input class="flat" name="setup_password" value="" type="password"></td>
+      <td><a href="http://172.17.0.2/setup.php?lostpw=1">Lost password?</a></td>
+   </tr>
+   <tr>
+      <td>Admin:</td>
+      <td><input class="flat" name="username" type="text"></td>
+      <td>Email address</td>
+   </tr>
+   <tr>
+      <td>Password:</td>
+      <td><input class="flat" name="password" type="password"></td>
+      <td></td>
+   </tr>
+   <tr>
+      <td>Password (again):</td>
+      <td><input class="flat" name="password2" type="password"></td>
+      <td></td>
+   </tr>
+   <tr>
+      <td colspan="3" class="hlp_center"><input class="button" name="submit" value="Add Admin" type="submit"></td>
+   </tr>
+</tbody></table>
+</form>
+</div>
+
+<b>Since version 2.3 there is no requirement to delete setup.php!</b><br>
+<b>Check the config.inc.php file for any other settings that you might need to change!<br>
+</b></div><b>
+
+
+</b></body></html>

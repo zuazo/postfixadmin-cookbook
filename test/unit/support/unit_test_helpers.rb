@@ -1,9 +1,7 @@
 # encoding: UTF-8
 #
-# Cookbook Name:: postfixadmin
-# Library:: conf
 # Author:: Xabier de Zuazo (<xabier@zuazo.org>)
-# Copyright:: Copyright (c) 2013 Onddo Labs, SL.
+# Copyright:: Copyright (c) 2017 Xabier de Zuazo
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,19 +15,31 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-require_relative 'php'
+module UnitTestHelpers
+  def sample_file(file)
+    File.join(::File.dirname(__FILE__), '..', 'samples', file)
+  end
 
-module PostfixAdmin
-  # Method helpers to be used from configuration templates
-  module Conf
-    def self.value(value)
-      case value
-      when TrueClass then "'YES'"
-      when FalseClass then "'NO'"
-      else
-        PostfixAdmin::PHP.ruby_value_to_php(value) || "'#{value}'"
-      end
-    end
+  def sample(file)
+    File.read(sample_file(file))
+  end
+
+  def url(path)
+    "127.0.0.1:80#{path}"
+  end
+
+  def force_cookie(cookie)
+    ::PostfixAdmin::API::HTTP::Request.cookie = cookie
+  end
+
+  def force_token(token)
+    ::PostfixAdmin::API::HTTP.token = token
+  end
+
+  def reset_cookies
+    force_cookie(nil)
+    force_token(nil)
   end
 end

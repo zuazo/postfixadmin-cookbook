@@ -1,0 +1,271 @@
+<!-- index.tpl -->
+<!-- header.tpl -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="create_alias_domain_ok_files/default.css">
+		<title>Postfix Admin - 172.17.0.2</title>
+	</head>
+	<body class="lang-en page-list-virtual ">
+		<div id="container">
+		<div id="login_header">
+		<a href="http://172.17.0.2/main.php"><img id="login_header_logo" src="create_alias_domain_ok_files/logo-default.png" alt="Logo"></a>
+		</div>
+<!-- menu.tpl -->
+<div id="menu">
+<ul>
+
+<li><a target="_top" href="http://172.17.0.2/list.php?table=admin">Admin List</a> <ul> <li><a target="_top" href="http://172.17.0.2/list.php?table=admin">Admin List</a></li> <li><a target="_top" href="http://172.17.0.2/edit.php?table=admin">New Admin</a></li> </ul> </li>
+
+<li><a target="_top" href="http://172.17.0.2/list.php?table=domain">Domain List</a> <ul> <li><a target="_top" href="http://172.17.0.2/list.php?table=domain">Domain List</a></li><li><a target="_top" href="http://172.17.0.2/edit.php?table=domain">New Domain</a></li></ul> </li>
+
+<li><a target="_top" href="http://172.17.0.2/list-virtual.php">Virtual List</a> <ul> <li><a target="_top" href="http://172.17.0.2/list-virtual.php">Virtual List</a></li> <li><a target="_top" href="http://172.17.0.2/edit.php?table=mailbox">Add Mailbox</a></li> <li><a target="_top" href="http://172.17.0.2/edit.php?table=alias">Add Alias</a></li><li><a target="_top" href="http://172.17.0.2/edit.php?table=aliasdomain">Add Alias Domain</a></li></ul> </li>
+
+
+<li><a target="_top" href="http://172.17.0.2/sendmail.php">Send Email</a> <ul> <li><a target="_top" href="http://172.17.0.2/sendmail.php">Send Email</a></li><li><a target="_top" href="http://172.17.0.2/broadcast-message.php">Broadcast message</a></li></ul> </li>
+
+	<li><a target="_top" href="http://172.17.0.2/edit.php?table=adminpassword">Password</a></li>
+
+
+	<li><a target="_top" href="http://172.17.0.2/viewlog.php">View Log</a></li>
+
+	<li class="logout"><a target="_top" href="http://172.17.0.2/login.php">Logout</a></li>
+</ul>
+</div>
+
+<script type="text/javascript">
+// <![CDATA[
+sfHover = function()
+{
+	var sfEls = document.getElementById("menu").getElementsByTagName("LI");
+	for (var i=0; i<sfEls.length; i++)
+	{
+		sfEls[i].onmouseover=function()
+		{
+			this.className+=" sfhover";
+		}
+		sfEls[i].onmouseout=function()
+		{
+			this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
+		}
+	}
+}
+if (window.attachEvent)
+	window.attachEvent("onload", sfHover);
+// ]]>
+</script>
+
+<br clear="all"><!-- flash_error.tpl -->
+<br clear="all"><br>
+<ul class="flash-info"><li>The alias domain example.org has been created.</li></ul><ul class="flash-error"><li>All domains are already aliased.</li></ul><div id="overview">
+<form name="frmOverview" method="get" action="list-virtual.php">
+	<select name="domain" onchange="this.form.submit();">
+<option value="example.com" selected="selected">example.com</option>
+<option value="example.org">example.org</option>
+<option value="foobar.com">foobar.com</option>
+</select>
+
+	<input name="limit" value="0" type="hidden">
+	<noscript><input class="button" type="submit" name="go" value="Go" /></noscript>
+</form>
+	<h4>Overview for example.com</h4>
+	<p>Aliases: 1 / 10</p>
+	<p>Mailboxes: 1 / 10</p>
+<form name="search" method="post" action="list-virtual.php"><input name="search[_]" size="10"></form>
+</div>
+<div class="subnav"><p>Show:
+				
+	<span class="active">All</span>
+		<a href="http://172.17.0.2/list-virtual.php?domain=&amp;tab=mailbox">:: Mailboxes</a>	<a href="http://172.17.0.2/list-virtual.php?domain=&amp;tab=alias">:: Aliases</a>			<a href="http://172.17.0.2/list-virtual.php?domain=&amp;tab=alias_domain">:: Domain Aliases</a>	</p></div>
+<br clear="all"><br>
+
+			
+
+
+<div id="overview">
+<form name="frmOverview" method="post" action="">
+    </form>
+</div>
+
+
+
+
+<div id="list">
+<table id="admin_table" border="0"><!-- TODO: 'admin_table' needed because of CSS for table header -->
+
+
+<tbody><tr class="header">
+                        <td>Alias Domain</td>
+                                <td>Target Domain</td>
+                                            <td>Last modified</td>
+                                <td>Active</td>
+                                        <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+
+     
+    <tr class="hilightoff" onmouseover="className='hilighton';" onmouseout="className='hilightoff';">
+
+            
+                                        
+                            <td>
+                                            example.com
+                                    </td>
+                                
+                             
+                            
+                            <td>
+                                            <a href="http://172.17.0.2/list-virtual.php?domain=foobar.com">foobar.com</a>
+
+                                    </td>
+                                            
+                                        
+                            <td>
+                                            2017-02-22
+                                    </td>
+                                
+                                        
+                            <td>
+                                                                        <a href="http://172.17.0.2/editactive.php?table=aliasdomain&amp;id=example.com&amp;active=0&amp;token=0a8d7e445107a2f2514fb1d0f553ce33">YES</a>
+                                                            </td>
+                                                
+    <td><a href="http://172.17.0.2/edit.php?table=aliasdomain&amp;edit=example.com">edit</a></td>
+    <td><a href="http://172.17.0.2/delete.php?table=aliasdomain&amp;delete=example.com&amp;token=0a8d7e445107a2f2514fb1d0f553ce33" onclick="return confirm ('Do you really want to delete the alias domain example.com?')">del</a></td>
+    </tr>
+
+</tbody></table>
+
+<br><a href="http://172.17.0.2/list.php?table=aliasdomain&amp;output=csv">Download this list as CSV file</a>
+
+</div>
+
+
+	<br>
+	
+	
+<div id="overview">
+<form name="frmOverview" method="post" action="">
+    </form>
+</div>
+
+
+
+
+<div id="list">
+<table id="admin_table" border="0"><!-- TODO: 'admin_table' needed because of CSS for table header -->
+
+	            			                    			                                 
+           			                                                          
+                      			                    			                        
+            	<tbody><tr>
+		<th colspan="7">:: Aliases</th>
+	</tr>
+
+<tr class="header">
+                        <td> </td>
+                                <td>Alias</td>
+                                                        <td>To</td>
+                                                                                            <td>Last modified</td>
+                                <td>Active</td>
+                                        <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+
+     
+    <tr class="hilightoff" onmouseover="className='hilighton';" onmouseout="className='hilightoff';">
+
+            
+                                        
+                            <td>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                
+                                        
+                            <td>
+                                            testalias@example.com
+                                    </td>
+                                                        
+                                        
+                            <td>
+                                            test@example.com<br>                                     </td>
+                                                                                            
+                                        
+                            <td>
+                                            2017-02-22
+                                    </td>
+                                
+                                        
+                            <td>
+                                                                        <a href="http://172.17.0.2/editactive.php?table=alias&amp;id=testalias%40example.com&amp;active=0&amp;token=0a8d7e445107a2f2514fb1d0f553ce33">YES</a>
+                                                            </td>
+                                                
+    <td><a href="http://172.17.0.2/edit.php?table=alias&amp;edit=testalias%40example.com">edit</a></td>
+    <td><a href="http://172.17.0.2/delete.php?table=alias&amp;delete=testalias%40example.com&amp;token=0a8d7e445107a2f2514fb1d0f553ce33" onclick="return confirm ('Do you really want to delete the alias testalias@example.com?')">del</a></td>
+    </tr>
+
+</tbody></table>
+
+<br><a href="http://172.17.0.2/edit.php?table=alias" class="button">Add Alias</a><br>
+<br>
+<br><a href="http://172.17.0.2/list.php?table=alias&amp;output=csv">Download this list as CSV file</a>
+
+</div>
+
+
+
+	
+<br>	
+				<table id="mailbox_table">
+		<tbody><tr>
+			<th colspan="11">:: Mailboxes</th>
+		</tr>
+			    
+	<tr class="header">
+		<td></td>		<td>Email</td>
+					<td>To</td>
+				<td>Name</td>
+				<td>Last modified</td>
+		<td>Active</td>
+				<td colspan="5">&nbsp;</td>
+	</tr>
+			<tr class="hilightoff" onmouseover="className='hilighton';" onmouseout="className='hilightoff';">
+							<td>&nbsp;&nbsp;&nbsp;<span style="background-color:darkgrey">&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td>
+									test@example.com
+							</td>
+							<td>
+									Mailbox<br>
+												</td>
+						<td>Test</td>
+						<td>2017-02-22 07:49:51</td>
+			<td><a href="http://172.17.0.2/editactive.php?table=mailbox&amp;id=test%40example.com&amp;active=0&amp;token=0a8d7e445107a2f2514fb1d0f553ce33">YES</a></td>
+								<td>&nbsp;</td>
+																			<td><a href="http://172.17.0.2/edit.php?table=alias&amp;edit=test%40example.com">Alias</a></td>
+						<td><a href="http://172.17.0.2/edit.php?table=mailbox&amp;edit=test%40example.com">edit</a></td>
+			<td><a href="http://172.17.0.2/delete.php?table=mailbox&amp;delete=test%40example.com&amp;token=0a8d7e445107a2f2514fb1d0f553ce33" onclick="return confirm ('Are you sure you want to delete this?\nMailboxes: test@example.com');">del</a></td>
+		</tr>
+	</tbody></table>
+
+		
+			<br><a href="http://172.17.0.2/edit.php?table=mailbox&amp;domain=example.com" class="button">Add Mailbox</a><br>
+		<br><br><a href="http://172.17.0.2/list.php?table=mailbox&amp;output=csv">Download this list as CSV file</a>
+	<br><br>
+			&nbsp;<span style="background-color:tomato;">&nbsp;&nbsp;</span>=maybe UNDELIVERABLE 
+				&nbsp;<span style="background-color:darkgrey;">&nbsp;&nbsp;</span>=POP/IMAP 
+							&nbsp;<span style="background-color:lightgreen;">&nbsp;&nbsp;</span>=Delivers to subdomain.domain.ext
+					&nbsp;<span style="background-color:lightblue;">&nbsp;&nbsp;</span>=Delivers to domain2.ext
+			<!-- footer.tpl -->
+<div id="footer">
+	<a target="_blank" href="http://postfixadmin.sf.net/">Postfix Admin 3.0.2</a>
+	&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+	<a target="_blank" href="http://postfixadmin.sf.net/update-check.php?version=3.0.2">Check for update</a>
+                        &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;	
+            Logged in as admin@admin.org
+            			&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+		<a href="http://change-this-to-your.domain.tld/">Return to change-this-to-your.domain.tld</a>
+	</div>
+</div>
+
+
+
+</body></html>

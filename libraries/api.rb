@@ -18,6 +18,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require_relative 'api_http'
+
 module PostfixAdmin
   # Static class to make PostfixAdmin API calls
   class API

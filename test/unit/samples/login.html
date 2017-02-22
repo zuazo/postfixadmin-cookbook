@@ -1,0 +1,66 @@
+<!-- index.tpl -->
+<!-- header.tpl -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="login_files/default.css">
+		<title>Postfix Admin - 172.17.0.2</title>
+	</head>
+	<body class="lang-en page-login ">
+		<div id="container">
+		<div id="login_header">
+		<a href="http://172.17.0.2/main.php"><img id="login_header_logo" src="login_files/logo-default.png" alt="Logo"></a>
+		</div>
+<br clear="all"><!-- flash_error.tpl -->
+<br clear="all"><br>
+<div id="login">
+<form name="frmLogin" method="post" action="">
+<table id="login_table" cellspacing="10">
+	<tbody><tr>
+		<th colspan="2">
+Mail admins login here to administer your domain.
+	</th>
+	</tr>
+	<tr>
+		<td class="label"><label>Login (email):</label></td>
+		<td><input class="flat" name="fUsername" type="text"></td>
+	</tr>
+	<tr>
+		<td class="label"><label>Password:</label></td>
+		<td><input class="flat" name="fPassword" type="password"></td>
+	</tr>
+	<tr>
+		<td class="label"><label>Language:</label></td>
+		<td><select name="lang" xml:lang="en" dir="ltr"><option value="bg">Български - Bulgarian</option><option value="ca">Català - Catalan</option><option value="cn">中文 - Chinese simplified (gb2312)</option><option value="tw">中文 - Chinese traditional</option><option value="cs">Česky - Czech</option><option value="da">Dansk - Danish</option><option value="de">Deutsch - German</option><option value="en" selected="selected">English</option><option value="es">Español - Spanish</option><option value="et">Eesti - Estonian</option><option value="eu">Euskara - Basque</option><option value="fi">Suomi - Finnish</option><option value="fo">Faroese</option><option value="fr">Français - French</option><option value="hr">Hrvatski - Croatian</option><option value="hu">Magyar - Hungarian</option><option value="is">Icelandic</option><option value="it">Italiano - Italian</option><option value="ja">日本語 - Japanese</option><option value="lt">Lietuvių - Lithuanian</option><option value="mk">Macedonian - Macedonian</option><option value="nl">Nederlands - Dutch</option><option value="nb">Norsk (bokmål) - Norwegian (bokmål)</option><option value="nn">Norsk (nynorsk) - Norwegian (nynorsk)</option><option value="pl">Polski - Polish</option><option value="pt-br">Português - Brazilian portuguese</option><option value="ro">Limba Română - Romanian</option><option value="ru">Русский - Russian</option><option value="sk">Slovenčina - Slovak</option><option value="sl">Slovenščina - Slovenian</option><option value="sv">Svenska - Swedish</option><option value="tr">Türkçe - Turkish</option></select></td>
+	</tr>
+	<tr>
+		<td class="label">&nbsp;</td>
+		<td><input class="button" name="submit" value="Login" type="submit"></td>
+	</tr>
+	<tr>
+		<td colspan="2"><a href="http://172.17.0.2/users/">Users click here to login to the user section.</a></td>
+	</tr>
+</tbody></table>
+</form>
+
+<script type="text/javascript">
+<!--
+	document.frmLogin.fUsername.focus();
+// -->
+</script>
+
+</div>
+
+<!-- footer.tpl -->
+<div id="footer">
+	<a target="_blank" href="http://postfixadmin.sf.net/">Postfix Admin 3.0.2</a>
+	&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+	<a target="_blank" href="http://postfixadmin.sf.net/update-check.php?version=3.0.2">Check for update</a>
+    			&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+		<a href="http://change-this-to-your.domain.tld/">Return to change-this-to-your.domain.tld</a>
+	</div>
+</div>
+
+
+
+</body></html>
