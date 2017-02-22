@@ -85,10 +85,9 @@ module PostfixAdmin
         end
 
         def self.parse_cookie(response)
-          if response['Set-Cookie'].is_a?(String)
-            self.cookie = response['set-cookie'].split(';')[0]
-            Chef::Log.debug("#{name}##{__method__} cookie: #{cookie}")
-          end
+          return unless response['Set-Cookie'].is_a?(String)
+          self.cookie = response['Set-Cookie'].split(';')[0]
+          Chef::Log.debug("#{name}##{__method__} cookie: #{cookie}")
         end
 
         def self.parse_response(response)
@@ -121,40 +120,31 @@ module PostfixAdmin
         end
       end # Request
 
-      unless defined?(::PostfixAdmin::API::HTTP::STDOUT_REGEXP)
-        STDOUT_REGEXP = /^.*class=['"]standout['"][^>]*>([^\n]*?)\n.*$/m
+      unless defined?(::PostfixAdmin::API::HTTP::STDOUT_REGEX)
+        STDOUT_REGEX = /^.*class=['"]standout['"][^>]*>([^\n]*?)\n.*$/m
       end
-      unless defined?(::PostfixAdmin::API::HTTP::ERROR_REGEXP1)
-        ERROR_REGEXP1 = /^.*class=['"]error_msg['"][^>]*>([^<]+)<.*$/m
+      unless defined?(::PostfixAdmin::API::HTTP::ERROR_REGEXS)
+        ERROR_REGEXS = [
+          /^.*class=['"]error_msg['"][^>]*>([^<]+)<.*$/m,
+          /^.*(Invalid\s+token!).*$/m
+        ].freeze
       end
-      unless defined?(::PostfixAdmin::API::HTTP::ERROR_REGEXP2)
-        ERROR_REGEXP2 = /^.*(Invalid\s+token!).*$/m
+      unless defined?(::PostfixAdmin::API::HTTP::SETUP_OK_REGEX)
+        SETUP_OK_REGEX = /You +are +done +with +your +basic +setup/
       end
-      unless defined?(::PostfixAdmin::API::HTTP::SETUP_OK_REGEXP)
-        SETUP_OK_REGEXP = /You +are +done +with +your +basic +setup/
-      end
-      unless defined?(::PostfixAdmin::API::HTTP::SETUP_ERROR_REGEXP)
-        SETUP_ERROR_REGEXP = /Please +fix +the +errors +listed +above/
-      end
-      unless defined?(::PostfixAdmin::API::HTTP::SETUP_STDERR_REGEXP1)
-        SETUP_STDERR_REGEXP1 = %r{^.*<b>(Error: .+)</b>.*$}m
-      end
-      unless defined?(::PostfixAdmin::API::HTTP::SETUP_STDERR_REGEXP2)
-        SETUP_STDERR_REGEXP2 =
+      unless defined?(::PostfixAdmin::API::HTTP::SETUP_ERROR_REGEXS)
+        SETUP_ERROR_REGEXS = [
+          %r{^.*<b>(Error: .+)</b>.*Please fix the errors listed above.*$}m,
           %r{^.*<tr>\s*(?:<td>.+?</td>\s*){2}<td>([^<]+?)</td>\s*</tr>.*$}m
+        ].freeze
       end
-      unless defined?(::PostfixAdmin::API::HTTP::TOKEN_REGEXP)
-        TOKEN_REGEXP =
-          /^.*<input\s+(?:[^>]*\s+)?name="token"\s+value="([^"]+)".*$/m
+      unless defined?(::PostfixAdmin::API::HTTP::TOKEN_REGEX)
+        TOKEN_REGEX = /^.*<input\s+[^>]*name="token"\s+value="([^"]+)".*$/m
       end
 
       # rubocop:disable Style/ClassVars
 
       @@token = nil
-
-      def self.token=(arg)
-        @@token = arg
-      end
 
       def self.token
         @@token
@@ -171,82 +161,41 @@ module PostfixAdmin
         raise error_msg
       end
 
-      def self.parse_response_error(body)
-        if body.match(ERROR_REGEXP1)
-          error("#{name}##{__method__}: #{body.gsub(ERROR_REGEXP1, '\1')}")
-        elsif body.match(ERROR_REGEXP2)
-          error("#{name}##{__method__}: #{body.gsub(ERROR_REGEXP2, '\1')}")
-        end
-      end
-
       def self.parse_setup_body(body)
-        return if body.match(SETUP_OK_REGEXP)
-        if body.match(SETUP_ERROR_REGEXP)
-          error(strip_html(body.gsub(STDOUT_REGEXP, '\1')))
-        elsif body.match(SETUP_STDERR_REGEXP1)
-          error(strip_html(body.gsub(SETUP_STDERR_REGEXP1, '\1')))
-        elsif body.match(SETUP_STDERR_REGEXP2)
-          error(strip_html(body.gsub(SETUP_STDERR_REGEXP2, '\1')))
-        else
-          error('Unknown error during the setup of PostfixAdmin.')
+        return if body.match(SETUP_OK_REGEX)
+        SETUP_ERROR_REGEXS.each do |regexp|
+          next unless body.match(regexp)
+          error(strip_html(body.gsub(regexp, '\1')))
         end
+        error('Unknown error during the setup of Postfix Admin.')
       end
 
       def self.parse_response_body(body)
-        parse_response_error(body)
-        strip_html(body.gsub(STDOUT_REGEXP, '\1')) if body.match(STDOUT_REGEXP)
+        ERROR_REGEXS + [STDOUT_REGEX].each do |regexp|
+          next unless body.match(regexp)
+          error(strip_html(body.gsub(regexp, '\1')))
+        end
       end
 
       def self.parse_token_body(body)
-        if body.match(TOKEN_REGEXP)
-          body.gsub(TOKEN_REGEXP, '\1').tap do |token|
-            Chef::Log.debug("#{name}##{__method__} token: #{token}")
-          end
-        else
-          error("#{name}##{__method__}: Token not found.")
-        end
+        error('Token not found.') unless body.match(TOKEN_REGEX)
+        @@token = body.gsub(TOKEN_REGEX, '\1') # rubocop:disable Style/ClassVars
       end
 
       def self.request(method, path, body, ssl, port)
-        response =
-          API::HTTP::Request.new(method, path, body, ssl, port).response
-        if response.code.to_i >= 400
-          error("#{name}##{__method__}: #{response.code} #{response.message}")
-        else
-          parse_response_body(response.body)
-        end
-      end
-
-      def self.get(path, ssl = false, port = nil)
-        request('get', path, nil, ssl, port)
-      end
-
-      def self.post(path, body, ssl = false, port = nil)
-        request('post', path, body, ssl, port)
-      end
-
-      def self.index(ssl = false, port = nil)
-        get('/login.php', ssl, port)
+        resp = API::HTTP::Request.new(method, path, body, ssl, port).response
+        error("#{resp.code} #{resp.message}") if resp.code.to_i >= 400
+        block_given? ? yield(resp.body) : parse_response_body(resp.body)
       end
 
       def self.setup(body, ssl = false, port = nil)
-        response =
-          API::HTTP::Request.new('post', '/setup.php', body, ssl, port).response
-        if response.code.to_i >= 400
-          error("#{name}##{__method__}: #{response.code} #{response.message}")
-        else
-          parse_setup_body(response.body)
-          parse_response_body(response.body)
+        request('post', '/setup.php', body, ssl, port) do |resp_body|
+          parse_setup_body(resp_body)
         end
       end
 
-      def self.get_token(url)
-        response = API::HTTP::Request.new('get', url, nil, @ssl, @port).response
-        if response.code.to_i >= 400
-          error("#{name}##{__method__}: #{response.code} #{response.message}")
-        else
-          parse_token_body(response.body)
-        end
+      def self.get_token(url, ssl = false, port = nil)
+        request('get', url, nil, ssl, port) { |body| parse_token_body(body) }
       end
 
       attr_writer :username, :password, :ssl
@@ -269,24 +218,24 @@ module PostfixAdmin
 
       def login
         return unless self.class.token.nil?
-        self.class.index(@ssl, @port)
+        self.class.request('get', '/login.php', nil, @ssl, @port) # get cookie
         body = {
           fUsername: @username, fPassword: @password, lang: 'en',
           submit: 'Login'
         }
-        self.class.post('/login.php', body, @ssl, @port)
-        self.class.token = self.class.get_token('/edit.php?table=domain')
+        self.class.request('post', '/login.php', body, @ssl, @port)
+        self.class.get_token('/edit.php?table=domain', @ssl, @port)
       end
 
       def get(path)
         login
-        self.class.get(path, @ssl, @port)
+        self.class.request('get', path, nil, @ssl, @port)
       end
 
       def post(path, body)
         login
         body[:token] = self.class.token unless self.class.token.nil?
-        self.class.post(path, body, @ssl, @port)
+        self.class.request('post', path, body, @ssl, @port)
       end
     end
   end
