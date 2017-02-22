@@ -134,7 +134,7 @@ end
 action :create do
   self.class.send(:include, Chef::EncryptedAttributesHelpers)
   @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
-  db = PostfixAdmin::DB.new(
+  db = PostfixadminCookbook::DB.new(
     type: db_type, user: db_user, password: db_password, dbname: db_name,
     host: db_host, port: db_port
   )
@@ -142,7 +142,7 @@ action :create do
   converge_by("Create #{new_resource}") do
     ruby_block "create admin user #{user}" do
       block do
-        api = PostfixAdmin::API.new(ssl, port)
+        api = PostfixadminCookbook::API.new(ssl, port)
         result = api.create_admin(user, password, setup_password)
         Chef::Log.info("Created #{new_resource}: #{result}")
       end
@@ -154,7 +154,7 @@ end
 action :remove do
   self.class.send(:include, Chef::EncryptedAttributesHelpers)
   @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
-  db = PostfixAdmin::DB.new(
+  db = PostfixadminCookbook::DB.new(
     type: db_type, user: db_user, password: db_password, dbname: db_name,
     host: db_host, port: db_port
   )

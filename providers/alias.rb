@@ -142,7 +142,7 @@ action :create do
           'Could not get the domain name from the address argument, it should '\
           'have the following format: user@domain.tld'
   end
-  db = PostfixAdmin::DB.new(
+  db = PostfixadminCookbook::DB.new(
     type: db_type, user: db_user, password: db_password, dbname: db_name,
     host: db_host, port: db_port
   )
@@ -150,7 +150,8 @@ action :create do
   converge_by("Create #{new_resource}") do
     ruby_block "create alias #{address}" do
       block do
-        api = PostfixAdmin::API.new(ssl, port, login_username, login_password)
+        api = PostfixadminCookbook::API
+              .new(ssl, port, login_username, login_password)
         result = api.create_alias(
           localpart: username, domain: domain, goto: goto, active: active
         )

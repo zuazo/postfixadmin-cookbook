@@ -25,7 +25,7 @@ rescue LoadError
   Chef::Log.info("Missing gem 'sequel'")
 end
 
-module PostfixAdmin
+module PostfixadminCookbook
   # A class to read PostfixAdmin data from its MySQL database
   class DB
     DEFAULT_OPTIONS = {
@@ -35,7 +35,7 @@ module PostfixAdmin
       dbname: 'postfix',
       host: '127.0.0.1',
       port: 3306
-    }.freeze unless defined?(::PostfixAdmin::DB::DEFAULT_OPTIONS)
+    }.freeze unless defined?(::PostfixadminCookbook::DB::DEFAULT_OPTIONS)
 
     attr_reader :db
 

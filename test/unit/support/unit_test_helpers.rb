@@ -31,11 +31,11 @@ module UnitTestHelpers
   end
 
   def force_cookie(cookie)
-    ::PostfixAdmin::API::HTTP::Request.cookie = cookie
+    ::PostfixadminCookbook::API::HTTP::Request.cookie = cookie
   end
 
   def force_token(token)
-    ::PostfixAdmin::API::HTTP.token = token
+    ::PostfixadminCookbook::API::HTTP.token = token
   end
 
   def reset_cookies

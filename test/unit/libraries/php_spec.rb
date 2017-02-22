@@ -21,7 +21,7 @@ require_relative '../spec_helper'
 require 'php'
 
 class FakeRecipe
-  include PostfixAdmin::PHP
+  include PostfixadminCookbook::PHP
 
   def node
     Chef::Node.new.tap do |n|
@@ -31,7 +31,7 @@ class FakeRecipe
   end
 end
 
-describe PostfixAdmin::PHP, order: :random do
+describe PostfixadminCookbook::PHP, order: :random do
   subject { FakeRecipe.new }
   let(:node) do
   end

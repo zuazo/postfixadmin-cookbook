@@ -18,7 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module PostfixAdmin
+module PostfixadminCookbook
   class API
     # Internal wrapper to send PostfixAdmin HTTP calls
     class HTTP
@@ -116,23 +116,23 @@ module PostfixAdmin
         end
       end # Request
 
-      unless defined?(::PostfixAdmin::API::HTTP::ERROR_REGEXS)
+      unless defined?(::PostfixadminCookbook::API::HTTP::ERROR_REGEXS)
         ERROR_REGEXS = [
           /^.*class=['"]error_msg['"][^>]*>([^<]+)<.*$/m,
           /^.*(Invalid\s+token!).*$/m
         ].freeze
       end
-      unless defined?(::PostfixAdmin::API::HTTP::SETUP_OK_REGEX)
+      unless defined?(::PostfixadminCookbook::API::HTTP::SETUP_OK_REGEX)
         SETUP_OK_REGEX = /You +are +done +with +your +basic +setup/
       end
-      unless defined?(::PostfixAdmin::API::HTTP::SETUP_ERROR_REGEXS)
+      unless defined?(::PostfixadminCookbook::API::HTTP::SETUP_ERROR_REGEXS)
         SETUP_ERROR_REGEXS = [
           %r{^.*<b>(Error: .+)</b>.*Please fix the errors listed above.*$}m,
           /^.*class=['"]standout['"][^>]*>([^<]+?)<.*$/m,
           %r{^.*<tr>\s*(?:<td>.+?</td>\s*){2}<td>([^<]+?)</td>\s*</tr>.*$}m
         ].freeze
       end
-      unless defined?(::PostfixAdmin::API::HTTP::TOKEN_REGEX)
+      unless defined?(::PostfixadminCookbook::API::HTTP::TOKEN_REGEX)
         TOKEN_REGEX = /^.*<input\s+[^>]*name="token"\s+value="([^"]+)".*$/m
       end
 

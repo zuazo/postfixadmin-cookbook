@@ -136,7 +136,7 @@ end
 action :create do
   self.class.send(:include, Chef::EncryptedAttributesHelpers)
   @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
-  db = PostfixAdmin::DB.new(
+  db = PostfixadminCookbook::DB.new(
     type: db_type, user: db_user, password: db_password, dbname: db_name,
     host: db_host, port: db_port
   )
@@ -144,7 +144,8 @@ action :create do
   converge_by("Create #{new_resource}") do
     ruby_block "create alias domain #{alias_domain}" do
       block do
-        api = PostfixAdmin::API.new(ssl, port, login_username, login_password)
+        api = PostfixadminCookbook::API
+              .new(ssl, port, login_username, login_password)
         result = api.create_alias_domain(
           alias_domain: alias_domain, target_domain: target_domain,
           active: active

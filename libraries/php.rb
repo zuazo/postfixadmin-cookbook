@@ -20,7 +20,7 @@
 
 require_relative 'conf'
 
-module PostfixAdmin
+module PostfixadminCookbook
   # Some helpers to emulate some PHP functions
   module PHP
     def mt_rand(min, max)
@@ -50,14 +50,14 @@ module PostfixAdmin
       case value
       when nil then 'NULL'
       when Integer, Float then value
-      when Array then PostfixAdmin::PHP.array(value)
-      when Hash then PostfixAdmin::PHP.hash(value)
+      when Array then PostfixadminCookbook::PHP.array(value)
+      when Hash then PostfixadminCookbook::PHP.hash(value)
       end
     end
 
     def self.php_from_template(template, obj)
       eruby = Erubis::Eruby.new(template)
-      eruby.evaluate(obj: obj, PostfixAdmin_Conf: PostfixAdmin::Conf)
+      eruby.evaluate(obj: obj, PostfixAdmin_Conf: PostfixadminCookbook::Conf)
     end
 
     def self.array(ary)

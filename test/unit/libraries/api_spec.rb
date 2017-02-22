@@ -20,7 +20,7 @@
 require_relative '../spec_helper'
 require 'api'
 
-describe PostfixAdmin::API, order: :random do
+describe PostfixadminCookbook::API, order: :random do
   let(:username) { 'User1' }
   let(:password) { '$up3rP@ss' }
   subject { described_class.new(false, 80, username, password) }

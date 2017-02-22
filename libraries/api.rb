@@ -20,7 +20,7 @@
 
 require_relative 'api_http'
 
-module PostfixAdmin
+module PostfixadminCookbook
   # Static class to make PostfixAdmin API calls
   class API
     def initialize(ssl = false, port = nil, username = nil, password = nil)

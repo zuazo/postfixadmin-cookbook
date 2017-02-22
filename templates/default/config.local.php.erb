@@ -11,5 +11,5 @@ $CONF['database_password'] = '<%= @db_password %>';
 $CONF['database_name'] = '<%= @db_name %>';
 
 <% @conf.sort.each do |k, v| -%>
-$CONF['<%= k %>'] = <%= PostfixAdmin::Conf.value(v) %>;
+$CONF['<%= k %>'] = <%= PostfixadminCookbook::Conf.value(v) %>;
 <% end -%>

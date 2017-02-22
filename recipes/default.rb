@@ -21,7 +21,7 @@
 
 # include the #random_password method:
 Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
-Chef::Recipe.send(:include, PostfixAdmin::PHP)
+Chef::Recipe.send(:include, PostfixadminCookbook::PHP)
 Chef::Recipe.send(:include, Chef::EncryptedAttributesHelpers)
 
 if %w(centos).include?(node['platform']) && node['platform_version'].to_i >= 7

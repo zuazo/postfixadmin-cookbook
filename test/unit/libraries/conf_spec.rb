@@ -20,7 +20,7 @@
 require_relative '../spec_helper'
 require 'conf'
 
-describe PostfixAdmin::Conf, order: :random do
+describe PostfixadminCookbook::Conf, order: :random do
   describe '.value' do
     it "returns 'YES' for true" do
       expect(described_class.value(true)).to eq("'YES'")
@@ -32,7 +32,8 @@ describe PostfixAdmin::Conf, order: :random do
 
     it 'converts to PHP for other values' do
       value = 'MyValue'
-      expect(PostfixAdmin::PHP).to receive(:ruby_value_to_php).with(value).once
+      expect(PostfixadminCookbook::PHP)
+        .to receive(:ruby_value_to_php).with(value).once
       described_class.value(value)
     end
   end
