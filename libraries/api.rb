@@ -29,7 +29,9 @@ module PostfixadminCookbook
     end
 
     def initialize(ssl = false, port = nil, username = nil, password = nil)
-      @http = API::HTTP.new(username, password, ssl, port)
+      @ssl = ssl
+      @port = port
+      @http = API::HTTP.new(username, password, @ssl, @port)
     end
 
     def parse_csv_line(line)
