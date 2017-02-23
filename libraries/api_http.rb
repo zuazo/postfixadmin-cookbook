@@ -99,14 +99,34 @@ module PostfixadminCookbook
           @request.set_form_data(serialize_body(body)) unless body.nil?
         end
 
+        #
+        # Returns a key, value pair for processing it with PHP web application.
+        #
+        # @param key [String, Symbol] Name of the hash key.
+        # @param value [Mixed] value of the key.
+        # @return [Array<Array>] an array of arrays with the key, value pairs.
+        # @example
+        #   serialize_php_body('key1', sub1: 'a', sub2: 'b')
+        #     #=> [["key1[sub1]", "a"], ["key1[sub2]", "b"]]
+        #   serialize_php_body('key1', sub1: 'a', sub2: { subsub3: 'b' })
+        #     #=> [["key1[sub1]", "a"], ["key1[sub2][subsub3]", "b"]]
+        def serialize_php_body(key, value)
+          case value
+          when Hash then value.reduce([]) do |m, (k2, v2)|
+                           m + serialize_php_body("#{key}[#{k2}]", v2)
+                         end
+          when Array then value.reduce([]) do |m, v2|
+                            # TODO: only one value is accepted for arrays
+                            m + serialize_php_body("#{key}[]", v2)
+                          end
+          else [[key, value]]
+          end
+        end
+
         def serialize_body(body)
           return body unless body.is_a?(Hash)
-          body.each_with_object({}) do |(k1, v1), hs|
-            if v1.is_a?(Hash)
-              v1.each { |k2, v2| hs["#{k1}[#{k2}]"] = v2 }
-            else
-              hs[k1] = v1
-            end
+          body.reduce({}) do |hs, (key, value)|
+            hs.merge(serialize_php_body(key, value).to_h)
           end
         end
 
@@ -135,6 +155,8 @@ module PostfixadminCookbook
       unless defined?(::PostfixadminCookbook::API::HTTP::TOKEN_REGEX)
         TOKEN_REGEX = /^.*<input\s+[^>]*name="token"\s+value="([^"]+)".*$/m
       end
+
+      class TokenError < StandardError; end
 
       # rubocop:disable Style/ClassVars
 
@@ -176,7 +198,7 @@ module PostfixadminCookbook
       end
 
       def self.parse_token_body(body)
-        error('Token not found.') unless body.match(TOKEN_REGEX)
+        error(TokenError.new('Token not found.')) unless body.match(TOKEN_REGEX)
         self.token = body.gsub(TOKEN_REGEX, '\1')
       end
 
@@ -206,21 +228,17 @@ module PostfixadminCookbook
       end
 
       def setup(username, password, setup_password)
-        body = {
-          form: 'createadmin', setup_password: setup_password,
-          username: username, password: password, password2: password,
-          submit: 'Add+Admin'
-        }
+        body = { form: 'createadmin', setup_password: setup_password,
+                 username: username, password: password, password2: password,
+                 submit: 'Add+Admin' }
         self.class.setup(body, @ssl, @port)
       end
 
       def login
         return unless self.class.token.nil?
         self.class.request('get', '/login.php', nil, @ssl, @port) # get cookie
-        body = {
-          fUsername: @username, fPassword: @password, lang: 'en',
-          submit: 'Login'
-        }
+        body = { fUsername: @username, fPassword: @password, lang: 'en',
+                 submit: 'Login' }
         self.class.request('post', '/login.php', body, @ssl, @port)
         self.class.get_token('/edit.php?table=domain', @ssl, @port)
       end

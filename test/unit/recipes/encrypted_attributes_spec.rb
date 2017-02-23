@@ -19,7 +19,6 @@
 
 require_relative '../spec_helper'
 require 'chef/encrypted_attributes'
-require 'sequel'
 
 describe 'postfixadmin encrypted attributes', order: :random do
   let(:step_into) do
@@ -31,6 +30,8 @@ describe 'postfixadmin encrypted attributes', order: :random do
       postfixadmin_mailbox
     )
   end
+  let(:admin_username) { 'admin@admin.org' }
+  let(:admin_password) { 'p@ssw0rd1' }
   let(:db_name) { 'postfixadmin_db' }
   let(:db_user) { 'postfixadmin_user' }
   let(:db_password) { 'postfixadmin_pass' }
@@ -45,24 +46,35 @@ describe 'postfixadmin encrypted attributes', order: :random do
     node.set['postfixadmin']['database']['user'] = db_user
 
     stub_command('/usr/sbin/apache2 -t').and_return(true)
+    reset_cookies
     stub_postfixadmin_http
-    allow(Sequel).to receive(:connect).and_return(
-      Sequel.connect('mock://user:pass@host')
-    )
   end
 
-  shared_examples 'the "create admin user" ruby block' do
-    let(:resource_name) { 'create admin user admin@admin.org' }
+  shared_examples 'the "setup admin user" ruby block' do
+    let(:resource_name) { 'setup admin user admin@admin.org' }
     let(:resource) { chef_run.ruby_block(resource_name) }
 
-    it 'connects to the database' do
-      expect(Sequel).to receive(:connect).with(
-        "mysql2://#{db_user}:#{db_password}@127.0.0.1:/#{db_name}"
-      )
+    it 'tries to log in' do
+      stub =
+        stub_request(:post, url('/login.php'))
+        .with(body: hash_including(
+          fUsername: admin_username, fPassword: admin_password
+        ))
+        .to_return(body: sample('login_error.html'))
+
       chef_run
+      expect(stub).to have_been_requested
     end
 
-    it 'creates the admin user (issue #6)' do
+    it 'setups the admin user (issue #6)' do
+      stub_request(:post, url('/login.php'))
+        .to_return(body: sample('login_error.html'))
+      i = 0
+      stub_request(:get, token_url)
+        .to_return do |_request|
+          i += 1
+          { body: sample(i == 1 ? 'login_error.html' : 'edit_domain.html') }
+        end
       chef_run
       resource.old_run_action(:create)
     end
@@ -84,7 +96,7 @@ describe 'postfixadmin encrypted attributes', order: :random do
       expect(chef_run).to include_recipe('encrypted_attributes')
     end
 
-    it_behaves_like 'the "create admin user" ruby block'
+    it_behaves_like 'the "setup admin user" ruby block'
   end
 
   context 'with encrypted attributes disabled' do
@@ -99,6 +111,6 @@ describe 'postfixadmin encrypted attributes', order: :random do
       expect(chef_run).to_not include_recipe('encrypted_attributes')
     end
 
-    it_behaves_like 'the "create admin user" ruby block'
+    it_behaves_like 'the "setup admin user" ruby block'
   end
 end

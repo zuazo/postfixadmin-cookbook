@@ -32,6 +32,10 @@ module UnitTestHelpers
     "127.0.0.1:80#{path}"
   end
 
+  def token_url
+    url('/edit.php?table=domain')
+  end
+
   def force_cookie(cookie)
     ::PostfixadminCookbook::API::HTTP::Request.cookie = cookie
   end
@@ -43,34 +47,5 @@ module UnitTestHelpers
   def reset_cookies
     force_cookie(nil)
     force_token(nil)
-  end
-
-  def stub_postfixadmin_setup
-    stub_request(:post, 'http://127.0.0.1/setup.php')
-      .to_return(body: sample('setup_ok.html'))
-  end
-
-  def stub_postfixadmin_login
-    stub_request(:get, url('/login.php'))
-      .to_return(body: sample('login.html'))
-    stub_request(:post, url('/login.php'))
-      .to_return(body: sample('login_ok.html'))
-    stub_request(:get, url('/edit.php?table=domain')) # token
-      .to_return(body: sample('edit_domain.html'))
-  end
-
-  def stub_postfixadmin_list(table)
-    stub_request(:get, url("/list.php?table=#{table}&output=csv"))
-      .to_return(body: sample('domain.csv'))
-  end
-
-  def stub_postfixadmin_http
-    reset_cookies
-    stub_postfixadmin_setup
-    stub_postfixadmin_login
-    stub_postfixadmin_list('domain')
-    stub_postfixadmin_list('mailbox')
-    stub_postfixadmin_list('aliasdomain')
-    stub_postfixadmin_list('alias')
   end
 end

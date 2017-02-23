@@ -222,11 +222,14 @@ Create or remove a PostfixAdmin admin user. This kind of user is used to create 
 | user           | *name attribute*              | Username
 | password       | `'p@ssw0rd1'`                 | Password
 | setup_password | *calculated*                  | PostfixAdmin Setup Password
-| db_user        | *calculated*                  | Database username
-| db_password    | *calculated*                  | Database password
-| db_name        | *calculated*                  | Database name
-| db_host        | *calculated*                  | Database hostname
+| superadmin     | `true`                        | Whether it has access to all domains
+| domains        | `[]`                          | List of domains it has access to
+| active         | `true`                        | Active status
+| login_username | *optional*                    | Admin user to use for its creation
+| login_password | *optional*                    | Admin password to use for its creation
 | ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
+
+If you don't provide `login_username`, it will use the *setup.php* to create the admin. Usually this is used only to create the first administrator.
 
 ### postfixadmin_admin Example
 
@@ -234,6 +237,12 @@ Create or remove a PostfixAdmin admin user. This kind of user is used to create 
 postfixadmin_admin 'admin@admindomain.com' do
   password 'sup3r-s3cr3t-p4ss'
   action :create
+end
+
+postfixadmin_admin 'secondadmin@admindomain.com' do
+  password '4n0th3r-p4ss'
+  login_username 'admin@admindomain.com'
+  login_password 'sup3r-s3cr3t-p4ss'
 end
 ```
 
@@ -254,7 +263,7 @@ Create domains.
 | aliases        | `10`                          | Maximum number of aliases
 | mailboxes      | `10`                          | Maximum number of mailboxes
 | login_username | *required*                    | Admin user to use
-| login_password | *required*                    | Admin password 
+| login_password | *required*                    | Admin password
 | ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_domain Example
@@ -285,7 +294,7 @@ Create a mailbox.
 | active         | `true`                        | Active status
 | mail           | `false`                       | Whether to send a welcome email
 | login_username | *required*                    | Admin user to use
-| login_password | *required*                    | Admin password 
+| login_password | *required*                    | Admin password
 | ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_mailbox Example
@@ -315,7 +324,7 @@ Create mailbox aliases.
 | goto           | *required*                    | Destination mailbox address
 | active         | `true`                        | Active status
 | login_username | *required*                    | Admin user to use
-| login_password | *required*                    | Admin password 
+| login_password | *required*                    | Admin password
 | ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_alias Example
@@ -345,7 +354,7 @@ Create domain aliases. The `alias_domain` must already exist.
 | target_domain  | *required*                    | Target domain
 | active         | `true`                        | Active status
 | login_username | *required*                    | Admin user to use
-| login_password | *required*                    | Admin password 
+| login_password | *required*                    | Admin password
 | ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_alias_domain Example

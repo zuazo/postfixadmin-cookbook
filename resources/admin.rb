@@ -23,12 +23,11 @@ actions :create, :remove
 attribute :user, kind_of: String, name_attribute: true
 attribute :password, kind_of: String, default: 'p@ssw0rd1'
 attribute :setup_password, kind_of: String
-attribute :db_type, equal_to: %w(mysql postgresql)
-attribute :db_user, kind_of: String
-attribute :db_password, kind_of: String
-attribute :db_name, kind_of: String
-attribute :db_host, kind_of: String
-attribute :db_port, kind_of: [Integer, String]
+attribute :superadmin, kind_of: [TrueClass, FalseClass], default: true
+attribute :domains, kind_of: [Array, String], default: true
+attribute :active, kind_of: [TrueClass, FalseClass], default: true
+attribute :login_username, kind_of: String
+attribute :login_password, kind_of: String
 attribute :ssl, kind_of: [TrueClass, FalseClass]
 attribute :port, kind_of: [Integer, String]
 

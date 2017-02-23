@@ -24,14 +24,13 @@ describe PostfixadminCookbook::API, order: :random do
   let(:username) { 'User1' }
   let(:password) { '$up3rP@ss' }
   subject { described_class.new(false, 80, username, password) }
-  let(:token_url) { '/edit.php?table=domain' }
   let(:token_sample) { 'edit_domain.html' }
   let(:token) { '6c2ef0d4187972393f047120f3fbc5f1' }
   let(:login_body) do
     {
-      'fUsername' => username,
-      'fPassword' => password,
-      'lang' => 'en'
+      fUsername: username,
+      fPassword: password,
+      lang: 'en'
     }
   end
   before do
@@ -81,6 +80,13 @@ describe PostfixadminCookbook::API, order: :random do
     end
   end
 
+  describe '#admin_exist?' do
+    it_behaves_like(
+      'a table value checker that', 'admin',
+      true: 'admin@admin.org', false: 'bademail@foobar.com'
+    )
+  end
+
   describe '#domain_exist?' do
     it_behaves_like(
       'a table value checker that', 'domain',
@@ -109,15 +115,47 @@ describe PostfixadminCookbook::API, order: :random do
     )
   end
 
-  describe '#create_admin' do
+  describe '#setup?' do
+    let(:login_body) { { fUsername: username, fPassword: password } }
+
+    describe 'when the admin does not exist' do
+      before do
+        stub_request(:post, url('/login.php'))
+          .with(body: hash_including(login_body))
+          .to_return(body: sample('login_error.html'))
+        stub_request(:get, token_url)
+          .to_return(body: 'login_error.html')
+      end
+
+      it 'returns false' do
+        expect(subject.setup?(username, password)).to eq(false)
+      end
+    end
+
+    describe 'when the admin exist' do
+      before do
+        stub_request(:post, url('/login.php'))
+          .with(body: hash_including(login_body))
+          .to_return(body: sample('login_ok.html'))
+        stub_request(:get, token_url)
+          .to_return(body: sample('edit_domain.html'))
+      end
+
+      it 'returns true' do
+        expect(subject.setup?(username, password)).to eq(true)
+      end
+    end
+  end
+
+  describe '#setup_admin' do
     let(:setup_password) { 's3tup_p4ssw0rd' }
     let(:body) do
       {
-        'form' => 'createadmin',
-        'username' => username,
-        'password' => password,
-        'password2' => password,
-        'setup_password' => setup_password
+        form: 'createadmin',
+        username: username,
+        password: password,
+        password2: password,
+        setup_password: setup_password
       }
     end
 
@@ -125,7 +163,7 @@ describe PostfixadminCookbook::API, order: :random do
       stub_request(:post, url('/setup.php'))
         .with(body: hash_including(body))
         .to_return(body: sample('setup_ok.html'))
-      subject.create_admin(username, password, 's3tup_p4ssw0rd')
+      subject.setup_admin(username, password, 's3tup_p4ssw0rd')
     end
 
     it 'parses requirements error' do
@@ -133,7 +171,7 @@ describe PostfixadminCookbook::API, order: :random do
       stub_request(:post, url('/setup.php'))
         .with(body: hash_including(body))
         .to_return(body: sample('setup_requirement_error.html'))
-      expect { subject.create_admin(username, password, 's3tup_p4ssw0rd') }
+      expect { subject.setup_admin(username, password, 's3tup_p4ssw0rd') }
         .to raise_error(error)
     end
 
@@ -143,7 +181,7 @@ describe PostfixadminCookbook::API, order: :random do
       stub_request(:post, url('/setup.php'))
         .with(body: hash_including(body))
         .to_return(body: sample('setup_error_invalid_email.html'))
-      expect { subject.create_admin(username, password, 's3tup_p4ssw0rd') }
+      expect { subject.setup_admin(username, password, 's3tup_p4ssw0rd') }
         .to raise_error(error)
     end
 
@@ -152,7 +190,7 @@ describe PostfixadminCookbook::API, order: :random do
       stub_request(:post, url('/setup.php'))
         .with(body: hash_including(body))
         .to_return(body: sample('setup_error_invalid_password.html'))
-      expect { subject.create_admin(username, password, 's3tup_p4ssw0rd') }
+      expect { subject.setup_admin(username, password, 's3tup_p4ssw0rd') }
         .to raise_error(error)
     end
 
@@ -161,20 +199,77 @@ describe PostfixadminCookbook::API, order: :random do
       stub_request(:post, url('/setup.php'))
         .with(body: hash_including(body))
         .to_return(body: sample('setup_error_unknown.html'))
-      expect { subject.create_admin(username, password, 's3tup_p4ssw0rd') }
+      expect { subject.setup_admin(username, password, 's3tup_p4ssw0rd') }
         .to raise_error(error)
+    end
+  end # #setup_admin
+
+  describe '#create_admin' do
+    let(:domain) { 'example.org' }
+    let(:value_in) do
+      {
+        username: 'user1',
+        password: 'pass1',
+        superadmin: true,
+        active: true,
+        key1: 'value1'
+      }
+    end
+    let(:value_out) do
+      {
+        username: 'user1',
+        password: 'pass1',
+        password2: 'pass1',
+        superadmin: '1',
+        active: '1',
+        key1: 'value1'
+      }
+    end
+    let(:body) do
+      {
+        table: 'admin',
+        value: value_out,
+        token: token
+      }
+    end
+
+    it 'parses successful creation' do
+      stub_request(:post, url('/edit.php?table=admin'))
+        .with(body: hash_including(body))
+        .to_return(body: sample('create_admin_ok.html'))
+      subject.create_admin(value_in)
+    end
+
+    it 'parses requirements error' do
+      error = /Admin is not a valid email address/
+      stub_request(:post, url('/edit.php?table=admin'))
+        .with(body: hash_including(body))
+        .to_return(body: sample('create_admin_error.html'))
+      expect { subject.create_admin(value_in) }.to raise_error(error)
+    end
+
+    it 'supports domain array list' do
+      value_in[:domain] = %w(mydomain.org)
+      body[:value]['domain'] = %w(mydomain.org)
+
+      stub =
+        stub_request(:post, url('/edit.php?table=admin'))
+        .with(body: hash_including(body))
+        .to_return(body: sample('create_admin_ok.html'))
+      subject.create_admin(value_in)
+      expect(stub).to have_been_requested
     end
   end # #create_admin
 
   describe '#create_domain' do
     let(:domain) { 'example.org' }
-    let(:value_in) { { 'domain' => domain, 'key1' => 'value1' } }
+    let(:value_in) { { domain: domain, key1: 'value1' } }
     let(:value_out) { value_in }
     let(:body) do
       {
-        'table' => 'domain',
-        'value' => value_out,
-        'token' => token
+        table: 'domain',
+        value: value_out,
+        token: token
       }
     end
 
@@ -198,23 +293,30 @@ describe PostfixadminCookbook::API, order: :random do
     let(:domain) { 'example.org' }
     let(:mailbox) { 'user1' }
     let(:value_in) do
-      { 'local_part' => mailbox, 'domain' => domain, 'key1' => 'value1' }
+      {
+        local_part: mailbox,
+        domain: domain,
+        password: 'p4ssw0rd',
+        key1: 'value1',
+        active: false
+      }
     end
     let(:value_out) do
       {
-        'local_part' => mailbox,
-        'domain' => domain,
-        'key1' => 'value1',
-        'active' => '0',
-        'welcome_mail' => '0',
-        'password2' => nil
+        local_part: mailbox,
+        domain: domain,
+        password: 'p4ssw0rd',
+        password2: 'p4ssw0rd',
+        key1: 'value1',
+        active: '0',
+        welcome_mail: '0'
       }
     end
     let(:body) do
       {
-        'table' => 'mailbox',
-        'value' => value_out,
-        'token' => token
+        table: 'mailbox',
+        value: value_out,
+        token: token
       }
     end
 
@@ -238,21 +340,26 @@ describe PostfixadminCookbook::API, order: :random do
     let(:domain) { 'example.org' }
     let(:calias) { 'alias1' }
     let(:value_in) do
-      { 'localpart' => calias, 'domain' => domain, 'goto' => 'value1' }
+      {
+        localpart: calias,
+        domain: domain,
+        goto: 'value1',
+        active: true
+      }
     end
     let(:value_out) do
       {
-        'localpart' => calias,
-        'domain' => domain,
-        'goto' => 'value1',
-        'active' => '0'
+        localpart: calias,
+        domain: domain,
+        goto: 'value1',
+        active: '1'
       }
     end
     let(:body) do
       {
-        'table' => 'alias',
-        'value' => value_out,
-        'token' => token
+        table: 'alias',
+        value: value_out,
+        token: token
       }
     end
 
@@ -276,20 +383,19 @@ describe PostfixadminCookbook::API, order: :random do
     let(:domain) { 'example.org' }
     let(:calias) { 'alias1' }
     let(:value_in) do
-      { 'alias_domain' => calias, 'target_domain' => domain }
+      { alias_domain: calias, target_domain: domain }
     end
     let(:value_out) do
       {
-        'alias_domain' => calias,
-        'target_domain' => domain,
-        'active' => '0'
+        alias_domain: calias,
+        target_domain: domain
       }
     end
     let(:body) do
       {
-        'table' => 'aliasdomain',
-        'value' => value_out,
-        'token' => token
+        table: 'aliasdomain',
+        value: value_out,
+        token: token
       }
     end
 

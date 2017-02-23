@@ -45,7 +45,6 @@ describe 'postfixadmin::default', order: :random do
     node.set['postfixadmin']['setup_password_salt'] = setup_password_salt
     node.set['postgresql']['password']['postgres'] = db_password
 
-    allow(Kernel).to receive(:require).with('sequel')
     allow(Kernel).to receive(:require).with('openssl')
     allow(Kernel).to receive(:require).with('digest/md5')
     allow(Kernel).to receive(:require).with('digest/sha1')
@@ -60,10 +59,6 @@ describe 'postfixadmin::default', order: :random do
     stub_command(
       'test -d /etc/php5/fpm/pool.d || mkdir -p /etc/php5/fpm/pool.d'
     ).and_return(true)
-  end
-
-  it 'installs the sequel gem' do
-    expect(chef_run).to install_chef_gem('sequel')
   end
 
   it 'includes postfixadmin::mysql recipe' do

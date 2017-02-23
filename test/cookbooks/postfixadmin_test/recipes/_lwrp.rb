@@ -31,6 +31,11 @@ postfixadmin_domain 'foobar.com' do
   login_password 'p@ssw0rd1'
 end
 
+postfixadmin_admin 'admin2@foobar.com' do
+  login_username 'admin@admin.org'
+  login_password 'p@ssw0rd1'
+end
+
 postfixadmin_mailbox 'postmaster@foobar.com' do
   password 'p0stm@st3r1'
   login_username 'admin@admin.org'

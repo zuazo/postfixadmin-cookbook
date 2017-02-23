@@ -31,7 +31,6 @@ group :unit do
   gem 'simplecov', '~> 0.13.0'
   gem 'should_not', '~> 1.1'
   gem 'webmock', '~> 2.3'
-  gem 'sequel', '~> 4.23'
   gem 'chef-encrypted-attributes', '~> 0.4'
 end
 

@@ -24,7 +24,6 @@ describe PostfixadminCookbook::API::HTTP, order: :random do
   let(:username) { 'User1' }
   let(:password) { '$up3rP@ss' }
   subject { described_class.new(username, password) }
-  let(:token_url) { '/edit.php?table=domain' }
   let(:token_sample) { 'edit_domain.html' }
   before do
     WebMock.disable_net_connect!
@@ -91,7 +90,7 @@ describe PostfixadminCookbook::API::HTTP, order: :random do
           body: hash_including(body)
         ).to_return(body: sample('login_ok.html'))
       # stub get token:
-      stub_request(:get, url(token_url)).to_return(body: sample(token_sample))
+      stub_request(:get, token_url).to_return(body: sample(token_sample))
       subject.login
     end
   end # #login

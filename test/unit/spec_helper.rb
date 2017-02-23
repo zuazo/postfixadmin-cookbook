@@ -26,6 +26,7 @@ require 'should_not/rspec'
 
 require_relative 'support/coverage'
 require_relative 'support/matchers'
+require_relative 'support/cookbook_stubs'
 require_relative 'support/unit_test_helpers'
 
 RSpec.configure do |config|

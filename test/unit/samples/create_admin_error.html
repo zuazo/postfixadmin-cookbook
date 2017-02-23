@@ -1,0 +1,182 @@
+<!-- index.tpl -->
+<!-- header.tpl -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="create_admin_error_files/default.css">
+		<title>Postfix Admin - 172.17.0.2</title>
+	</head>
+	<body class="lang-en page-editform page-editform-admin">
+		<div id="container">
+		<div id="login_header">
+		<a href="http://172.17.0.2/main.php"><img id="login_header_logo" src="create_admin_error_files/logo-default.png" alt="Logo"></a>
+		</div>
+<!-- menu.tpl -->
+<div id="menu">
+<ul>
+
+<li><a target="_top" href="http://172.17.0.2/list.php?table=admin">Admin List</a> <ul> <li><a target="_top" href="http://172.17.0.2/list.php?table=admin">Admin List</a></li> <li><a target="_top" href="http://172.17.0.2/edit.php?table=admin">New Admin</a></li> </ul> </li>
+
+<li><a target="_top" href="http://172.17.0.2/list.php?table=domain">Domain List</a> <ul> <li><a target="_top" href="http://172.17.0.2/list.php?table=domain">Domain List</a></li><li><a target="_top" href="http://172.17.0.2/edit.php?table=domain">New Domain</a></li></ul> </li>
+
+<li><a target="_top" href="http://172.17.0.2/list-virtual.php">Virtual List</a> <ul> <li><a target="_top" href="http://172.17.0.2/list-virtual.php">Virtual List</a></li> <li><a target="_top" href="http://172.17.0.2/edit.php?table=mailbox">Add Mailbox</a></li> <li><a target="_top" href="http://172.17.0.2/edit.php?table=alias">Add Alias</a></li><li><a target="_top" href="http://172.17.0.2/edit.php?table=aliasdomain">Add Alias Domain</a></li></ul> </li>
+
+
+<li><a target="_top" href="http://172.17.0.2/sendmail.php">Send Email</a> <ul> <li><a target="_top" href="http://172.17.0.2/sendmail.php">Send Email</a></li><li><a target="_top" href="http://172.17.0.2/broadcast-message.php">Broadcast message</a></li></ul> </li>
+
+	<li><a target="_top" href="http://172.17.0.2/edit.php?table=adminpassword">Password</a></li>
+
+
+	<li><a target="_top" href="http://172.17.0.2/viewlog.php">View Log</a></li>
+
+	<li class="logout"><a target="_top" href="http://172.17.0.2/login.php">Logout</a></li>
+</ul>
+</div>
+
+<script type="text/javascript">
+// <![CDATA[
+sfHover = function()
+{
+	var sfEls = document.getElementById("menu").getElementsByTagName("LI");
+	for (var i=0; i<sfEls.length; i++)
+	{
+		sfEls[i].onmouseover=function()
+		{
+			this.className+=" sfhover";
+		}
+		sfEls[i].onmouseout=function()
+		{
+			this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
+		}
+	}
+}
+if (window.attachEvent)
+	window.attachEvent("onload", sfHover);
+// ]]>
+</script>
+
+<br clear="all"><!-- flash_error.tpl -->
+<br clear="all"><br>
+<ul class="flash-error"><li>Invalid domain baddomain5234234234.com, and/or not discoverable in DNS</li></ul><div id="edit_form">
+<form name="edit_admin" method="post" action="">
+<input class="flat" name="table" value="admin" type="hidden">
+<input class="flat" name="token" value="e319af7794b07f97c310d87cea65d108" type="hidden">
+
+<table>
+	<tbody><tr>
+		<th colspan="4">Add a new domain admin</th>
+	</tr>
+
+	
+					<tr>
+				<td class="label">Admin</td>
+				<td>
+															<input class="flat" name="value[username]" value="user1@baddomain5234234234.com" type="text">
+										
+				</td>
+				<td>
+											Email address
+									</td>
+				<td class="error_msg">Admin is not a valid email address!</td>
+			</tr>
+		
+		
+					<tr>
+				<td class="label">Password</td>
+				<td>
+															<input class="flat" name="value[password]" type="password">
+										
+				</td>
+				<td>
+											
+									</td>
+				<td class="error_msg"></td>
+			</tr>
+		
+		
+					<tr>
+				<td class="label">Password (again)</td>
+				<td>
+															<input class="flat" name="value[password2]" type="password">
+										
+				</td>
+				<td>
+											
+									</td>
+				<td class="error_msg"></td>
+			</tr>
+		
+		
+					<tr>
+				<td class="label">Super admin</td>
+				<td>
+															<input class="flat" value="1" name="value[superadmin]" checked="checked" type="checkbox">
+										
+				</td>
+				<td>
+											Super admins have access to all domains, can manage domains and admin accounts.
+									</td>
+				<td class="error_msg"></td>
+			</tr>
+		
+		
+					<tr>
+				<td class="label">Domain</td>
+				<td>
+															<select class="flat" name="value[domains][]" size="10" multiple="multiple">
+						<option value="example.com">example.com</option>
+<option value="foobar.com">foobar.com</option>
+
+						</select>
+
+<!-- alternative: 
+						<div style='max-height:30em; overflow:auto;'>
+							<label><input type="checkbox" name="value[domains][]" value="example.com" />example.com</label><br />
+<label><input type="checkbox" name="value[domains][]" value="foobar.com" />foobar.com</label><br />
+						</div>
+-->
+										
+				</td>
+				<td>
+											
+									</td>
+				<td class="error_msg"></td>
+			</tr>
+		
+			
+					<tr>
+				<td class="label">Active</td>
+				<td>
+															<input class="flat" value="1" name="value[active]" checked="checked" type="checkbox">
+										
+				</td>
+				<td>
+											
+									</td>
+				<td class="error_msg"></td>
+			</tr>
+		
+					
+	<tr>
+		<td>&nbsp;</td>
+		<td colspan="3"><input class="button" name="submit" value="Add Admin" type="submit"></td>
+	</tr>
+</tbody></table>
+
+</form>
+</div>
+<!-- footer.tpl -->
+<div id="footer">
+	<a target="_blank" href="http://postfixadmin.sf.net/">Postfix Admin 3.0.2</a>
+	&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+	<a target="_blank" href="http://postfixadmin.sf.net/update-check.php?version=3.0.2">Check for update</a>
+                        &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;	
+            Logged in as admin@admin.org
+            			&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+		<a href="http://change-this-to-your.domain.tld/">Return to change-this-to-your.domain.tld</a>
+	</div>
+</div>
+
+
+
+</body></html>

@@ -55,6 +55,10 @@ module PostfixadminCookbook
       end
     end
 
+    def admin_exist?(name)
+      list_table('admin').key?(name.to_s)
+    end
+
     def domain_exist?(name)
       list_table('domain').key?(name.to_s)
     end
@@ -71,18 +75,28 @@ module PostfixadminCookbook
       list_table('aliasdomain').key?(name.to_s)
     end
 
-    def create_admin(username, password, setup_password)
+    def setup?(username, password)
+      http = API::HTTP.new(username, password, @ssl, @port)
+      http.login.is_a?(String)
+    rescue API::HTTP::TokenError
+      false
+    end
+
+    def setup_admin(username, password, setup_password)
       @http.setup(username, password, setup_password)
     end
 
     def create_to_table(table, value)
+      value[:active] = value[:active] ? 1 : 0 if value.key?(:active)
+      value[:password2] = value[:password] if value.key?(:password)
       url = "/edit.php?table=#{table}"
-      body = {
-        submit: "Add+#{table.capitalize}",
-        table: table,
-        value: value
-      }
+      body = { submit: "Add+#{table.capitalize}", table: table, value: value }
       @http.post(url, body)
+    end
+
+    def create_admin(value)
+      value[:superadmin] = value[:superadmin] ? 1 : 0
+      create_to_table('admin', value)
     end
 
     def create_domain(value)
@@ -90,19 +104,15 @@ module PostfixadminCookbook
     end
 
     def create_mailbox(value)
-      value[:active] = value[:active] ? 1 : 0
       value[:welcome_mail] = value[:welcome_mail] ? 1 : 0
-      value[:password2] = value[:password]
       create_to_table('mailbox', value)
     end
 
     def create_alias(value)
-      value[:active] = value[:active] ? 1 : 0
       create_to_table('alias', value)
     end
 
     def create_alias_domain(value)
-      value[:active] = value[:active] ? 1 : 0
       create_to_table('aliasdomain', value)
     end
   end

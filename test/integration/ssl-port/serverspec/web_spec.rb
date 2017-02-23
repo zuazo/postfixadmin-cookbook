@@ -58,7 +58,7 @@ describe server(:web) do
       expect(page).to have_content 'Logged in as admin@admin.org'
     end
 
-    it 'lists admins' do
+    it 'list setup admin' do
       visit '/list.php?table=admin'
       expect(find('#admin_table')).to have_content 'admin@admin.org'
     end
@@ -66,6 +66,11 @@ describe server(:web) do
     it 'lists domains' do
       visit '/list.php?table=domain'
       expect(find('#admin_table')).to have_content 'foobar.com'
+    end
+
+    it 'lists admins' do
+      visit '/list.php?table=admin'
+      expect(find('#admin_table')).to have_content 'admin2@foobar.com'
     end
 
     context 'in virtual list' do

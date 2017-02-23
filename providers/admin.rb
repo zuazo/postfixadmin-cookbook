@@ -40,75 +40,24 @@ def setup_password
   )
 end
 
-def db_type
-  new_resource.db_type(
-    if new_resource.db_type.nil?
-      node['postfixadmin']['database']['type']
-    else
-      new_resource.db_type
-    end
-  )
+def superadmin
+  new_resource.superadmin
 end
 
-def db_user
-  new_resource.db_user(
-    if new_resource.db_user.nil?
-      node['postfixadmin']['database']['user']
-    else
-      new_resource.db_user
-    end
-  )
+def domains
+  [new_resource.superadmin].flatten
 end
 
-def db_password
-  new_resource.db_password(
-    if new_resource.db_password.nil?
-      encrypted_attribute_read(%w(postfixadmin database password))
-    else
-      new_resource.db_password
-    end
-  )
+def active
+  new_resource.active
 end
 
-def default_db_port
-  case db_type
-  when 'mysql'
-    node['postfixadmin']['database']['port']
-  when 'postgresql'
-    node['postgresql']['config']['port']
-  else
-    raise "Port for \"#{db_type}\" type not known."
-  end
+def login_username
+  new_resource.login_username
 end
 
-def db_port
-  new_resource.db_port(
-    if new_resource.db_port.nil?
-      default_db_port
-    else
-      new_resource.db_port
-    end
-  )
-end
-
-def db_name
-  new_resource.db_name(
-    if new_resource.db_name.nil?
-      node['postfixadmin']['database']['name']
-    else
-      new_resource.db_name
-    end
-  )
-end
-
-def db_host
-  new_resource.db_host(
-    if new_resource.db_host.nil?
-      node['postfixadmin']['database']['host']
-    else
-      new_resource.db_host
-    end
-  )
+def login_password
+  new_resource.login_password
 end
 
 def ssl
@@ -134,19 +83,33 @@ end
 action :create do
   self.class.send(:include, Chef::EncryptedAttributesHelpers)
   @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
-  db = PostfixadminCookbook::DB.new(
-    type: db_type, user: db_user, password: db_password, dbname: db_name,
-    host: db_host, port: db_port
-  )
-  next if db.admin_exist?(user)
-  converge_by("Create #{new_resource}") do
-    ruby_block "create admin user #{user}" do
-      block do
-        api = PostfixadminCookbook::API.new(ssl, port)
-        result = api.create_admin(user, password, setup_password)
-        Chef::Log.info("Created #{new_resource}: #{result}")
+  api = PostfixadminCookbook::API.new(ssl, port, login_username, login_password)
+  if login_username.nil? || login_password.nil?
+    # Use setup.php to created the admin
+    next if api.setup?(user, password)
+    converge_by("Setup #{new_resource}") do
+      ruby_block "setup admin user #{user}" do
+        block do
+          result = api.setup_admin(user, password, setup_password)
+          Chef::Log.info("Created #{new_resource}: #{result}")
+        end
+        action :create
       end
-      action :create
+    end
+  else
+    # Log in and create the admin
+    next if api.admin_exist?(user)
+    converge_by("Create #{new_resource}") do
+      ruby_block "create admin #{user}" do
+        block do
+          result = api.create_admin(
+            username: user, password: password, superadmin: superadmin,
+            domain: domains, active: active
+          )
+          Chef::Log.info("Created #{new_resource}: #{result}")
+        end
+        action :create
+      end
     end
   end
 end
@@ -154,18 +117,7 @@ end
 action :remove do
   self.class.send(:include, Chef::EncryptedAttributesHelpers)
   @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
-  db = PostfixadminCookbook::DB.new(
-    type: db_type, user: db_user, password: db_password, dbname: db_name,
-    host: db_host, port: db_port
-  )
-  next unless db.admin_exist?(user)
-  converge_by("Remove #{new_resource}") do
-    ruby_block "remove admin user #{user}" do
-      block do
-        deleted = db.remove_admin(user)
-        Chef::Log.info("Deleted #{new_resource}") if deleted
-      end
-      action :create
-    end
+  converge_by("Create #{new_resource}") do
+    raise 'postfixadmin_admin :remove action still not implemented.' # TODO
   end
 end
