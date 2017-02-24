@@ -3,6 +3,7 @@
 # Cookbook Name:: postfixadmin
 # Resource:: alias
 # Author:: Xabier de Zuazo (<xabier@zuazo.org>)
+# Copyright:: Copyright (c) 2017 Xabier de Zuazo
 # Copyright:: Copyright (c) 2013 Onddo Labs, SL.
 # License:: Apache License, Version 2.0
 #
@@ -18,17 +19,54 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-actions :create, :delete
+default_action :create
 
-attribute :address, kind_of: String, name_attribute: true
-attribute :goto, kind_of: String, required: true
-attribute :active, kind_of: [TrueClass, FalseClass], default: true
-attribute :login_username, kind_of: String, required: true
-attribute :login_password, kind_of: String, required: true
-attribute :ssl, kind_of: [TrueClass, FalseClass]
-attribute :port, kind_of: [Integer, String]
+property :address, String, name_property: true
+property :goto, String, required: true
+property :active, [TrueClass, FalseClass], default: true
+property :login_username, String, required: true
+property :login_password, String, required: true
+property :ssl, [TrueClass, FalseClass], default: lazy { default_ssl }
+property :port, [Integer, String], default: lazy { default_port }
 
-def initialize(*args)
-  super
-  @action = :create
+include PostfixadminCookbook::ResourceHelpers
+
+action :create do
+  self.class.send(:include, Chef::EncryptedAttributesHelpers)
+  @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
+  username, domain = address.split('@', 2)
+  if domain.nil?
+    raise Chef::Exceptions::ArgumentError,
+          'Could not get the domain name from the address argument, it should '\
+          'have the following format: user@domain.tld'
+  end
+  api = PostfixadminCookbook::API.new(ssl, port, login_username, login_password)
+  next if api.alias_exist?(address)
+  converge_by("Create #{new_resource}") do
+    ruby_block "create alias #{address}" do
+      block do
+        api.create_alias(
+          localpart: username, domain: domain, goto: goto, active: active
+        )
+        Chef::Log.info("Created #{new_resource}")
+      end
+      action :create
+    end
+  end
+end
+
+action :delete do
+  self.class.send(:include, Chef::EncryptedAttributesHelpers)
+  @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
+  api = PostfixadminCookbook::API.new(ssl, port, login_username, login_password)
+  next unless api.alias_exist?(address)
+  converge_by("Delete #{new_resource}") do
+    ruby_block "delete alias #{address}" do
+      block do
+        api.delete_alias(address)
+        Chef::Log.info("Deleted #{new_resource}")
+      end
+      action :create
+    end
+  end
 end

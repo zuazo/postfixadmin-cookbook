@@ -99,6 +99,12 @@ action :create do
 end
 
 action :delete do
+  postfixadmin_domain 'nonexistingdomain.com' do
+    login_username 'admin@admin.org'
+    login_password 'p@ssw0rd1'
+    action :delete
+  end
+
   postfixadmin_domain 'todelete.com' do
     login_username 'admin@admin.org'
     login_password 'p@ssw0rd1'

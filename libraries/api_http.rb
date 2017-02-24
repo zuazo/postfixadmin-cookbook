@@ -183,7 +183,7 @@ module PostfixadminCookbook
       end
 
       def error(error_msg, e_class = RuntimeError)
-        Chef::Log.fatal(error_msg)
+        Chef::Log.fatal(error_msg) if e_class == RuntimeError
         raise e_class, error_msg
       end
 

@@ -69,6 +69,7 @@ Please, [let us know](https://github.com/zuazo/postfixadmin-cookbook/issues/new?
 * [encrypted_attributes](https://supermarket.chef.io/cookbooks/encrypted_attributes)
 * [mysql](https://supermarket.chef.io/cookbooks/mysql)
 * [chef_nginx](https://supermarket.chef.io/cookbooks/chef_nginx)
+* [compat_resource](https://supermarket.chef.io/cookbooks/compat_resource)
 * [openssl](https://supermarket.chef.io/cookbooks/openssl)
 * [php](https://supermarket.chef.io/cookbooks/php)
 * [php-fpm](https://supermarket.chef.io/cookbooks/php-fpm)
@@ -78,7 +79,7 @@ Please, [let us know](https://github.com/zuazo/postfixadmin-cookbook/issues/new?
 
 ## Required Applications
 
-* Chef `12` or higher.
+* Chef `12.1` or higher.
 * Ruby `2.2` or higher.
 
 Only Postfix Admin version `3` or higher is supported by this cookbook. For older versions, use cookbook versions `< 3`.
@@ -217,9 +218,9 @@ This kind of user is used to create the domains and mailboxes, and must be used 
 * `create`: Create a PostfixAdmin admin user (default).
 * `delete`: Remove a PostfixAdmin admin user.
 
-### postfixadmin_admin Parameters
+### postfixadmin_admin Properties
 
-| Parameter      | Default                       | Description                    |
+| Property       | Default                       | Description                    |
 |:---------------|:------------------------------|:-------------------------------|
 | user           | *name attribute*              | Username
 | password       | `'p@ssw0rd1'`                 | Password
@@ -257,9 +258,9 @@ Create or delete a domain.
 * `create`
 * `delete`
 
-### postfixadmin_domain Parameters
+### postfixadmin_domain Properties
 
-| Parameter      | Default                       | Description                    |
+| Property       | Default                       | Description                    |
 |:---------------|:------------------------------|:-------------------------------|
 | domain         | *name attribute*              | Domain name
 | description    | `''`                          | Domain description
@@ -288,9 +289,9 @@ Create or delete a mailbox.
 * `create`
 * `delete`
 
-### postfixadmin_mailbox Parameters
+### postfixadmin_mailbox Properties
 
-| Parameter      | Default                       | Description                    |
+| Property       | Default                       | Description                    |
 |:---------------|:------------------------------|:-------------------------------|
 | mailbox        | *name attribute*              | Mailbox address to create
 | password       | *required*                    | Mailbox password
@@ -321,9 +322,9 @@ Create or delete a mailbox alias.
 * `create`
 * `delete`
 
-### postfixadmin_alias Parameters
+### postfixadmin_alias Properties
 
-| Parameter      | Default                       | Description                    |
+| Property       | Default                       | Description                    |
 |:---------------|:------------------------------|:-------------------------------|
 | address        | *name attribute*              | Alias address
 | goto           | *required*                    | Destination mailbox address
@@ -354,9 +355,9 @@ The domain name used as `alias_domain` must already exist: in other words, it ne
 * `create`
 * `delete`
 
-### postfixadmin_alias_domain Parameters
+### postfixadmin_alias_domain Properties
 
-| Parameter      | Default                       | Description                    |
+| Property       | Default                       | Description                    |
 |:---------------|:------------------------------|:-------------------------------|
 | alias_domain   | *name attribute*              | Alias domain
 | target_domain  | *required*                    | Target domain

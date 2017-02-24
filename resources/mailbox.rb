@@ -3,6 +3,7 @@
 # Cookbook Name:: postfixadmin
 # Resource:: mailbox
 # Author:: Xabier de Zuazo (<xabier@zuazo.org>)
+# Copyright:: Copyright (c) 2017 Xabier de Zuazo
 # Copyright:: Copyright (c) 2013 Onddo Labs, SL.
 # License:: Apache License, Version 2.0
 #
@@ -18,19 +19,57 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-actions :create, :delete
+default_action :create
 
-attribute :mailbox, kind_of: String, name_attribute: true
-attribute :password, kind_of: String, required: true
-attribute :name, kind_of: String, default: ''
-attribute :active, kind_of: [TrueClass, FalseClass], default: true
-attribute :mail, kind_of: [TrueClass, FalseClass], default: false
-attribute :login_username, kind_of: String, required: true
-attribute :login_password, kind_of: String, required: true
-attribute :ssl, kind_of: [TrueClass, FalseClass]
-attribute :port, kind_of: [Integer, String]
+property :mailbox, String, name_property: true
+property :password, String, required: true
+property :name, String, default: ''
+property :active, [TrueClass, FalseClass], default: true
+property :mail, [TrueClass, FalseClass], default: false
+property :login_username, String, required: true
+property :login_password, String, required: true
+property :ssl, [TrueClass, FalseClass], default: lazy { default_ssl }
+property :port, [Integer, String], default: lazy { default_port }
 
-def initialize(*args)
-  super
-  @action = :create
+include PostfixadminCookbook::ResourceHelpers
+
+action :create do
+  self.class.send(:include, Chef::EncryptedAttributesHelpers)
+  @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
+  username, domain = mailbox.split('@', 2)
+  if domain.nil?
+    raise Chef::Exceptions::ArgumentError,
+          'Could not get the domain name from the mailbox argument, it should '\
+          'have the following format: user@domain.tld'
+  end
+  api = PostfixadminCookbook::API.new(ssl, port, login_username, login_password)
+  next if api.mailbox_exist?(mailbox)
+  converge_by("Create #{new_resource}") do
+    ruby_block "create mailbox #{mailbox}" do
+      block do
+        api.create_mailbox(
+          local_part: username, domain: domain, password: password,
+          name: mailbox, active: active, welcome_mail: mail
+        )
+        Chef::Log.info("Created #{new_resource}")
+      end
+      action :create
+    end
+  end
+end
+
+action :delete do
+  self.class.send(:include, Chef::EncryptedAttributesHelpers)
+  @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
+  api = PostfixadminCookbook::API.new(ssl, port, login_username, login_password)
+  next unless api.mailbox_exist?(mailbox)
+  converge_by("Delete #{new_resource}") do
+    ruby_block "delete mailbox #{mailbox}" do
+      block do
+        api.delete_mailbox(mailbox)
+        Chef::Log.info("Deleted #{new_resource}")
+      end
+      action :create
+    end
+  end
 end
