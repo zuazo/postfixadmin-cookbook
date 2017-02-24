@@ -38,25 +38,25 @@ module PostfixadminCookbook
 
         # rubocop:enable Style/ClassVars
 
-        def self.default_proto(ssl)
+        def default_proto(ssl)
           ssl ? 'https' : 'http'
         end
 
-        def self.default_port(ssl)
+        def default_port(ssl)
           ssl ? 443 : 80
         end
 
-        def self.create_uri(path, ssl, port)
+        def create_uri(path, ssl, port)
           proto = default_proto(ssl)
           port = default_port(ssl) if port.nil?
           URI.parse("#{proto}://127.0.0.1:#{port}#{path}")
         end
 
-        def self.user_agent
+        def user_agent
           Chef::HTTP::HTTPRequest.user_agent
         end
 
-        def self.create_http(uri, ssl)
+        def create_http(uri, ssl)
           http = Net::HTTP.new(uri.host, uri.port)
           if ssl
             require 'net/https'
@@ -67,7 +67,7 @@ module PostfixadminCookbook
           http
         end
 
-        def self.create_request(method, uri)
+        def create_request(method, uri)
           case method.downcase
           when 'post'
             request = Net::HTTP::Post.new(uri.request_uri)
@@ -76,26 +76,28 @@ module PostfixadminCookbook
             request = Net::HTTP::Get.new(uri.request_uri)
           end
           request['User-Agent'] = user_agent
-          request['Cookie'] = cookie unless cookie.nil?
+          request['Cookie'] = self.class.cookie unless self.class.cookie.nil?
           request
         end
 
-        def self.parse_cookie(response)
+        def parse_cookie(response)
           return unless response['Set-Cookie'].is_a?(String)
-          self.cookie = response['Set-Cookie'].split(';')[0]
-          Chef::Log.debug("#{name}##{__method__} cookie: #{cookie}")
+          self.class.cookie = response['Set-Cookie'].split(';')[0]
+          Chef::Log.debug(
+            "#{self.class.name}##{__method__} cookie: #{self.class.cookie}"
+          )
         end
 
-        def self.parse_response(response)
+        def parse_response(response)
           parse_cookie(response)
           response
         end
 
         def initialize(method, path, body, ssl, port)
-          uri = self.class.create_uri(path, ssl, port)
+          uri = create_uri(path, ssl, port)
           Chef::Log.debug("#{self.class}: #{method} #{uri}")
-          @http = self.class.create_http(uri, ssl)
-          @request = self.class.create_request(method, uri)
+          @http = create_http(uri, ssl)
+          @request = create_request(method, uri)
           @request.set_form_data(serialize_body(body)) unless body.nil?
         end
 
@@ -132,7 +134,7 @@ module PostfixadminCookbook
 
         def response
           response = @http.request(@request)
-          self.class.parse_response(response)
+          parse_response(response)
         end
       end # Request
 
@@ -151,6 +153,10 @@ module PostfixadminCookbook
           /^.*class=['"]standout['"][^>]*>([^<]+?)<.*$/m,
           %r{^.*<tr>\s*(?:<td>.+?</td>\s*){2}<td>([^<]+?)</td>\s*</tr>.*$}m
         ].freeze
+      end
+      unless defined?(::PostfixadminCookbook::API::HTTP::DELETE_ERROR_REGEX)
+        DELETE_ERROR_REGEX =
+          %r{^.*class=['"]flash-error['"][^>]*>(?:<li>)?([^<]+?)(?:</li>)?<.*$}m
       end
       unless defined?(::PostfixadminCookbook::API::HTTP::TOKEN_REGEX)
         TOKEN_REGEX = /^.*<input\s+[^>]*name="token"\s+value="([^"]+)".*$/m
@@ -172,16 +178,16 @@ module PostfixadminCookbook
 
       # rubocop:enable Style/ClassVars
 
-      def self.strip_html(html)
+      def strip_html(html)
         html.gsub(%r{</?[^>]+?>}, ' ')
       end
 
-      def self.error(error_msg)
+      def error(error_msg, e_class = RuntimeError)
         Chef::Log.fatal(error_msg)
-        raise error_msg
+        raise e_class, error_msg
       end
 
-      def self.parse_setup_body(body)
+      def parse_setup(body)
         return if body.match(SETUP_OK_REGEX)
         SETUP_ERROR_REGEXS.each do |regexp|
           next unless body.match(regexp)
@@ -190,32 +196,17 @@ module PostfixadminCookbook
         error("Unknown error during the setup of Postfix Admin:\n\n#{body}")
       end
 
-      def self.parse_response_body(body)
-        ERROR_REGEXS.each do |regexp|
+      def parse_response(body, regexps = nil)
+        (regexps ? [regexps].flatten : ERROR_REGEXS).each do |regexp|
           next unless body.match(regexp)
           error(strip_html(body.gsub(regexp, '\1')))
         end
       end
 
-      def self.parse_token_body(body)
-        error(TokenError.new('Token not found.')) unless body.match(TOKEN_REGEX)
-        self.token = body.gsub(TOKEN_REGEX, '\1')
-      end
-
-      def self.request(method, path, body, ssl, port)
+      def request(method, path, body, ssl, port)
         resp = API::HTTP::Request.new(method, path, body, ssl, port).response
         error("#{resp.code} #{resp.message}") if resp.code.to_i >= 400
-        block_given? ? yield(resp.body) : parse_response_body(resp.body)
-      end
-
-      def self.setup(body, ssl = false, port = nil)
-        request('post', '/setup.php', body, ssl, port) do |resp_body|
-          parse_setup_body(resp_body)
-        end
-      end
-
-      def self.get_token(url, ssl = false, port = nil)
-        request('get', url, nil, ssl, port) { |body| parse_token_body(body) }
+        block_given? ? yield(resp.body) : parse_response(resp.body)
       end
 
       attr_writer :username, :password, :ssl
@@ -231,27 +222,40 @@ module PostfixadminCookbook
         body = { form: 'createadmin', setup_password: setup_password,
                  username: username, password: password, password2: password,
                  submit: 'Add+Admin' }
-        self.class.setup(body, @ssl, @port)
+        request('post', '/setup.php', body, @ssl, @port) { |x| parse_setup(x) }
+      end
+
+      def get_token(url, ssl = false, port = nil)
+        request('get', url, nil, ssl, port) do |x|
+          error('Token not found.', TokenError) unless x.match(TOKEN_REGEX)
+          self.class.token = x.gsub(TOKEN_REGEX, '\1')
+        end
       end
 
       def login
         return unless self.class.token.nil?
-        self.class.request('get', '/login.php', nil, @ssl, @port) # get cookie
+        request('get', '/login.php', nil, @ssl, @port) # get cookie
         body = { fUsername: @username, fPassword: @password, lang: 'en',
                  submit: 'Login' }
-        self.class.request('post', '/login.php', body, @ssl, @port)
-        self.class.get_token('/edit.php?table=domain', @ssl, @port)
+        request('post', '/login.php', body, @ssl, @port)
+        get_token('/edit.php?table=domain', @ssl, @port)
       end
 
       def get(path, &block)
         login
-        self.class.request('get', path, nil, @ssl, @port, &block)
+        request('get', path, nil, @ssl, @port, &block)
       end
 
       def post(path, body, &block)
         login
         body[:token] = self.class.token unless self.class.token.nil?
-        self.class.request('post', path, body, @ssl, @port, &block)
+        request('post', path, body, @ssl, @port, &block)
+      end
+
+      def delete(path)
+        get("#{path}&token=#{self.class.token}") do |x|
+          parse_response(x, DELETE_ERROR_REGEX)
+        end
       end
     end
   end

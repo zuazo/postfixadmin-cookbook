@@ -63,6 +63,8 @@ setup_password_encrypted =
     encrypt_setup_password(setup_password, generate_setup_password_salt)
   end
 
+chef_gem 'addressable'
+
 if node['postfixadmin']['database']['manage'].nil?
   node.default['postfixadmin']['database']['manage'] =
     %w(localhost 127.0.0.1).include?(node['postfixadmin']['database']['host'])

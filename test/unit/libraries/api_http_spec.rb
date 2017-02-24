@@ -34,7 +34,7 @@ describe PostfixadminCookbook::API::HTTP, order: :random do
     WebMock.allow_net_connect!(net_http_connect_on_start: true)
   end
 
-  describe '.get_token' do
+  describe '#get_token' do
     let(:path) { '/edit.php?table=domain' }
     let(:token) { '6c2ef0d4187972393f047120f3fbc5f1' }
     before do
@@ -42,7 +42,7 @@ describe PostfixadminCookbook::API::HTTP, order: :random do
     end
 
     it 'returns the token' do
-      expect(described_class.get_token(path)).to eq(token)
+      expect(subject.get_token(path)).to eq(token)
     end
   end # .get_token
 

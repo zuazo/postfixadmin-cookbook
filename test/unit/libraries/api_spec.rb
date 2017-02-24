@@ -47,6 +47,18 @@ describe PostfixadminCookbook::API, order: :random do
     WebMock.allow_net_connect!(net_http_connect_on_start: true)
   end
 
+  describe '#load_depends' do
+    before do
+      allow(Chef::Log).to receive(:info)
+      hide_const('Addressable')
+    end
+    after { subject.load_depends }
+
+    it 'requires addressable' do
+      expect(subject).to receive('require').with('addressable').once
+    end
+  end
+
   shared_examples 'a table value checker that' do |meth, fields|
     table = meth.delete('_')
     let(:path) { "/list.php?table=#{table}&output=csv" }
@@ -298,7 +310,8 @@ describe PostfixadminCookbook::API, order: :random do
         domain: domain,
         password: 'p4ssw0rd',
         key1: 'value1',
-        active: false
+        active: false,
+        welcome_mail: false
       }
     end
     let(:value_out) do
@@ -414,4 +427,52 @@ describe PostfixadminCookbook::API, order: :random do
       expect { subject.create_alias_domain(value_in) }.to raise_error(error)
     end
   end # #create_alias_domain
+
+  %w(admin domain mailbox alias alias_domain).each do |resource|
+    table = resource.delete('_')
+
+    describe "#delete_#{resource}" do
+      before { force_token(token) }
+
+      it 'parses successful creation' do
+        stub =
+          stub_request(:get, %r{/delete\.php})
+          .to_return(body: sample('delete_admin_ok.html'))
+        subject.send("delete_#{resource}", 'value')
+        expect(stub).to have_been_requested
+      end
+
+      it 'adds table value to the query' do
+        stub =
+          stub_request(:get, %r{/delete\.php.*[&\?]table=#{table}})
+          .to_return(body: sample('delete_admin_ok.html'))
+        subject.send("delete_#{resource}", 'value')
+        expect(stub).to have_been_requested
+      end
+
+      it 'adds delete value to the query' do
+        stub =
+          stub_request(:get, %r{/delete\.php.*[&\?]delete=value})
+          .to_return(body: sample('delete_admin_ok.html'))
+        subject.send("delete_#{resource}", 'value')
+        expect(stub).to have_been_requested
+      end
+
+      it 'adds token value to the query' do
+        stub =
+          stub_request(:get, %r{/delete\.php.*[&\?]token=#{token}})
+          .to_return(body: sample('delete_admin_ok.html'))
+        subject.send("delete_#{resource}", 'value')
+        expect(stub).to have_been_requested
+      end
+
+      it 'parses requirements error' do
+        error = /The admin does not exist!/
+        stub_request(:get, %r{/delete\.php})
+          .to_return(body: sample('delete_admin_error.html'))
+        expect { subject.send("delete_#{resource}", 'value') }
+          .to raise_error(error)
+      end
+    end
+  end
 end

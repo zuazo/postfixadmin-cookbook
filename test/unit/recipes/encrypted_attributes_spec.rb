@@ -28,6 +28,7 @@ describe 'postfixadmin encrypted attributes', order: :random do
       postfixadmin_alias_domain
       postfixadmin_domain
       postfixadmin_mailbox
+      postfixadmin_test_lwrps
     )
   end
   let(:admin_username) { 'admin@admin.org' }

@@ -28,10 +28,29 @@ module PostfixadminCookbook
       IGNORE_CSV_FIELD_REGEXP = /^(&nbsp;|\s)*$/
     end
 
+    def load_depends
+      return if defined?(Addressable)
+      Chef::Log.info("Trying to load 'addressable' at runtime.")
+      Gem.clear_paths
+      require 'addressable'
+    end
+
     def initialize(ssl = false, port = nil, username = nil, password = nil)
       @ssl = ssl
       @port = port
       @http = API::HTTP.new(username, password, @ssl, @port)
+      load_depends
+    end
+
+    def setup?(username, password)
+      http = API::HTTP.new(username, password, @ssl, @port)
+      http.login.is_a?(String)
+    rescue API::HTTP::TokenError
+      false
+    end
+
+    def setup_admin(username, password, setup_password)
+      @http.setup(username, password, setup_password)
     end
 
     def parse_csv_line(line)
@@ -57,65 +76,37 @@ module PostfixadminCookbook
       end
     end
 
-    def admin_exist?(name)
-      list_table('admin').key?(name.to_s)
-    end
-
-    def domain_exist?(name)
-      list_table('domain').key?(name.to_s)
-    end
-
-    def mailbox_exist?(name)
-      list_table('mailbox').key?(name.to_s)
-    end
-
-    def alias_exist?(name)
-      list_table('alias').key?(name.to_s)
-    end
-
-    def alias_domain_exist?(name)
-      list_table('aliasdomain').key?(name.to_s)
-    end
-
-    def setup?(username, password)
-      http = API::HTTP.new(username, password, @ssl, @port)
-      http.login.is_a?(String)
-    rescue API::HTTP::TokenError
-      false
-    end
-
-    def setup_admin(username, password, setup_password)
-      @http.setup(username, password, setup_password)
-    end
-
     def create_to_table(table, value)
-      value[:active] = value[:active] ? 1 : 0 if value.key?(:active)
+      %i(active superadmin welcome_mail).each do |key|
+        value[key] = value[key] ? 1 : 0 if value.key?(key)
+      end
       value[:password2] = value[:password] if value.key?(:password)
-      url = "/edit.php?table=#{table}"
+      uri = Addressable::URI.parse('/edit.php')
+      uri.query_values = { table: table }
       body = { submit: "Add+#{table.capitalize}", table: table, value: value }
-      @http.post(url, body)
+      @http.post(uri.normalize.to_s, body)
     end
 
-    def create_admin(value)
-      value[:superadmin] = value[:superadmin] ? 1 : 0
-      create_to_table('admin', value)
+    def delete_from_table(table, value)
+      uri = Addressable::URI.parse('/delete.php')
+      uri.query_values = { table: table, delete: value }
+      @http.delete(uri.normalize.to_s)
     end
 
-    def create_domain(value)
-      create_to_table('domain', value)
-    end
+    %w(admin domain mailbox alias alias_domain).each do |resource|
+      table = resource.delete('_')
 
-    def create_mailbox(value)
-      value[:welcome_mail] = value[:welcome_mail] ? 1 : 0
-      create_to_table('mailbox', value)
-    end
+      define_method("#{resource}_exist?") do |value|
+        list_table(table).key?(value.to_s)
+      end
 
-    def create_alias(value)
-      create_to_table('alias', value)
-    end
+      define_method("create_#{resource}") do |value|
+        create_to_table(table, value)
+      end
 
-    def create_alias_domain(value)
-      create_to_table('aliasdomain', value)
+      define_method("delete_#{resource}") do |value|
+        delete_from_table(table, value)
+      end
     end
   end
 end

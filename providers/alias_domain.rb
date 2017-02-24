@@ -80,3 +80,19 @@ action :create do
     end
   end
 end
+
+action :delete do
+  self.class.send(:include, Chef::EncryptedAttributesHelpers)
+  @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
+  api = PostfixadminCookbook::API.new(ssl, port, login_username, login_password)
+  next unless api.alias_domain_exist?(alias_domain)
+  converge_by("Remove #{new_resource}") do
+    ruby_block "delete alias domain #{alias_domain}" do
+      block do
+        result = api.delete_alias_domain(alias_domain)
+        Chef::Log.info("Removed #{new_resource}: #{result}")
+      end
+      action :create
+    end
+  end
+end

@@ -1,0 +1,159 @@
+<!-- index.tpl -->
+<!-- header.tpl -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="delete_admin_error_files/default.css">
+		<title>Postfix Admin - 172.17.0.2</title>
+	</head>
+	<body class="lang-en page-list page-list-admin">
+		<div id="container">
+		<div id="login_header">
+		<a href="http://172.17.0.2/main.php"><img id="login_header_logo" src="delete_admin_error_files/logo-default.png" alt="Logo"></a>
+		</div>
+<!-- menu.tpl -->
+<div id="menu">
+<ul>
+
+<li><a target="_top" href="http://172.17.0.2/list.php?table=admin">Admin List</a> <ul> <li><a target="_top" href="http://172.17.0.2/list.php?table=admin">Admin List</a></li> <li><a target="_top" href="http://172.17.0.2/edit.php?table=admin">New Admin</a></li> </ul> </li>
+
+<li><a target="_top" href="http://172.17.0.2/list.php?table=domain">Domain List</a> <ul> <li><a target="_top" href="http://172.17.0.2/list.php?table=domain">Domain List</a></li><li><a target="_top" href="http://172.17.0.2/edit.php?table=domain">New Domain</a></li></ul> </li>
+
+<li><a target="_top" href="http://172.17.0.2/list-virtual.php">Virtual List</a> <ul> <li><a target="_top" href="http://172.17.0.2/list-virtual.php">Virtual List</a></li> <li><a target="_top" href="http://172.17.0.2/edit.php?table=mailbox">Add Mailbox</a></li> <li><a target="_top" href="http://172.17.0.2/edit.php?table=alias">Add Alias</a></li><li><a target="_top" href="http://172.17.0.2/edit.php?table=aliasdomain">Add Alias Domain</a></li></ul> </li>
+
+
+<li><a target="_top" href="http://172.17.0.2/sendmail.php">Send Email</a> <ul> <li><a target="_top" href="http://172.17.0.2/sendmail.php">Send Email</a></li><li><a target="_top" href="http://172.17.0.2/broadcast-message.php">Broadcast message</a></li></ul> </li>
+
+	<li><a target="_top" href="http://172.17.0.2/edit.php?table=adminpassword">Password</a></li>
+
+
+	<li><a target="_top" href="http://172.17.0.2/viewlog.php">View Log</a></li>
+
+	<li class="logout"><a target="_top" href="http://172.17.0.2/login.php">Logout</a></li>
+</ul>
+</div>
+
+<script type="text/javascript">
+// <![CDATA[
+sfHover = function()
+{
+	var sfEls = document.getElementById("menu").getElementsByTagName("LI");
+	for (var i=0; i<sfEls.length; i++)
+	{
+		sfEls[i].onmouseover=function()
+		{
+			this.className+=" sfhover";
+		}
+		sfEls[i].onmouseout=function()
+		{
+			this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
+		}
+	}
+}
+if (window.attachEvent)
+	window.attachEvent("onload", sfHover);
+// ]]>
+</script>
+
+<br clear="all"><!-- flash_error.tpl -->
+<br clear="all"><br>
+<ul class="flash-error"><li>The admin does not exist!</li></ul><div id="overview">
+<form name="frmOverview" method="post" action="">
+    </form>
+</div>
+
+
+
+
+<div id="list">
+<table id="admin_table" border="0"><!-- TODO: 'admin_table' needed because of CSS for table header -->
+
+
+<tbody><tr class="header">
+                        <td>Admin</td>
+                                                                                <td>Domains</td>
+                                <td>Active</td>
+                                            <td>Last modified</td>
+                                        <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>
+
+     
+    <tr class="hilightoff" onmouseover="className='hilighton';" onmouseout="className='hilightoff';">
+
+            
+                             
+                            
+                            <td>
+                                            <a href="http://172.17.0.2/list.php?table=domain&amp;username=admin2%40admin.org">admin2@admin.org</a>
+                                    </td>
+                                                                                
+                                        
+                            <td>
+                                            Super admin
+                                    </td>
+                                
+                                        
+                            <td>
+                                                                        <a href="http://172.17.0.2/editactive.php?table=admin&amp;id=admin2%40admin.org&amp;active=0&amp;token=35f1bc0ea2bc36f5b11ea28c47595e32">YES</a>
+                                                            </td>
+                                            
+                                        
+                            <td>
+                                            2017-02-23
+                                    </td>
+                                                
+    <td><a href="http://172.17.0.2/edit.php?table=admin&amp;edit=admin2%40admin.org">edit</a></td>
+    <td><a href="http://172.17.0.2/delete.php?table=admin&amp;delete=admin2%40admin.org&amp;token=35f1bc0ea2bc36f5b11ea28c47595e32" onclick="return confirm ('Do you really want to delete the admin admin2@admin.org?')">del</a></td>
+    </tr>
+     
+    <tr class="hilightoff" onmouseover="className='hilighton';" onmouseout="className='hilightoff';">
+
+            
+                             
+                            
+                            <td>
+                                            <a href="http://172.17.0.2/list.php?table=domain&amp;username=admin%40admin.org">admin@admin.org</a>
+                                    </td>
+                                                                                
+                                        
+                            <td>
+                                            Super admin
+                                    </td>
+                                
+                                        
+                            <td>
+                                                                        <a href="http://172.17.0.2/editactive.php?table=admin&amp;id=admin%40admin.org&amp;active=0&amp;token=35f1bc0ea2bc36f5b11ea28c47595e32">YES</a>
+                                                            </td>
+                                            
+                                        
+                            <td>
+                                            2017-02-23
+                                    </td>
+                                                
+    <td><a href="http://172.17.0.2/edit.php?table=admin&amp;edit=admin%40admin.org">edit</a></td>
+    <td><a href="http://172.17.0.2/delete.php?table=admin&amp;delete=admin%40admin.org&amp;token=35f1bc0ea2bc36f5b11ea28c47595e32" onclick="return confirm ('Do you really want to delete the admin admin@admin.org?')">del</a></td>
+    </tr>
+
+</tbody></table>
+
+<br><a href="http://172.17.0.2/edit.php?table=admin" class="button">Add Admin</a><br>
+<br>
+<br><a href="http://172.17.0.2/list.php?table=admin&amp;output=csv">Download this list as CSV file</a>
+
+</div>
+<!-- footer.tpl -->
+<div id="footer">
+	<a target="_blank" href="http://postfixadmin.sf.net/">Postfix Admin 3.0.2</a>
+	&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+	<a target="_blank" href="http://postfixadmin.sf.net/update-check.php?version=3.0.2">Check for update</a>
+                        &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;	
+            Logged in as admin@admin.org
+            			&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+		<a href="http://change-this-to-your.domain.tld/">Return to change-this-to-your.domain.tld</a>
+	</div>
+</div>
+
+
+
+</body></html>

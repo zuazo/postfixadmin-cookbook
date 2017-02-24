@@ -21,40 +21,10 @@
 
 include_recipe 'postfixadmin_test'
 
-postfixadmin_admin 'admin@admin.org' do
-  password 'p@ssw0rd1'
+postfixadmin_test_lwrps 'create postfixadmin_test' do
   action :create
 end
 
-postfixadmin_domain 'foobar.com' do
-  login_username 'admin@admin.org'
-  login_password 'p@ssw0rd1'
-end
-
-postfixadmin_admin 'admin2@foobar.com' do
-  login_username 'admin@admin.org'
-  login_password 'p@ssw0rd1'
-end
-
-postfixadmin_mailbox 'postmaster@foobar.com' do
-  password 'p0stm@st3r1'
-  login_username 'admin@admin.org'
-  login_password 'p@ssw0rd1'
-end
-
-postfixadmin_alias 'admin@foobar.com' do
-  goto 'postmaster@foobar.com'
-  login_username 'admin@admin.org'
-  login_password 'p@ssw0rd1'
-end
-
-postfixadmin_domain 'example.com' do
-  login_username 'admin@admin.org'
-  login_password 'p@ssw0rd1'
-end
-
-postfixadmin_alias_domain 'example.com' do
-  target_domain 'foobar.com'
-  login_username 'admin@admin.org'
-  login_password 'p@ssw0rd1'
+postfixadmin_test_lwrps 'delete postfixadmin_test' do
+  action :delete
 end

@@ -114,10 +114,25 @@ action :create do
   end
 end
 
-action :remove do
+action :delete do
   self.class.send(:include, Chef::EncryptedAttributesHelpers)
   @encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
-  converge_by("Create #{new_resource}") do
-    raise 'postfixadmin_admin :remove action still not implemented.' # TODO
+  api = PostfixadminCookbook::API.new(ssl, port, login_username, login_password)
+  if login_username.nil? || login_password.nil?
+    converge_by("Remove #{new_resource}") do
+      raise 'You need to set `login_username` and `login_password` properties '\
+            'to delete admins.'
+    end
+  else
+    next unless api.admin_exist?(user)
+    converge_by("Remove #{new_resource}") do
+      ruby_block "delete admin #{user}" do
+        block do
+          result = api.delete_admin(user)
+          Chef::Log.info("Removed #{new_resource}: #{result}")
+        end
+        action :create
+      end
+    end
   end
 end

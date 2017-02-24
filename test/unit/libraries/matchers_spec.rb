@@ -22,11 +22,11 @@ require 'matchers'
 
 describe 'ChefSpec matchers', order: :random do
   matchers = {
-    postfixadmin_admin: %i(create remove),
-    postfixadmin_alias: %i(create),
-    postfixadmin_alias_domain: %i(create),
-    postfixadmin_domain: %i(create),
-    postfixadmin_mailbox: %i(create),
+    postfixadmin_admin: %i(create delete),
+    postfixadmin_alias: %i(create delete),
+    postfixadmin_alias_domain: %i(create delete),
+    postfixadmin_domain: %i(create delete),
+    postfixadmin_mailbox: %i(create delete),
 
     # support/matchers
     ark: %i(

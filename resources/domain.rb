@@ -18,7 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-actions :create
+actions :create, :delete
 
 attribute :domain, kind_of: String, name_attribute: true
 attribute :description, kind_of: String, default: ''

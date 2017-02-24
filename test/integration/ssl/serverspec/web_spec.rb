@@ -68,9 +68,20 @@ describe server(:web) do
       expect(find('#admin_table')).to have_content 'foobar.com'
     end
 
+    it 'does not list deleted domains' do
+      visit '/list.php?table=domain'
+      expect(find('#admin_table')).to_not have_content 'todelete.com'
+    end
+
     it 'lists admins' do
       visit '/list.php?table=admin'
       expect(find('#admin_table')).to have_content 'admin2@foobar.com'
+    end
+
+    it 'does not list deleted admins' do
+      visit '/list.php?table=admin'
+      expect(find('#admin_table'))
+        .to_not have_content 'todelete.admin@foobar.com'
     end
 
     context 'in virtual list' do
@@ -81,10 +92,23 @@ describe server(:web) do
           .to have_content 'example.com'
       end
 
+      it 'does not list deleted domain aliases' do
+        expect(first('#admin_table'))
+          .to_not have_content 'todelete.aliasdomain.com'
+      end
+
       it 'lists aliases' do
         text = 'admin@foobar.com'
         expect(page).to have_selector(
           '#admin_table tr:nth-child(3) > td:nth-child(2)',
+          text: Regexp.new(Regexp.escape(text))
+        )
+      end
+
+      it 'does not list deleted aliases' do
+        text = 'todelete.alias@foobar.com'
+        expect(page).to_not have_selector(
+          '#admin_table',
           text: Regexp.new(Regexp.escape(text))
         )
       end
@@ -99,6 +123,11 @@ describe server(:web) do
 
       it 'lists mailboxes' do
         expect(find('#mailbox_table')).to have_content 'postmaster@foobar.com'
+      end
+
+      it 'does not list deleted mailboxes' do
+        expect(find('#mailbox_table'))
+          .to_not have_content 'todelete.mailbox@foobar.com'
       end
     end # in virtual list
   end # capybara tests

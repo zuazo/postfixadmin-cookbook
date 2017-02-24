@@ -208,12 +208,14 @@ Resources
 
 ## postfixadmin_admin[user]
 
-Create or remove a PostfixAdmin admin user. This kind of user is used to create the domains and mailboxes.
+Create or delete a PostfixAdmin admin user.
+
+This kind of user is used to create the domains and mailboxes, and must be used before any other resource from this cookbook.
 
 ### postfixadmin_admin Actions
 
 * `create`: Create a PostfixAdmin admin user (default).
-* `remove`: Remove a PostfixAdmin admin user.
+* `delete`: Remove a PostfixAdmin admin user.
 
 ### postfixadmin_admin Parameters
 
@@ -248,11 +250,12 @@ end
 
 ## postfixadmin_domain[domain]
 
-Create domains.
+Create or delete a domain.
 
 ### postfixadmin_domain Actions
 
 * `create`
+* `delete`
 
 ### postfixadmin_domain Parameters
 
@@ -278,11 +281,12 @@ end
 
 ## postfixadmin_mailbox[mailbox]
 
-Create a mailbox.
+Create or delete a mailbox.
 
 ### postfixadmin_mailbox Actions
 
 * `create`
+* `delete`
 
 ### postfixadmin_mailbox Parameters
 
@@ -310,11 +314,12 @@ end
 
 ## postfixadmin_alias[address]
 
-Create mailbox aliases.
+Create or delete a mailbox alias.
 
 ### postfixadmin_alias Actions
 
 * `create`
+* `delete`
 
 ### postfixadmin_alias Parameters
 
@@ -340,11 +345,14 @@ end
 
 ## postfixadmin_alias_domain[address]
 
-Create domain aliases. The `alias_domain` must already exist.
+Create or remote a domain alias.
+
+The domain name used as `alias_domain` must already exist: in other words, it needs to be created previously with `postfixadmin_domain` resource.
 
 ### postfixadmin_alias_domain Actions
 
 * `create`
+* `delete`
 
 ### postfixadmin_alias_domain Parameters
 
@@ -494,12 +502,12 @@ Assert that the *Chef Run* creates a PostfixAdmin admin user.
 expect(chef_run).to create_postfixadmin_admin(user)
 ```
 
-### remove_postfixadmin_admin(path)
+### delete_postfixadmin_admin(path)
 
-Assert that the *Chef Run* removes a PostfixAdmin admin user.
+Assert that the *Chef Run* deletes a PostfixAdmin admin user.
 
 ```ruby
-expect(chef_run).to remove_postfixadmin_admin(user)
+expect(chef_run).to delete_postfixadmin_admin(user)
 ```
 
 ### postfixadmin_alias(address)
@@ -519,6 +527,14 @@ Assert that the *Chef Run* creates a PostfixAdmin alias.
 expect(chef_run).to create_postfixadmin_alias(address)
 ```
 
+### delete_postfixadmin_alias(address)
+
+Assert that the *Chef Run* deletes a PostfixAdmin alias.
+
+```ruby
+expect(chef_run).to delete_postfixadmin_alias(address)
+```
+
 ### postfixadmin_alias_domain(alias_domain)
 
 Helper method for locating a `postfixadmin_alias_domain` resource in the collection.
@@ -534,6 +550,14 @@ Assert that the *Chef Run* creates a PostfixAdmin alias domain.
 
 ```ruby
 expect(chef_run).to create_postfixadmin_alias_domain(alias_domain)
+```
+
+### delete_postfixadmin_alias_domain(alias_domain)
+
+Assert that the *Chef Run* deletes a PostfixAdmin alias domain.
+
+```ruby
+expect(chef_run).to delete_postfixadmin_alias_domain(alias_domain)
 ```
 
 ### postfixadmin_domain(domain)
@@ -553,6 +577,14 @@ Assert that the *Chef Run* creates a PostfixAdmin domain.
 expect(chef_run).to create_postfixadmin_domain(domain)
 ```
 
+### delete_postfixadmin_domain(domain)
+
+Assert that the *Chef Run* deletes a PostfixAdmin domain.
+
+```ruby
+expect(chef_run).to delete_postfixadmin_domain(domain)
+```
+
 ### postfixadmin_mailbox(mailbox)
 
 Helper method for locating a `postfixadmin_mailbox` resource in the collection.
@@ -568,6 +600,14 @@ Assert that the *Chef Run* creates a PostfixAdmin mailbox.
 
 ```ruby
 expect(chef_run).to create_postfixadmin_mailbox(mailbox)
+```
+
+### delete_postfixadmin_mailbox(domain)
+
+Assert that the *Chef Run* deletes a PostfixAdmin mailbox.
+
+```ruby
+expect(chef_run).to delete_postfixadmin_mailbox(mailbox)
 ```
 
 Contributing

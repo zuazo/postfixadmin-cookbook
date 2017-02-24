@@ -18,7 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-actions :create, :remove
+actions :create, :delete
 
 attribute :user, kind_of: String, name_attribute: true
 attribute :password, kind_of: String, default: 'p@ssw0rd1'
