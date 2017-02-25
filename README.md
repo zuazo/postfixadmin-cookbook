@@ -79,7 +79,7 @@ Please, [let us know](https://github.com/zuazo/postfixadmin-cookbook/issues/new?
 
 ## Required Applications
 
-* Chef `12.1` or higher.
+* Chef `12.5` or higher.
 * Ruby `2.2` or higher.
 
 Only Postfix Admin version `3` or higher is supported by this cookbook. For older versions, use cookbook versions `< 3`.
