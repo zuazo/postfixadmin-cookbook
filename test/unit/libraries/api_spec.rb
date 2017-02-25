@@ -172,10 +172,12 @@ describe PostfixadminCookbook::API, order: :random do
     end
 
     it 'parses successful creation' do
-      stub_request(:post, url('/setup.php'))
+      stub =
+        stub_request(:post, url('/setup.php'))
         .with(body: hash_including(body))
         .to_return(body: sample('setup_ok.html'))
       subject.setup_admin(username, password, 's3tup_p4ssw0rd')
+      expect(stub).to have_been_requested
     end
 
     it 'parses requirements error' do
@@ -190,20 +192,24 @@ describe PostfixadminCookbook::API, order: :random do
     it 'parses invalid email error' do
       error = 'Admin is not a valid email address!Email address'
 
-      stub_request(:post, url('/setup.php'))
+      stub =
+        stub_request(:post, url('/setup.php'))
         .with(body: hash_including(body))
         .to_return(body: sample('setup_error_invalid_email.html'))
       expect { subject.setup_admin(username, password, 's3tup_p4ssw0rd') }
         .to raise_error(error)
+      expect(stub).to have_been_requested
     end
 
     it 'parses invalid password error' do
       error = /Your password must contain at least 2 digit\(s\)/
-      stub_request(:post, url('/setup.php'))
+      stub =
+        stub_request(:post, url('/setup.php'))
         .with(body: hash_including(body))
         .to_return(body: sample('setup_error_invalid_password.html'))
       expect { subject.setup_admin(username, password, 's3tup_p4ssw0rd') }
         .to raise_error(error)
+      expect(stub).to have_been_requested
     end
 
     it 'handles unknown error' do
@@ -246,10 +252,12 @@ describe PostfixadminCookbook::API, order: :random do
     end
 
     it 'parses successful creation' do
-      stub_request(:post, url('/edit.php?table=admin'))
+      stub =
+        stub_request(:post, url('/edit.php?table=admin'))
         .with(body: hash_including(body))
         .to_return(body: sample('create_admin_ok.html'))
       subject.create_admin(value_in)
+      expect(stub).to have_been_requested
     end
 
     it 'parses requirements error' do
@@ -286,10 +294,12 @@ describe PostfixadminCookbook::API, order: :random do
     end
 
     it 'parses successful creation' do
-      stub_request(:post, url('/edit.php?table=domain'))
+      stub =
+        stub_request(:post, url('/edit.php?table=domain'))
         .with(body: hash_including(body))
         .to_return(body: sample('create_domain_ok.html'))
       subject.create_domain(value_in)
+      expect(stub).to have_been_requested
     end
 
     it 'parses requirements error' do
@@ -334,10 +344,12 @@ describe PostfixadminCookbook::API, order: :random do
     end
 
     it 'parses successful creation' do
-      stub_request(:post, url('/edit.php?table=mailbox'))
+      stub =
+        stub_request(:post, url('/edit.php?table=mailbox'))
         .with(body: hash_including(body))
         .to_return(body: sample('create_mailbox_ok.html'))
       subject.create_mailbox(value_in)
+      expect(stub).to have_been_requested
     end
 
     it 'parses requirements error' do
@@ -377,10 +389,12 @@ describe PostfixadminCookbook::API, order: :random do
     end
 
     it 'parses successful creation' do
-      stub_request(:post, url('/edit.php?table=alias'))
+      stub =
+        stub_request(:post, url('/edit.php?table=alias'))
         .with(body: hash_including(body))
         .to_return(body: sample('create_alias_ok.html'))
       subject.create_alias(value_in)
+      expect(stub).to have_been_requested
     end
 
     it 'parses requirements error' do
@@ -413,10 +427,12 @@ describe PostfixadminCookbook::API, order: :random do
     end
 
     it 'parses successful creation' do
-      stub_request(:post, url('/edit.php?table=aliasdomain'))
+      stub =
+        stub_request(:post, url('/edit.php?table=aliasdomain'))
         .with(body: hash_including(body))
         .to_return(body: sample('create_alias_domain_ok.html'))
       subject.create_alias_domain(value_in)
+      expect(stub).to have_been_requested
     end
 
     it 'parses requirements error' do

@@ -60,10 +60,12 @@ describe PostfixadminCookbook::API::HTTP, order: :random do
     end
 
     it 'sets up' do
-      stub_request(:post, url(path))
+      stub =
+        stub_request(:post, url(path))
         .with(body: hash_including(body))
         .to_return(body: sample('setup_ok.html'))
       subject.setup(username, password, setup_password)
+      expect(stub).to have_been_requested
     end
   end # #setup
 
@@ -79,12 +81,14 @@ describe PostfixadminCookbook::API::HTTP, order: :random do
 
     it 'parses successful log in' do
       # stub login:
-      stub_request(:get, url('/login.php'))
+      stub_get =
+        stub_request(:get, url('/login.php'))
         .to_return(
           headers: { 'Set-Cookie' => cookie },
           body: sample('login.html')
         )
-      stub_request(:post, url('/login.php'))
+      stub_post =
+        stub_request(:post, url('/login.php'))
         .with(
           headers: { 'Cookie' => cookie },
           body: hash_including(body)
@@ -92,6 +96,8 @@ describe PostfixadminCookbook::API::HTTP, order: :random do
       # stub get token:
       stub_request(:get, token_url).to_return(body: sample(token_sample))
       subject.login
+      expect(stub_get).to have_been_requested
+      expect(stub_post).to have_been_requested
     end
   end # #login
 
@@ -101,17 +107,21 @@ describe PostfixadminCookbook::API::HTTP, order: :random do
     before { allow(subject).to receive(:login) }
 
     it 'logs in' do
-      stub_request(:get, url(path)).to_return(body: sample('login.html'))
+      stub =
+        stub_request(:get, url(path)).to_return(body: sample('login.html'))
       expect(subject).to receive(:login).once
       subject.get(path)
+      expect(stub).to have_been_requested
     end
 
     it 'gets url' do
       force_cookie(cookie)
-      stub_request(:get, url(path))
+      stub =
+        stub_request(:get, url(path))
         .with(headers: { 'Cookie' => cookie })
         .to_return(body: sample('login.html'))
       subject.get(path)
+      expect(stub).to have_been_requested
     end
   end # #get
 
@@ -123,21 +133,25 @@ describe PostfixadminCookbook::API::HTTP, order: :random do
     before { allow(subject).to receive(:login) }
 
     it 'logs in' do
-      stub_request(:post, url(path)).to_return(body: sample('login.html'))
+      stub =
+        stub_request(:post, url(path)).to_return(body: sample('login.html'))
       expect(subject).to receive(:login).once
       subject.post(path, body)
+      expect(stub).to have_been_requested
     end
 
     it 'posts url' do
       force_cookie(cookie)
       force_token(token)
-      stub_request(:post, url(path))
+      stub =
+        stub_request(:post, url(path))
         .with(
           body: body.merge('token' => token),
           headers: { 'Cookie' => cookie }
         )
         .to_return(body: sample('login.html'))
       subject.post(path, body)
+      expect(stub).to have_been_requested
     end
   end # #post
 
@@ -148,9 +162,11 @@ describe PostfixadminCookbook::API::HTTP, order: :random do
     before { allow(subject).to receive(:login) }
 
     it 'uses https' do
-      stub_request(:get, "https://127.0.0.1:#{port}#{path}")
+      stub =
+        stub_request(:get, "https://127.0.0.1:#{port}#{path}")
         .to_return(body: sample('setup_ok.html'))
       subject.get(path)
+      expect(stub).to have_been_requested
     end
   end
 end
