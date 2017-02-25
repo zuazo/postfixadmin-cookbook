@@ -62,8 +62,9 @@ describe 'postfixadmin::default', order: :random do
     ).and_return(true)
   end
 
-  it 'installs the addressable gem' do
+  it 'installs the addressable gem at compile time' do
     expect(chef_run).to install_chef_gem('addressable')
+      .with_compile_time(false)
   end
 
   it 'includes postfixadmin::mysql recipe' do

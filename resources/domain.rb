@@ -28,7 +28,7 @@ property :mailboxes, Integer, default: 10
 property :login_username, String, required: true
 property :login_password, String, required: true
 property :ssl, [TrueClass, FalseClass], default: lazy { default_ssl }
-property :port, [Integer, String], default: lazy { default_port }
+property :port, [Integer, String, NilClass], default: lazy { default_port }
 
 include PostfixadminCookbook::ResourceHelpers
 

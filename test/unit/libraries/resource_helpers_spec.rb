@@ -39,14 +39,48 @@ describe PostfixadminCookbook::ResourceHelpers, order: :random do
   end
 
   describe '#default_ssl' do
-    it "returns `node['postfixadmin']['ssl']` attribute value" do
-      expect(subject.default_ssl).to eq(node['postfixadmin']['ssl'])
+    context "when `node['postfixadmin']['ssl']` is true" do
+      before { node.default['postfixadmin']['ssl'] = true }
+
+      it 'returns true' do
+        expect(subject.default_ssl).to eq(true)
+      end
+    end
+
+    context "when `node['postfixadmin']['ssl']` is false" do
+      before { node.default['postfixadmin']['ssl'] = false }
+
+      it 'returns false' do
+        expect(subject.default_ssl).to eq(false)
+      end
+    end
+
+    context "without `node['postfixadmin']['ssl']` set" do
+      before { node.default['postfixadmin']['ssl'] = nil }
+
+      it 'returns false' do
+        expect(subject.default_ssl).to eq(false)
+      end
     end
   end
 
   describe '#default_port' do
     it "returns `node['postfixadmin']['port']` attribute value" do
       expect(subject.default_port).to eq(node['postfixadmin']['port'])
+    end
+
+    context "without `node['postfixadmin']['port']` set" do
+      before { node.default['postfixadmin']['port'] = nil }
+
+      it 'returns 80 without ssl' do
+        node.default['postfixadmin']['ssl'] = false
+        expect(subject.default_port).to eq(80)
+      end
+
+      it 'returns 443 without ssl' do
+        node.default['postfixadmin']['ssl'] = true
+        expect(subject.default_port).to eq(443)
+      end
     end
   end
 end

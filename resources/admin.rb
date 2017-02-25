@@ -30,7 +30,7 @@ property :active, [TrueClass, FalseClass], default: true
 property :login_username, String
 property :login_password, String, sensitive: true
 property :ssl, [TrueClass, FalseClass], default: lazy { default_ssl }
-property :port, [Integer, String], default: lazy { default_port }
+property :port, [Integer, String, NilClass], default: lazy { default_port }
 
 include PostfixadminCookbook::ResourceHelpers
 

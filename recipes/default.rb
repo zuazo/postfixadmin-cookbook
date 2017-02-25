@@ -63,7 +63,9 @@ setup_password_encrypted =
     encrypt_setup_password(setup_password, generate_setup_password_salt)
   end
 
-chef_gem 'addressable'
+chef_gem 'addressable' do
+  compile_time false
+end
 
 if node['postfixadmin']['database']['manage'].nil?
   node.default['postfixadmin']['database']['manage'] =

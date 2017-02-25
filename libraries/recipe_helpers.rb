@@ -4,7 +4,6 @@
 # Author:: Xabier de Zuazo (<xabier@zuazo.org>)
 # Library:: resource_helpers
 # Copyright:: Copyright (c) 2017 Xabier de Zuazo
-# Copyright:: Copyright (c) 2013 Onddo Labs, SL.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,15 +18,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-module PostfixadminCookbook
-  # Helper methods to be included in Chef Custom Resources.
-  module ResourceHelpers
-    def default_ssl
-      node['postfixadmin']['ssl'] ? true : false
-    end
+require_relative 'resource_helpers'
 
-    def default_port
-      node['postfixadmin']['port'] || (default_ssl ? 443 : 80)
-    end
+module PostfixadminCookbook
+  # Helper methods to be included in Chef Recipes
+  module RecipeHelpers
+    include ResourceHelpers
   end
 end

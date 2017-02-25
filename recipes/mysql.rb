@@ -32,12 +32,20 @@ self.encrypted_attributes_enabled = node['postfixadmin']['encrypt_attributes']
 root_password = mysql_password('root')
 
 mysql_service node['postfixadmin']['mysql']['instance'] do
-  data_dir node['postfixadmin']['mysql']['data_dir']
+  unless node['postfixadmin']['mysql']['data_dir'].nil?
+    data_dir node['postfixadmin']['mysql']['data_dir']
+  end
   initial_root_password root_password
   bind_address '127.0.0.1'
   port node['postfixadmin']['mysql']['port']
-  run_group node['postfixadmin']['mysql']['run_group']
-  run_user node['postfixadmin']['mysql']['run_user']
-  version node['postfixadmin']['mysql']['version']
+  unless node['postfixadmin']['mysql']['run_group'].nil?
+    run_group node['postfixadmin']['mysql']['run_group']
+  end
+  unless node['postfixadmin']['mysql']['run_user'].nil?
+    run_user node['postfixadmin']['mysql']['run_user']
+  end
+  unless node['postfixadmin']['mysql']['version'].nil?
+    version node['postfixadmin']['mysql']['version']
+  end
   action [:create, :start]
 end

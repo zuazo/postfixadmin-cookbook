@@ -1,10 +1,7 @@
 # encoding: UTF-8
 #
-# Cookbook Name:: postfixadmin
 # Author:: Xabier de Zuazo (<xabier@zuazo.org>)
-# Library:: resource_helpers
 # Copyright:: Copyright (c) 2017 Xabier de Zuazo
-# Copyright:: Copyright (c) 2013 Onddo Labs, SL.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,16 +15,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-module PostfixadminCookbook
-  # Helper methods to be included in Chef Custom Resources.
-  module ResourceHelpers
-    def default_ssl
-      node['postfixadmin']['ssl'] ? true : false
-    end
+require_relative '../spec_helper'
+require 'resource_helpers'
+require 'recipe_helpers'
 
-    def default_port
-      node['postfixadmin']['port'] || (default_ssl ? 443 : 80)
-    end
+class FakeRecipe
+  include PostfixadminCookbook::RecipeHelpers
+end
+
+describe PostfixadminCookbook::RecipeHelpers, order: :random do
+  let(:subject) { FakeRecipe.new }
+
+  it 'is a ResourceHelpers' do
+    expect(subject).to be_a(PostfixadminCookbook::ResourceHelpers)
   end
 end
