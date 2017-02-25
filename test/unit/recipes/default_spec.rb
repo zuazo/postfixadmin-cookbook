@@ -170,6 +170,7 @@ describe 'postfixadmin::default', order: :random do
       .with_owner('root')
       .with_group('www-data')
       .with_mode('0640')
+      .with_sensitive(true)
   end
 
   context 'on Ubuntu 12.04' do

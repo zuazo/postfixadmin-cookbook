@@ -50,6 +50,7 @@ describe 'postfixadmin::map_files', order: :random do
         .with_mode('00640')
         .with_owner('root')
         .with_group('postfix')
+        .with_sensitive(true)
     end
   end
 end

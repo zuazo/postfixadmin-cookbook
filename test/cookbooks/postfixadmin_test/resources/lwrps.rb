@@ -33,6 +33,7 @@ action :create do
   postfixadmin_admin 'admin2@foobar.com' do
     login_username 'admin@admin.org'
     login_password 'p@ssw0rd1'
+    password 'p@ssw0rd1'
   end
 
   postfixadmin_mailbox 'postmaster@foobar.com' do
@@ -67,6 +68,7 @@ action :create do
   postfixadmin_admin 'todelete.admin@foobar.com' do
     login_username 'admin@admin.org'
     login_password 'p@ssw0rd1'
+    password 'p@ssw0rd1'
     action :create
   end
 

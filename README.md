@@ -223,7 +223,7 @@ This kind of user is used to create the domains and mailboxes, and must be used 
 | Property       | Default                       | Description                    |
 |:---------------|:------------------------------|:-------------------------------|
 | user           | *name attribute*              | Username
-| password       | `'p@ssw0rd1'`                 | Password
+| password       | *required*                    | Password
 | setup_password | *calculated*                  | PostfixAdmin Setup Password
 | superadmin     | `true`                        | Whether it has access to all domains
 | domains        | `[]`                          | List of domains it has access to

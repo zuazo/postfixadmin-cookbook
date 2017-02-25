@@ -22,12 +22,12 @@
 default_action :create
 
 property :mailbox, String, name_property: true
-property :password, String, required: true
+property :password, String, sensitive: true
 property :name, String, default: ''
 property :active, [TrueClass, FalseClass], default: true
 property :mail, [TrueClass, FalseClass], default: false
 property :login_username, String, required: true
-property :login_password, String, required: true
+property :login_password, String, required: true, sensitive: true
 property :ssl, [TrueClass, FalseClass], default: lazy { default_ssl }
 property :port, [Integer, String, NilClass], default: lazy { default_port }
 

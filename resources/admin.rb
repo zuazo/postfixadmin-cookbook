@@ -22,7 +22,7 @@
 default_action :create
 
 property :user, String, name_property: true
-property :password, String, default: 'p@ssw0rd1'
+property :password, String, sensitive: true
 property :setup_password, String, sensitive: true
 property :superadmin, [TrueClass, FalseClass], default: true
 property :domains, [Array, String], default: []

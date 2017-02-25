@@ -171,6 +171,7 @@ template "#{node['ark']['prefix_root']}/postfixadmin/config.local.php" do
   owner 'root'
   group web_group
   mode '0640'
+  sensitive true
   variables(
     db_type: db_type,
     db_host: node['postfixadmin']['database']['host'],

@@ -22,10 +22,10 @@
 default_action :create
 
 property :alias_domain, String, name_property: true
-property :target_domain, String, required: true
+property :target_domain, String
 property :active, [TrueClass, FalseClass], default: true
 property :login_username, String, required: true
-property :login_password, String, required: true
+property :login_password, String, required: true, sensitive: true
 property :ssl, [TrueClass, FalseClass], default: lazy { default_ssl }
 property :port, [Integer, String, NilClass], default: lazy { default_port }
 

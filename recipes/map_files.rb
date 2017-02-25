@@ -38,6 +38,7 @@ node['postfixadmin']['map_files']['list'].each do |map_file|
     mode node['postfixadmin']['map_files']['mode']
     owner node['postfixadmin']['map_files']['owner']
     group node['postfixadmin']['map_files']['group']
+    sensitive true
     variables(
       user: node['postfixadmin']['database']['user'],
       password: password,
