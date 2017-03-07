@@ -47,7 +47,7 @@ describe 'map files' do
       table = PostfixTable.new(description).parse
 
       describe mysql_query(
-        table.query.format(%w(example.com admin)), table.mysql
+        format(table.query, 'example.com', 'admin'), table.mysql
       ) do
         it 'includes "admin@example.com" alias domain' do
           expect(results.first['goto']).to eq('postmaster@foobar.com')
@@ -58,7 +58,7 @@ describe 'map files' do
     describe 'db_virtual_alias_domain_catchall_maps.cf' do
       table = PostfixTable.new(description).parse
 
-      describe mysql_query(table.query.format('example.com'), table.mysql) do
+      describe mysql_query(format(table.query, 'example.com'), table.mysql) do
         it 'is empty' do
           expect(results.to_a).to be_empty
         end
@@ -69,7 +69,7 @@ describe 'map files' do
       table = PostfixTable.new(description).parse
 
       describe mysql_query(
-        table.query.format('postmaster@foobar.com'), table.mysql
+        format(table.query, 'postmaster@foobar.com'), table.mysql
       ) do
         it 'includes "foobar.com/postmaster/" maildir' do
           expect(results.first['maildir']).to eq('foobar.com/postmaster/')
@@ -81,7 +81,7 @@ describe 'map files' do
       table = PostfixTable.new(description).parse
 
       describe mysql_query(
-        table.query.format(%w(example.com postmaster)), table.mysql
+        format(table.query, 'example.com', 'postmaster'), table.mysql
       ) do
         it 'includes "foobar.com/postmaster/" maildir' do
           expect(results.first['maildir']).to eq('foobar.com/postmaster/')
