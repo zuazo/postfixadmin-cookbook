@@ -77,7 +77,7 @@ module PostfixadminCookbook
     end
 
     def create_to_table(table, value)
-      %i(active superadmin welcome_mail).each do |key|
+      %i(active superadmin welcome_mail default_aliases).each do |key|
         value[key] = value[key] ? 1 : 0 if value.key?(key)
       end
       value[:password2] = value[:password] if value.key?(:password)

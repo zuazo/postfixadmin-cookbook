@@ -25,6 +25,8 @@ property :domain, String, name_property: true
 property :description, String, default: ''
 property :aliases, Integer, default: 10
 property :mailboxes, Integer, default: 10
+property :active, [TrueClass, FalseClass], default: true
+property :default_aliases, [TrueClass, FalseClass], default: false
 property :login_username, String, required: true
 property :login_password, String, required: true, sensitive: true
 property :ssl, [TrueClass, FalseClass], default: lazy { default_ssl }
@@ -42,7 +44,8 @@ action :create do
       block do
         api.create_domain(
           domain: domain, description: description, aliases: aliases,
-          mailboxes: mailboxes
+          mailboxes: mailboxes, active: active,
+          default_aliases: default_aliases
         )
         Chef::Log.info("Created #{new_resource}")
       end

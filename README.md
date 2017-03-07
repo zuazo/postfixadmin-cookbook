@@ -260,15 +260,17 @@ Create or delete a domain.
 
 ### postfixadmin_domain Properties
 
-| Property       | Default                       | Description                    |
-|:---------------|:------------------------------|:-------------------------------|
-| domain         | *name attribute*              | Domain name
-| description    | `''`                          | Domain description
-| aliases        | `10`                          | Maximum number of aliases
-| mailboxes      | `10`                          | Maximum number of mailboxes
-| login_username | *required*                    | Admin user to use
-| login_password | *required*                    | Admin password
-| ssl            | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
+| Property        | Default                       | Description                    |
+|:----------------|:------------------------------|:-------------------------------|
+| domain          | *name attribute*              | Domain name
+| description     | `''`                          | Domain description
+| aliases         | `10`                          | Maximum number of aliases
+| mailboxes       | `10`                          | Maximum number of mailboxes
+| active          | `true`                        | Active status
+| default_aliases | `false`                       | Whether to include default aliases
+| login_username  | *required*                    | Admin user to use
+| login_password  | *required*                    | Admin password
+| ssl             | `node['postfixadmin']['ssl']` | Whether to use SSL on HTTP requests
 
 ### postfixadmin_domain Example
 
