@@ -17,28 +17,36 @@
 # limitations under the License.
 #
 
-require 'serverspec'
-require 'infrataster/rspec'
-require_relative 'system_info_helpers'
+require_relative '../../../kitchen/data/spec_helper'
 
-# Set backend type
-set :backend, :exec
-
-ENV['PATH'] = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-
-Infrataster::Server.define(:web, '127.0.0.1')
-Infrataster::Server.define(:db, '127.0.0.1')
-
-# Infrataster hack to ignore phantomjs SSL errors
-Infrataster::Contexts::CapybaraContext.class_eval do
-  def self.prepare_session
-    driver = Infrataster::Contexts::CapybaraContext::CAPYBARA_DRIVER_NAME
-    Capybara.register_driver driver do |app|
-      Capybara::Poltergeist::Driver.new(
-        app,
-        phantomjs_options: %w(--ignore-ssl-errors=true)
-      )
-    end
-    Capybara::Session.new(driver)
+family = os[:family].downcase
+apache =
+  if %w(centos redhat fedora scientific amazon).include?(family)
+    'httpd'
+  else
+    'apache2'
   end
+
+describe package(apache) do
+  it { should be_installed }
 end
+
+describe port(80) do
+  it { should be_listening }
+end
+
+describe process(apache) do
+  it { should be_running }
+end
+
+describe process('nginx') do
+  it { should_not be_running }
+end
+
+describe server(:web) do
+  describe http('/login.php') do
+    it 'runs Apache httpd' do
+      expect(response['Server']).to include 'Apache'
+    end
+  end # http /login.php
+end # server web
