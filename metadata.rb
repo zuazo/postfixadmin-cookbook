@@ -171,10 +171,6 @@ attribute 'postfixadmin/web_server',
           required: 'optional',
           default: 'apache'
 
-grouping 'postfixadmin/database',
-         title: 'postfixadmin database',
-         description: 'PostfixAdmin database configuration options'
-
 attribute 'postfixadmin/database/manage',
           display_name: 'database manage',
           description: 'Whether to manage database creation.',
@@ -218,10 +214,6 @@ attribute 'postfixadmin/database/password',
           calculated: true,
           type: 'string',
           required: 'optional'
-
-grouping 'postfixadmin/mysql',
-         title: 'postfixadmin mysql',
-         description: 'PostfixAdmin MySQL configuration options'
 
 attribute 'postfixadmin/mysql/instance',
           display_name: 'mysql instance',
@@ -267,10 +259,6 @@ attribute 'postfixadmin/mysql/version',
           required: 'optional',
           calculated: true
 
-grouping 'postfixadmin/conf',
-         title: 'postfixadmin configuration',
-         description: 'PostfixAdmin configuration options (config.local.php)'
-
 attribute 'postfixadmin/conf/encrypt',
           display_name: 'encryption configuration',
           description: 'The way do you want the passwords to be crypted',
@@ -302,10 +290,6 @@ attribute 'postfixadmin/conf/fetchmail',
           required: 'optional',
           default: '"NO"'
 
-grouping 'postfixadmin/packages',
-         title: 'postfixadmin packages',
-         description: 'PostfixAdmin required packages'
-
 attribute 'postfixadmin/packages/requirements',
           display_name: 'postfixadmin packages requirements',
           description: 'PostfixAdmin required packages array',
@@ -328,19 +312,11 @@ attribute 'postfixadmin/packages/postgresql',
           required: 'optional',
           calculated: true
 
-grouping 'postfixadmin/mysql',
-         title: 'postfixadmin mysql',
-         description: 'PostfixAdmin MySQL server credentials'
-
 attribute 'postfixadmin/mysql/server_root_password',
           display_name: 'postfixadmin mysql server root password',
           description: 'PostfixAdmin MySQL root password.',
           type: 'string',
           calculated: true
-
-grouping 'postfixadmin/map_files',
-         title: 'postfixadmin map files',
-         description: 'PostfixAdmin map-files configuration options'
 
 attribute 'postfixadmin/map_files/path',
           display_name: 'map files path',
