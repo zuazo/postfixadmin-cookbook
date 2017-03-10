@@ -56,7 +56,7 @@ describe 'postfixadmin::php_fpm', order: :random do
 
   context 'on Fedora' do
     let(:chef_runner) do
-      ChefSpec::SoloRunner.new(platform: 'fedora', version: '20')
+      ChefSpec::SoloRunner.new(platform: 'fedora', version: '22')
     end
 
     it 'does not fix php session directory' do
