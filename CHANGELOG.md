@@ -86,7 +86,7 @@ include_recipe 'postfixadmin'
 ```
 
 ## [1.4.2] - 2015-05-07
-###
+### Fixed
 - Mailbox resource: Fix name attribute to be a string.
 
 ## [1.4.1] - 2015-05-06
