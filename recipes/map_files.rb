@@ -19,13 +19,17 @@
 # limitations under the License.
 #
 
-directory node['postfixadmin']['map_files']['path'] do
-  mode '00755'
-  owner node['postfixadmin']['map_files']['owner']
-  group node['postfixadmin']['map_files']['group']
-  recursive true
-  not_if { ::File.exist?(node['postfixadmin']['map_files']['path']) }
-  action :create
+begin
+  resources(directory: node['postfixadmin']['map_files']['path'])
+rescue Chef::Exceptions::ResourceNotFound
+  directory node['postfixadmin']['map_files']['path'] do
+    mode '00755'
+    owner node['postfixadmin']['map_files']['owner']
+    group node['postfixadmin']['map_files']['group']
+    recursive true
+    not_if { ::File.exist?(node['postfixadmin']['map_files']['path']) }
+    action :create
+  end
 end
 
 ::Chef::Recipe.send(:include, Chef::EncryptedAttributesHelpers)
