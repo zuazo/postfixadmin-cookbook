@@ -3,7 +3,7 @@ All notable changes to the `postfixadmin` cookbook will be documented in this fi
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [3.0.0] - 2017-03-11
 ### Added
 - Add `:active` and `:default_aliases` properties to domain resource.
 - Add `:delete` action to resources.
@@ -33,7 +33,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Drop Ruby `< 2.2` support.
 - Drop Chef `< 12.5` support.
 - Drop PostfixAdmin `2` installation support.
-- Remove `nginx` cookbook usage.
+- Remove old `nginx` cookbook usage.
+- Metadata: Remove grouping ([RFC-85](https://github.com/chef/chef-rfc/blob/8d47f1d0afa5a2313ed2010e0eda318edc28ba47/rfc085-remove-unused-metadata.md)).
 - README: Remove documentation about locale (old).
 
 ### Fixed
@@ -226,7 +227,8 @@ include_recipe 'postfixadmin'
 ## 0.1.0 - 2013-06-11
 - Initial release of `postfixadmin`
 
-[Unreleased]: https://github.com/zuazo/postfixadmin-cookbook/compare/2.1.0...HEAD
+[Unreleased]: https://github.com/zuazo/postfixadmin-cookbook/compare/3.0.0...HEAD
+[3.0.0]: https://github.com/zuazo/postfixadmin-cookbook/compare/2.1.0...3.0.0
 [2.1.0]: https://github.com/zuazo/postfixadmin-cookbook/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/zuazo/postfixadmin-cookbook/compare/1.4.2...2.0.0
 [1.4.2]: https://github.com/zuazo/postfixadmin-cookbook/compare/1.4.1...1.4.2
