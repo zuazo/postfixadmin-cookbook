@@ -3,6 +3,9 @@ All notable changes to the `postfixadmin` cookbook will be documented in this fi
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+- ...
+
 ## [3.0.0] - 2017-03-11
 ### Added
 - Add `:active` and `:default_aliases` properties to domain resource.

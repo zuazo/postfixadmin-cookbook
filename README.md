@@ -6,8 +6,8 @@ PostfixAdmin Cookbook
 [![Cookbook Version](https://img.shields.io/cookbook/v/postfixadmin.svg?style=flat)](https://supermarket.chef.io/cookbooks/postfixadmin)
 [![Dependency Status](http://img.shields.io/gemnasium/zuazo/postfixadmin-cookbook.svg?style=flat)](https://gemnasium.com/zuazo/postfixadmin-cookbook)
 [![Code Climate](http://img.shields.io/codeclimate/github/zuazo/postfixadmin-cookbook.svg?style=flat)](https://codeclimate.com/github/zuazo/postfixadmin-cookbook)
-[![Build Status](http://img.shields.io/travis/zuazo/postfixadmin-cookbook/3.0.0.svg?style=flat)](https://travis-ci.org/zuazo/postfixadmin-cookbook)
-[![Coverage Status](http://img.shields.io/coveralls/zuazo/postfixadmin-cookbook/3.0.0.svg?style=flat)](https://coveralls.io/r/zuazo/postfixadmin-cookbook?branch=3.0.0)
+[![Build Status](http://img.shields.io/travis/zuazo/postfixadmin-cookbook.svg?style=flat)](https://travis-ci.org/zuazo/postfixadmin-cookbook)
+[![Coverage Status](http://img.shields.io/coveralls/zuazo/postfixadmin-cookbook.svg?style=flat)](https://coveralls.io/r/zuazo/postfixadmin-cookbook?branch=master)
 
 Installs and configures [PostfixAdmin](http://postfixadmin.sourceforge.net/), a web based interface used to manage mailboxes, virtual domains and aliases.
 
