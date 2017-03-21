@@ -39,6 +39,8 @@ suites:
   - recipe[netstat]
   - recipe[postfixadmin_test]
   excludes:
+  # mysql cookbook: undefined method `split' for nil:NilClass
+  - centos-5
   # mysql cookbook: No candidate version available for mysql-community-server
   - centos-7
   # Can't connect to MySQL server on '127.0.0.1' (111)
