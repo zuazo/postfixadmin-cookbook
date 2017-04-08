@@ -13,7 +13,6 @@ env:
   - TESTS="integration[mysql-debian-7,verify]"
   - TESTS="integration[mysql-debian-8,verify]"
   - TESTS="integration[mysql-scientific-66,verify]"
-  - TESTS="integration[postgresql-centos-5,verify]"
   - TESTS="integration[postgresql-centos-6,verify]"
   - TESTS="integration[postgresql-debian-7,verify]"
   - TESTS="integration[postgresql-debian-8,verify]"
@@ -37,8 +36,6 @@ matrix:
     env: TESTS="integration[mysql-debian-8,verify]"
   - rvm: 2.2
     env: TESTS="integration[mysql-scientific-66,verify]"
-  - rvm: 2.2
-    env: TESTS="integration[postgresql-centos-5,verify]"
   - rvm: 2.2
     env: TESTS="integration[postgresql-centos-6,verify]"
   - rvm: 2.2
