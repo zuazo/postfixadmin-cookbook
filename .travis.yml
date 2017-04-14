@@ -9,11 +9,11 @@ services: docker
 env:
   matrix:
   - TESTS="style unit" CHEF_VERSION="~> 12.0"
-  - TESTS="integration[mysql-centos-6,verify]"
+  # - TESTS="integration[mysql-centos-6,verify]"
   - TESTS="integration[mysql-debian-7,verify]"
   - TESTS="integration[mysql-debian-8,verify]"
-  - TESTS="integration[mysql-scientific-66,verify]"
-  - TESTS="integration[postgresql-centos-6,verify]"
+  # - TESTS="integration[mysql-scientific-66,verify]"
+  # - TESTS="integration[postgresql-centos-6,verify]"
   - TESTS="integration[postgresql-debian-7,verify]"
   - TESTS="integration[postgresql-debian-8,verify]"
   - TESTS="integration[postgresql-ubuntu-1204,verify]"
@@ -22,9 +22,9 @@ env:
   - TESTS="integration[nginx-debian-7,verify]"
   - TESTS="integration[nginx-debian-8,verify]"
   - TESTS="integration[without-webserver-centos-6,verify]"
-  - TESTS="integration[map-files-centos-6,verify]"
-  - TESTS="integration[ssl-centos-6,verify]"
-  - TESTS="integration[ssl-port-centos-6,verify]"
+  - TESTS="integration[map-files-debian-8,verify]"
+  - TESTS="integration[ssl-debian-8,verify]"
+  - TESTS="integration[ssl-port-debian-8,verify]"
 
 matrix:
   exclude:
@@ -55,11 +55,11 @@ matrix:
   - rvm: 2.2
     env: TESTS="integration[without-webserver-centos-6,verify]"
   - rvm: 2.2
-    env: TESTS="integration[map-files-centos-6,verify]"
+    env: TESTS="integration[map-files-debian-8,verify]"
   - rvm: 2.2
-    env: TESTS="integration[ssl-centos-6,verify]"
+    env: TESTS="integration[ssl-debian-8,verify]"
   - rvm: 2.2
-    env: TESTS="integration[ssl-port-centos-6,verify]"
+    env: TESTS="integration[ssl-port-debian-8,verify]"
 
 before_install:
 - chef --version &> /dev/null || curl -L https://www.getchef.com/chef/install.sh | sudo bash -s -- -P chefdk -v 1.2.22
