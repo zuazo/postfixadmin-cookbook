@@ -50,7 +50,7 @@ update_listen_ports(default_port)
 
 include_recipe 'apache2::default'
 include_recipe 'php'
-include_recipe 'apache2::mod_php5'
+include_recipe 'apache2::mod_php'
 
 if default_ssl
   cert = ssl_certificate 'postfixadmin' do
