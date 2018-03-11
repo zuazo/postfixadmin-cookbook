@@ -35,8 +35,8 @@ describe 'postfixadmin::apache', order: :random do
     expect(chef_run).to include_recipe('php')
   end
 
-  it 'includes apache2::mod_php5 recipe' do
-    expect(chef_run).to include_recipe('apache2::mod_php5')
+  it 'includes apache2::mod_php recipe' do
+    expect(chef_run).to include_recipe('apache2::mod_php')
   end
 
   it 'creates ssl_certificate' do
