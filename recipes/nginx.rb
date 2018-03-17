@@ -21,7 +21,7 @@
 
 Chef::Recipe.send(:include, PostfixadminCookbook::RecipeHelpers)
 
-include_recipe 'chef_nginx'
+include_recipe 'nginx'
 include_recipe 'postfixadmin::php_fpm'
 
 # Disable apache2, required for Debian 6
