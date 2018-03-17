@@ -68,7 +68,7 @@ Please, [let us know](https://github.com/zuazo/postfixadmin-cookbook/issues/new?
 * [database](https://supermarket.chef.io/cookbooks/database)
 * [encrypted_attributes](https://supermarket.chef.io/cookbooks/encrypted_attributes)
 * [mysql](https://supermarket.chef.io/cookbooks/mysql)
-* [chef_nginx](https://supermarket.chef.io/cookbooks/chef_nginx)
+* [nginx](https://supermarket.chef.io/cookbooks/nginx)
 * [compat_resource](https://supermarket.chef.io/cookbooks/compat_resource)
 * [openssl](https://supermarket.chef.io/cookbooks/openssl)
 * [php](https://supermarket.chef.io/cookbooks/php)
